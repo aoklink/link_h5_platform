@@ -55,5 +55,58 @@ export default {
     async [types.ADD_COASH] ({commit}, payload) {
         let result = await nets.gymCoachAdd(payload);
         return result;
+    },
+    async [types.DELETE_GYM] ({dispatch}, payload) {
+        let result = await nets.gymInfoDelete(payload);
+        if (result.success) {
+            dispatch(types.GET_ALL_GYM_INFO);
+        }
+        return result;
+    },
+    async [types.GET_COACH_LIST_BY_GYMID] ({commit}, payload) {
+        let result = await nets.gymCoachList(payload);
+        if (result.success) {
+            commit(mutationTypes.MUTATE_COACH_INFO_LIST_SELECTED, result.data);
+        }
+        return result;
+    },
+    async [types.ADD_GYM_ADMIN] (_, payload) {
+        let result = await nets.gymAdminUserAdd(payload);
+        return result;
+    },
+    async [types.GET_OSS_SESSION] ({commit}, payload) {
+        let result = await nets.getOSSSession(payload);
+        if (result.success) {
+            commit(mutationTypes.MUTATE_OSS_SESSION, result.data);
+        }
+        return result;
+    },
+    async [types.ADD_CLASS_INFO] ({dispatch}, payload) {
+        let result = await nets.gymClassAdd(payload);
+        if (result.success) {
+            dispatch(types.GET_CLASS_INFO_LIST_BY_GYMID, {gym_id: result.data.gym_id});
+        }
+        return result;
+    },
+    async [types.GET_CLASS_INFO_LIST_BY_GYMID] ({commit}, payload) {
+        let result = await nets.gymClassList(payload);
+        if (result.success) {
+            commit(mutationTypes.MUTATE_CLASS_INFO_LIST_SELECTED, result.data);
+        }
+        return result;
+    },
+    async [types.EDIT_GYM] ({dispatch}, payload) {
+        let result = await nets.gymInfoUpdate(payload);
+        if (result.success) {
+            dispatch(types.GET_ALL_GYM_INFO);
+        }
+        return result;
+    },
+    async [types.EDIT_CLASS_INFO] ({dispatch}, payload) {
+        let result = await nets.gymClassUpdate(payload);
+        if (result.success) {
+            dispatch(types.GET_CLASS_INFO_LIST_BY_GYMID, {gym_id: payload.gym_id});
+        }
+        return result;
     }
 };

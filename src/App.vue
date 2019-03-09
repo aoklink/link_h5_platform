@@ -8,7 +8,10 @@
     html{
         min-height: 700px;
         min-width: 1360px;
-        font-size: 36px;
+        font-size: 35px;
+    }
+    body{
+        font-size: 14px;
     }
 
     body,html,#app{

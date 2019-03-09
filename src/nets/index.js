@@ -9,6 +9,13 @@ const axios = http.create({
     timeout: 15000,
     withCredentials: true
 });
+export function getOSSSession (payload) {
+    return wrapAjaxToPromise(http.create({timeout: 15000}).get(api.GET_OSS_SESSION).then(res => {
+        res.data.data = {...res.data};
+        res.data.code = 200;
+        return res;
+    }));
+}
 
 export function login (payload) {
     return wrapAjaxToPromise(axios.post(api.LOGIN, qs.stringify(payload)));

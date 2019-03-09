@@ -8,7 +8,7 @@
             <div class="login-form-title">
                 <h2>欢迎回来</h2>
                 <h1>
-                    <!-- Linkfeeling 后台系统管理 -->
+                    Linkfeeling 后台系统管理
                 </h1>
             </div>
             <div class="login-form-input">
@@ -26,7 +26,7 @@
                     登录
                 </button>
                 <p>
-                    <!-- 领客菲力（杭州）健康技术有限公司 -->
+                    领客菲力（杭州）健康技术有限公司
                 </p>
             </div>
         </div>
@@ -159,8 +159,10 @@ export default {
     font-size:16px;
     font-family:PingFangSC-Medium;
     font-weight:500;
-    color:rgba(191,196,209,1);
     line-height:0.56rem;
+}
+.login-form-input-row input::placeholder{
+    color:rgba(191,196,209,1);
 }
 .login-form-input-row input:focus{
     outline: none;

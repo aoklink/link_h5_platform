@@ -24,7 +24,7 @@ export default {
         state.gymInfoList = payload;
     },
     [types.ADD_GYM_INFO_LIST_SELECTED] (state, payload) {
-        state.gymInfoListSelected = [...state.gymInfoListSelected, {
+        state.gymInfoListSelected = [{
             id: payload.id,
             member_count: payload.memberCount,
             name: payload.name,
@@ -39,5 +39,18 @@ export default {
     },
     [types.REMOVE_ITEM_FROM_GYM_INFO_LIST_SELECTED] (state, payload) {
         state.gymInfoListSelected = state.gymInfoListSelected.filter(item => item.id != payload);
+    },
+    [types.MUTATE_COACH_INFO_LIST_SELECTED] (state, payload) {
+        state.coachInfoListSelected = [...payload];
+    },
+    [types.MUTATE_CLASS_INFO_LIST_SELECTED] (state, payload = []) {
+        state.classInfoListSelected = payload.map(item => ({...item, priceInfo: item.price_info}));
+    },
+    [types.MUTATE_OSS_SESSION] (state, payload) {
+        state.OSSsession = {
+            accessid: payload.accessid,
+            policy: payload.policy,
+            signature: payload.signature
+        };
     }
 };

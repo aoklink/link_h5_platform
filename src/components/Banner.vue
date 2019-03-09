@@ -1,8 +1,7 @@
 <template>
     <div class="banner">
         <div class="banner-left">
-            ss
-            <!-- 后台管理系统 -->
+            后台管理系统
         </div>
         <div class="banner-right">
             <div class="banner-userinfo">
@@ -12,7 +11,7 @@
                     </span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item command="logout">
-                            注销
+                            退出登录
                         </el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -76,6 +75,7 @@ export default {
     .banner-userinfo {
         position: absolute;
         right: 1rem;
+        top: .5rem;
     }
 
 </style>

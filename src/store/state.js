@@ -7,7 +7,10 @@ export const initVal = {
     authorization: isLogin(),
     userInfo: persistence.getMyInfo(),
     gymInfoList: [],
-    gymInfoListSelected: []
+    gymInfoListSelected: [],
+    coachInfoListSelected: [],
+    classInfoListSelected: [],
+    OSSsession: {}
 };
 
 export default {
