@@ -2,9 +2,12 @@
     <div class="management">
         <div class="management-top">
             <h3>店铺列表</h3>
-            <button class="btn-add-store" @click="onAdd">
-                + 添加店铺
-            </button>
+            <app-button custom-class="btn-add-store" size="medium" theme="grey"
+                        @click="onAdd"
+            >
+                <i class="el-icon-plus"> 添加店铺
+                </i>
+            </app-button>
         </div>
         <div>
             <el-table :data="gymInfoList" style="width: 100%" stripe
@@ -17,12 +20,12 @@
                 <el-table-column label="用户数" prop="memberCount" />
                 <el-table-column align="left" label="操作">
                     <template slot-scope="scope">
-                        <button class="btn-management-view-detail" @click="handleViewDetail(scope.row)">
+                        <app-button size="mini" theme="yellow" @click="handleViewDetail(scope.row)">
                             查看
-                        </button>
-                        <button class="btn-management-edit" @click="handleEdit(scope.row)">
+                        </app-button>
+                        <app-button size="mini" theme="plain" @click="handleEdit(scope.row)">
                             编辑
-                        </button>
+                        </app-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -43,10 +46,12 @@ import {GET_ALL_GYM_INFO, GET_GYM_INFO, GET_COACH_LIST_BY_GYMID, GET_CLASS_INFO_
 import {ADD_GYM_INFO_LIST_SELECTED} from '../store/mutation_type.js';
 import {mapState} from 'vuex';
 import { Promise } from 'q';
+import AppButton from './AppButton.vue';
 
 export default {
     components: {
-        FormAddEditGYM
+        FormAddEditGYM,
+        AppButton
     },
     data () {
         return {
@@ -124,16 +129,6 @@ export default {
         position: absolute;
         right: 1rem;
         top: .5rem;
-        font-size: 14px;
-        border: none;
-        width:3.33rem;
-        height:0.97rem;
-        background:rgba(60,68,86,1);
-        border-radius:0.06rem;
-        cursor: pointer;
-        font-family:PingFangSC-Medium;
-        font-weight:500;
-        color:rgba(255,255,255,1);
     }
     .dialog-add-edit-gym{
         display: flex;
@@ -148,23 +143,5 @@ export default {
     .dialog-add-edit-gym .el-dialog__body{
         flex: 1;
         display: flex;
-    }
-
-    .btn-management-view-detail{
-        width:1.67rem;
-        height:0.69rem;
-        background:rgba(255,192,1,1);
-        border-radius:0.06rem;
-        border: none;
-        cursor: pointer;
-    }
-    .btn-management-edit{
-        margin-left: .25rem;
-        width:1.67rem;
-        height:0.69rem;
-        border-radius:0.06rem;
-        background: none;
-        border:0.03rem solid rgba(60,68,86,1);
-        cursor: pointer;
     }
 </style>
