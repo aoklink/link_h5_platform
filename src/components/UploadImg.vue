@@ -48,11 +48,12 @@ export default {
     methods: {
         handleSuccess (response, file, fileList) {
             console.log(222, response, file, fileList);
+            this.$$emit('url', '');
         },
         handleError (err, file, fileList) {
             console.log(111, err, file, fileList);
             console.log(33, err);
-            this.$emit('error', JSON.parse(err).Error.Message);
+            this.$emit('error', err);
         },
         handleChange (file, fileList) {
 
@@ -62,6 +63,7 @@ export default {
                 this.$message.error('只能上传图片');
                 return false;
             }
+            return true;
         }
     }
 };

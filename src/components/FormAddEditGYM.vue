@@ -32,13 +32,13 @@
                                 <h6>店铺logo</h6>
                                 <p>请尽量保证图片是正方形， 建议上传尺寸80*80像素， 大小不超过3M。</p>
                             </label>
-                            <upload-img />
+                            <upload-img @error="onUploadImgError" />
                         </div>
                         <div class="form-upload-img-item">
                             <label>
                                 <h6>小程序二维码</h6>
                             </label>
-                            <upload-img />
+                            <upload-img @error="onUploadImgError" />
                         </div>
                         <div class="form-upload-img-item img-show">
                             <label>
@@ -46,7 +46,7 @@
                                 <p>请上传店铺相关图片进行展示，每张图片大小不超过3M</p>
                             </label>
                             <div class="img-show-list">
-                                <upload-img />
+                                <upload-img @error="onUploadImgError" />
                             </div>
                         </div>
                     </div>
@@ -285,6 +285,12 @@ export default {
             } else if (this.activeName == 'fourth') {
                 this.onSubmitAddAccount();
             }
+        },
+        async onUploadImgError (msg) {
+            this.$notify.error({
+                title: '图片上传失败',
+                message: msg
+            });
         },
         async onSubmitCoachInfo () {
             let result = await this.$store.dispatch(ADD_COASH, {...this.formCoachInfo, gym_id: this.gymId});
