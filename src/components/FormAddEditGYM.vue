@@ -25,14 +25,27 @@
                             <label>店铺地址</label>
                             <input v-model="formGYMInfo.address" type="text" placeholder="如：浙江省杭州市西湖区xx街道118号">
                         </div>
-                        <div class="gym-info-input-item">
-                            <label>店铺logo</label>
+                        <div class="form-upload-img-item">
+                            <label>
+                                <h6>店铺logo</h6>
+                                <p>请尽量保证图片是正方形， 建议上传尺寸80*80像素， 大小不超过3M。</p>
+                            </label>
+                            <upload-img />
                         </div>
-                        <div class="gym-info-input-item">
-                            <label>展示图</label>
+                        <div class="form-upload-img-item">
+                            <label>
+                                <h6>小程序二维码</h6>
+                            </label>
+                            <upload-img />
                         </div>
-                        <div class="gym-info-input-item">
-                            <label>小程序二维码</label>
+                        <div class="form-upload-img-item img-show">
+                            <label>
+                                <h6>展示图</h6>
+                                <p>请上传店铺相关图片进行展示，每张图片大小不超过3M</p>
+                            </label>
+                            <div class="img-show-list">
+                                <upload-img />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -159,8 +172,12 @@
 
 <script>
 import {mapState} from 'vuex';
+import UploadImg from './UploadImg.vue';
 import { ADD_GYM, ADD_COASH, ADD_GYM_ADMIN, GET_OSS_SESSION, ADD_CLASS_INFO, GET_GYM_INFO, EDIT_GYM, EDIT_CLASS_INFO, GET_CLASS_INFO_LIST_BY_GYMID } from '../store/action_type';
 export default {
+    components: {
+        UploadImg
+    },
     props: {
         isEdit: {
             type: Boolean,
@@ -497,5 +514,48 @@ export default {
         background: none;
         border:0.03rem solid rgba(60,68,86,1);
         cursor: pointer;
+    }
+
+    .form-upload-img-item{
+        display:  inline-flex;
+        flex-direction:  row;
+        width:12.22rem;
+        height:2.94rem;
+        padding: .33rem;
+        margin-bottom: .33rem;
+        box-sizing: border-box;
+        border: 1px solid rgba(188,191,201,1);
+    }
+    .form-upload-img-item   label{
+        flex:1;
+    }
+    .form-upload-img-item:nth-of-type(2n){
+        margin-right: .83rem;
+    }
+    .form-upload-img-item p,.form-upload-img-item h6{
+        margin: 0;
+        padding: 0;
+        color: #5B637E;
+    }
+    .form-upload-img-item p{
+        font-size: 14px;
+    }
+    .form-upload-img-item h6{
+        font-size: 16px;
+        margin-bottom: .39rem;
+    }
+    .form-upload-img-item.img-show{
+        width: 25.28rem;
+        height: 4rem;
+        margin-right: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    .form-upload-img-item.img-show label{
+        display: flex;
+    }
+    .form-upload-img-item.img-show h6{
+        margin-bottom: 0;
+        margin-right: .33rem;
     }
 </style>

@@ -8,7 +8,7 @@
     html{
         min-height: 700px;
         min-width: 1360px;
-        font-size: 35px;
+        font-size: 36px;
     }
     body{
         font-size: 14px;

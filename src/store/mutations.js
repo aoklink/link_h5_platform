@@ -49,6 +49,10 @@ export default {
     [types.MUTATE_OSS_SESSION] (state, payload) {
         state.OSSsession = {
             accessid: payload.accessid,
+            callback: payload.callback,
+            dir: payload.dir,
+            expire: payload.expire,
+            host: payload.host,
             policy: payload.policy,
             signature: payload.signature
         };
