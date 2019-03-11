@@ -5,23 +5,25 @@
                 <div class="form-add-store">
                     <h3>店铺资料</h3>
                     <div class="gym-info">
-                        <div class="gym-info-input-item">
+                        <div class="app-form-item">
                             <label>店铺名称</label>
-                            <input v-model="formGYMInfo.name" type="text" placeholder="请输入店铺名称">
+                            <input v-model="formGYMInfo.name" type="text" placeholder="请输入店铺名称"
+                                   autocomplete="false"
+                            >
                         </div>
-                        <div class="gym-info-input-item">
+                        <div class="app-form-item">
                             <label>联系电话</label>
                             <input v-model="formGYMInfo.phone" type="text" placeholder="联系电话">
                         </div>
-                        <div class="gym-info-input-item">
+                        <div class="app-form-item">
                             <label>所在城市</label>
                             <input v-model="formGYMInfo.city" type="text" placeholder="所在城市">
                         </div>
-                        <div class="gym-info-input-item">
+                        <div class="app-form-item">
                             <label>标签</label>
                             <input v-model="formGYMInfo.label" type="text" placeholder="请输入标签，用空格隔开">
                         </div>
-                        <div class="gym-info-input-item gym-info-address">
+                        <div class="app-form-item gym-info-address">
                             <label>店铺地址</label>
                             <input v-model="formGYMInfo.address" type="text" placeholder="如：浙江省杭州市西湖区xx街道118号">
                         </div>
@@ -58,11 +60,11 @@
                             点击添加
                         </button>
                     </h3>
-                    <div class="gym-info-input-item">
+                    <div class="app-form-item">
                         <label>姓名</label>
                         <input v-model="formCoachInfo.name" type="text" placeholder="请输入教练姓名">
                     </div>
-                    <div class="gym-info-input-item">
+                    <div class="app-form-item">
                         <label>标签</label>
                         <input v-model="formCoachInfo.label" type="text" placeholder="请输入标签，用空格隔开">
                     </div>
@@ -74,15 +76,15 @@
                         <div>
                             <h3>添加课程活动</h3>
                             <div>
-                                <div class="gym-info-input-item">
+                                <div class="app-form-item">
                                     <label>课程活动名称</label>
                                     <input v-model="formClassInfo.title" type="text" placeholder="请输入课程活动名称">
                                 </div>
-                                <div class="gym-info-input-item">
+                                <div class="app-form-item">
                                     <label>价格</label>
                                     <input v-model="formClassInfo.priceInfo" type="text" placeholder="请输入价格，如19.9">
                                 </div>
-                                <div class="gym-info-input-item form-class-info-content">
+                                <div class="app-form-item form-class-info-content">
                                     <label>课程内容</label>
                                     <textarea v-model="formClassInfo.content" placeholder="请输入课程内容" />
                                 </div>
@@ -141,15 +143,17 @@
                     <h3>
                         账号设定
                     </h3>
-                    <div class="gym-info-input-item">
+                    <div class="app-form-item">
                         <label>负责人</label>
                         <input v-model="formAccountInfo.name" type="text" placeholder="请输入负责人名称">
                     </div>
-                    <div class="gym-info-input-item">
+                    <div class="app-form-item">
                         <label>密码</label>
-                        <input v-model="formAccountInfo.password" type="password" placeholder="请输入6-18位密码">
+                        <input v-model="formAccountInfo.password" autocomplete="false" type="password"
+                               placeholder="请输入6-18位密码"
+                        >
                     </div>
-                    <div class="gym-info-input-item">
+                    <div class="app-form-item">
                         <label>手机号</label>
                         <input v-model="formAccountInfo.phone" type="text" placeholder="请输入手机号">
                     </div>
@@ -359,9 +363,6 @@ export default {
         position: relative;
         flex: 1;
     }
-    .gym-info-input-item>*{
-        display: block;
-    }
 
     .btn-close-dialog-form-add-edit-gym{
         position: absolute;
@@ -372,51 +373,11 @@ export default {
         color: #ccc;
         cursor: pointer;
     }
-    .gym-info-input-item{
-        display: inline-flex;
-        width:12.22rem;
-        height:1.94rem;
-        border:0.01rem solid rgba(225,227,232,1);
-        flex-direction: column;
-    }
-    .gym-info-input-item label{
-        padding-left: 1rem;
-        padding-top: .5rem;
-        font-size:16px;
-        font-family:PingFangSC-Regular;
-        font-weight:400;
-        color:rgba(91,99,126,1);
-        line-height:0.47rem;
-    }
-    .gym-info-input-item input,
-    .gym-info-input-item textarea{
-        padding-left: 1rem;
-        padding-top:8px;
-        width: 100%;
-        background: transparent;
-        box-sizing: border-box;
-        border: none;
-        font-size:16px;
-        font-family:PingFangSC-Medium;
-        font-weight:500;
-        line-height:0.56rem;
-    }
-    .gym-info-input-item textarea{
-        flex: 1;
-    }
-    .gym-info-input-item.gym-info-address{
+    .app-form-item.gym-info-address{
         margin: .5rem 0;
         margin-right: 0!important;
         width: 25.44rem;
         box-sizing: border-box;
-    }
-    .gym-info-input-item textarea::placeholder,
-    .gym-info-input-item input::placeholder{
-        color:rgba(191,196,209,1);
-    }
-    .gym-info-input-item textarea:focus,
-    .gym-info-input-item input:focus{
-        outline: none;
     }
     .form-btn-add{
         width:3.33rem;
@@ -429,11 +390,6 @@ export default {
     }
     .form-add-store,.form-add-coach, .form-add-account{
         padding:0 1rem;
-    }
-    .form-add-coach .gym-info-input-item:nth-of-type(2n-1),
-    .form-add-store .gym-info-input-item:nth-of-type(2n-1),
-    .form-add-account .gym-info-input-item:nth-of-type(2n-1){
-        margin-right: 1rem;
     }
     .form-add-coach .form-btn-add{
         position: absolute;
@@ -467,8 +423,9 @@ export default {
     .form-add-activity .gym-info-input-item{
         display: flex;
     }
-    .form-class-info-content{
+    .app-form-item.form-class-info-content{
         margin-top:.5rem;
+        margin-right: 0!important;
         width: 25rem;
         height: 5.56rem;
         box-sizing: border-box;
@@ -524,7 +481,7 @@ export default {
         padding: .33rem;
         margin-bottom: .33rem;
         box-sizing: border-box;
-        border: 1px solid rgba(188,191,201,1);
+        border: 1px solid rgba(225, 227, 232, 1);
     }
     .form-upload-img-item   label{
         flex:1;
