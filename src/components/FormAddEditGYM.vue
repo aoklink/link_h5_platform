@@ -46,8 +46,8 @@
                                 <p>请上传店铺相关图片进行展示，每张图片大小不超过3M</p>
                             </label>
                             <div class="img-show-list">
-                                <img v-for="(src, index) in formGYMInfo.display_img_urls" :key="index" :src="src">
-                                <upload-img @error="onUploadImgError" />
+                                <img-list v-model="formGYMInfo.display_img_urls" />
+                                <upload-img :one-image="false" @error="onUploadImgError" @addimg="onAddDisplayImg" />
                             </div>
                         </div>
                     </div>
@@ -178,10 +178,12 @@
 <script>
 import {mapState} from 'vuex';
 import UploadImg from './UploadImg.vue';
+import ImgList from './ImgList.vue';
 import { ADD_GYM, ADD_COASH, ADD_GYM_ADMIN, GET_OSS_SESSION, ADD_CLASS_INFO, GET_GYM_INFO, EDIT_GYM, EDIT_CLASS_INFO, GET_CLASS_INFO_LIST_BY_GYMID } from '../store/action_type';
 export default {
     components: {
-        UploadImg
+        UploadImg,
+        ImgList
     },
     props: {
         isEdit: {
@@ -250,15 +252,21 @@ export default {
         onClose () {
             this.$emit('close');
         },
+        onAddDisplayImg (url) {
+            this.formGYMInfo.display_img_urls = [...this.formGYMInfo.display_img_urls, url];
+        },
         async onSubmitGYMInfo () {
             let result;
             if (this.isEdit) {
                 result = await this.$store.dispatch(EDIT_GYM, {
                     ...this.formGYMInfo,
-                    id: this.gymId
+                    id: this.gymId,
+                    display_img_urls: JSON.stringify(this.formGYMInfo.display_img_urls)
                 });
             } else {
-                result = await this.$store.dispatch(ADD_GYM, {...this.formGYMInfo});
+                result = await this.$store.dispatch(ADD_GYM, {...this.formGYMInfo,
+                    display_img_urls: JSON.stringify(this.formGYMInfo.display_img_urls)
+                });
             }
             if (result.success) {
                 this.$notify({
@@ -348,7 +356,7 @@ export default {
             let result = await this.$store.dispatch(ADD_GYM_ADMIN, {...this.formAccountInfo, gym_id: this.gymId});
             if (result.success) {
                 this.$notify({
-                    title: '添加成功',
+                    title: this.isEdit ? '编辑成功' : '添加成功',
                     type: 'success'
                 });
                 this.onClose();
@@ -519,5 +527,8 @@ export default {
     .form-upload-img-item.img-show h6{
         margin-bottom: 0;
         margin-right: .33rem;
+    }
+    .img-show-list {
+        display: flex;
     }
 </style>
