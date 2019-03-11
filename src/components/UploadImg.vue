@@ -11,6 +11,7 @@
             :show-file-list="false"
         >
             <img v-if="oneImage&&imgSrc" :src="imgSrc">
+            <img v-else-if="value" :src="value">
             <i v-else class="el-icon-plus" />
         </el-upload>
     </div>
@@ -24,6 +25,10 @@ export default {
         oneImage: {
             type: Boolean,
             default: true
+        },
+        value: {
+            type: String,
+            default: ''
         }
     },
     data () {
@@ -48,7 +53,7 @@ export default {
     methods: {
         handleSuccess (response, file, fileList) {
             console.log(222, response, file, fileList);
-            this.$$emit('url', '');
+            this.$emit('input', '1111');
         },
         handleError (err, file, fileList) {
             console.log(111, err, file, fileList);

@@ -32,13 +32,13 @@
                                 <h6>店铺logo</h6>
                                 <p>请尽量保证图片是正方形， 建议上传尺寸80*80像素， 大小不超过3M。</p>
                             </label>
-                            <upload-img @error="onUploadImgError" />
+                            <upload-img v-model="formGYMInfo.logoUrl" @error="onUploadImgError" />
                         </div>
                         <div class="form-upload-img-item">
                             <label>
                                 <h6>小程序二维码</h6>
                             </label>
-                            <upload-img @error="onUploadImgError" />
+                            <upload-img v-model="formGYMInfo.mini_program_code_url" @error="onUploadImgError" />
                         </div>
                         <div class="form-upload-img-item img-show">
                             <label>
@@ -46,6 +46,7 @@
                                 <p>请上传店铺相关图片进行展示，每张图片大小不超过3M</p>
                             </label>
                             <div class="img-show-list">
+                                <img v-for="(src, index) in formGYMInfo.display_img_urls" :key="index" :src="src">
                                 <upload-img @error="onUploadImgError" />
                             </div>
                         </div>
@@ -202,7 +203,7 @@ export default {
                 label: '',
                 phone: '',
                 logoUrl: '',
-                displayImgUrls: '',
+                displayImgUrls: [],
                 miniProgramCodeUrl: ''
             },
             formCoachInfo: {
@@ -232,7 +233,13 @@ export default {
             this.gymId = this.editGymId;
             let result = await this.$store.dispatch(GET_GYM_INFO, {id: this.editGymId});
             if (result.success) {
-                this.formGYMInfo = {...result.data};
+                let displayImgUrls = [];
+                try {
+                    displayImgUrls = JSON.parse(result.data.display_img_urls);
+                } catch (error) {
+
+                }
+                this.formGYMInfo = {...result.data, display_img_urls: displayImgUrls};
             }
         }
     },
