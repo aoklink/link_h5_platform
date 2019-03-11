@@ -32,9 +32,9 @@ export default {
             address: payload.address,
             label: payload.label,
             phone: payload.phone,
-            logoUrl: payload.logo_url,
-            displayImgUrls: payload.display_img_urls,
-            miniProgramCodeUrl: payload.mini_program_code_url
+            logo_url: payload.logo_url,
+            display_img_urls: payload.display_img_urls,
+            mini_program_code_url: payload.mini_program_code_url
         }];
     },
     [types.REMOVE_ITEM_FROM_GYM_INFO_LIST_SELECTED] (state, payload) {
@@ -44,7 +44,7 @@ export default {
         state.coachInfoListSelected = [...payload];
     },
     [types.MUTATE_CLASS_INFO_LIST_SELECTED] (state, payload = []) {
-        state.classInfoListSelected = payload.map(item => ({...item, priceInfo: item.price_info}));
+        state.classInfoListSelected = [...payload];
     },
     [types.MUTATE_OSS_SESSION] (state, payload) {
         state.OSSsession = {

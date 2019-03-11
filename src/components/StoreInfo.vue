@@ -85,7 +85,7 @@
                         label="标题"
                     />
                     <el-table-column
-                        prop="priceInfo"
+                        prop="price_info"
                         label="价格"
                     />
                     <el-table-column
@@ -147,7 +147,7 @@
             <div class="class-info-item">
                 <label>价格</label>
                 <div>
-                    {{ classInfoDetail.priceInfo }}
+                    {{ classInfoDetail.price_info }}
                 </div>
             </div>
             <div class="class-info-item class-info-content">

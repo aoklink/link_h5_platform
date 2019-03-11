@@ -32,7 +32,7 @@
                                 <h6>店铺logo</h6>
                                 <p>请尽量保证图片是正方形， 建议上传尺寸80*80像素， 大小不超过3M。</p>
                             </label>
-                            <upload-img v-model="formGYMInfo.logoUrl" @error="onUploadImgError" />
+                            <upload-img v-model="formGYMInfo.logo_url" @error="onUploadImgError" />
                         </div>
                         <div class="form-upload-img-item">
                             <label>
@@ -83,7 +83,7 @@
                                 </div>
                                 <div class="app-form-item">
                                     <label>价格</label>
-                                    <input v-model="formClassInfo.priceInfo" type="text" placeholder="请输入价格，如19.9">
+                                    <input v-model="formClassInfo.price_info" type="text" placeholder="请输入价格，如19.9">
                                 </div>
                                 <div class="app-form-item form-class-info-content">
                                     <label>课程内容</label>
@@ -117,7 +117,7 @@
                                     label="标题"
                                 />
                                 <el-table-column
-                                    prop="priceInfo"
+                                    prop="price_info"
                                     label="价格"
                                 />
                                 <el-table-column
@@ -202,9 +202,9 @@ export default {
                 address: '',
                 label: '',
                 phone: '',
-                logoUrl: '',
-                displayImgUrls: [],
-                miniProgramCodeUrl: ''
+                logo_url: '',
+                display_img_urls: [],
+                mini_program_code_url: ''
             },
             formCoachInfo: {
                 name: '',
@@ -217,7 +217,7 @@ export default {
             },
             formClassInfo: {
                 title: '',
-                priceInfo: '',
+                price_info: '',
                 content: ''
             },
             gymId: null,
@@ -255,17 +255,10 @@ export default {
             if (this.isEdit) {
                 result = await this.$store.dispatch(EDIT_GYM, {
                     ...this.formGYMInfo,
-                    logo_url: this.formGYMInfo.logoUrl,
-                    display_img_urls: this.formGYMInfo.displayImgUrls,
-                    mini_program_code_url: this.formGYMInfo.miniProgramCodeUrl,
                     id: this.gymId
                 });
             } else {
-                result = await this.$store.dispatch(ADD_GYM, {...this.formGYMInfo,
-                    logo_url: this.formGYMInfo.logoUrl,
-                    display_img_urls: this.formGYMInfo.displayImgUrls,
-                    mini_program_code_url: this.formGYMInfo.miniProgramCodeUrl
-                });
+                result = await this.$store.dispatch(ADD_GYM, {...this.formGYMInfo});
             }
             if (result.success) {
                 this.$notify({
@@ -316,8 +309,7 @@ export default {
         async onSubmitAddClassInfo () {
             let result = await this.$store.dispatch(ADD_CLASS_INFO, {
                 ...this.formClassInfo,
-                gym_id: this.gymId,
-                price_info: this.formClassInfo.priceInfo
+                gym_id: this.gymId
             });
             if (result.success) {
                 this.$notify({
