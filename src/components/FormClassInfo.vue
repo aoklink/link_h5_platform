@@ -77,6 +77,7 @@
 import {mapState} from 'vuex';
 import AppButton from './AppButton.vue';
 import { UPDATE_CLASS_INFO_BY_ID, ADD_CLASS_INFO } from '../store/action_type';
+import {verifyEmptyHelper} from '../utils/index.js';
 
 export default {
     components: {
@@ -105,6 +106,24 @@ export default {
     },
     methods: {
         async onSubmitClassInfo () {
+            let validResult = verifyEmptyHelper(this.formClassInfo, [
+                {
+                    field: 'title',
+                    label: '课程活动名称'
+                },
+                {
+                    field: 'price_info',
+                    label: '价格'
+                },
+                {
+                    field: 'content',
+                    label: '课程内容'
+                }
+            ]);
+            if (!validResult.valid) {
+                this.$message.warning(validResult.msg);
+                return;
+            }
             let result;
             if (this.isUpdateClassInfo) {
                 result = await this.$store.dispatch(UPDATE_CLASS_INFO_BY_ID, {...this.formClassInfo,

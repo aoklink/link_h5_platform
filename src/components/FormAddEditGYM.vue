@@ -138,6 +138,8 @@ import { ADD_GYM, ADD_COASH, ADD_GYM_ADMIN, GET_OSS_SESSION, GET_GYM_INFO, UPDAT
     , GET_CLASS_INFO_LIST_BY_GYMID, UPDATE_GYM_ADMIN_USER, GET_GYM_ADMIN_USER_GET_BIND } from
     '../store/action_type';
 import { md5 } from '../utils/crypto';
+import {verifyEmptyHelper} from '../utils/index.js';
+
 export default {
     components: {
         UploadImg,
@@ -210,6 +212,29 @@ export default {
             this.formGYMInfo.display_img_urls = [...this.formGYMInfo.display_img_urls, url];
         },
         async onSubmitGYMInfo () {
+            let validResult = verifyEmptyHelper(this.formGYMInfo, [
+                {
+                    field: 'name',
+                    label: '店铺名称'
+                },
+                {
+                    field: 'city',
+                    label: '所在城市'
+                },
+                {
+                    field: 'address',
+                    label: '店铺地址'
+                },
+                {
+                    field: 'phone',
+                    label: '联系电话'
+                }
+            ]);
+            if (!validResult.valid) {
+                this.$message.warning(validResult.msg);
+                return;
+            }
+
             let result;
             if (this.isEdit) {
                 result = await this.$store.dispatch(UPDATE_GYM, {
@@ -262,6 +287,14 @@ export default {
             });
         },
         async onSubmitCoachInfo () {
+            let validResult = verifyEmptyHelper(this.formCoachInfo, [{
+                field: 'name',
+                label: '姓名'
+            }]);
+            if (!validResult.valid) {
+                this.$message.warning(validResult.msg);
+                return;
+            }
             let result = await this.$store.dispatch(ADD_COASH, {...this.formCoachInfo, gym_id: this.gymId});
             if (result.success) {
                 this.$notify({

@@ -23,3 +23,24 @@ export function wrapAjaxToPromise (p) {
         };
     });
 }
+
+/**
+ *
+ * @param {Object} obj
+ * @param {Array<Object>} rules
+ */
+export function verifyEmptyHelper (obj, rules) {
+    let msg = '';
+    let valid = true;
+    for (let rule of rules) {
+        let val = obj[rule.field];
+        if (!val) {
+            msg = `${rule.label}不能为空`;
+            valid = false;
+        }
+    }
+    return {
+        valid,
+        msg
+    };
+}
