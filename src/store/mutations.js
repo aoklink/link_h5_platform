@@ -56,5 +56,12 @@ export default {
             policy: payload.policy,
             signature: payload.signature
         };
+    },
+    [types.MUTATE_GYM_ADMIN_INFO_SELECTED] (state, payload) {
+        state.gymAdminInfoSelected = {
+            id: payload.id,
+            name: payload.name,
+            phone: payload.phone
+        };
     }
 };

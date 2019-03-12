@@ -8,6 +8,7 @@ export const USER_VERIFY = `${PREFIX}/api/user/verify`;
 export const GYM_ADMIN_USER_ADD = `${PREFIX}/api/gym_admin_user/add`;
 export const GYM_ADMIN_USER_UPDATE = `${PREFIX}/api/gym_admin_user/update`;
 export const GYM_ADMIN_USER_VERIFY = `${PREFIX}/api/gym_admin_user/verify`;
+export const GYM_ADMIN_USER_GET_BIND = `${PREFIX}/api/gym_admin_user/get_bind`;
 export const GYM_CLASS_ADD = `${PREFIX}/api/gym_class/add`;
 export const GYM_CLASS_GET = `${PREFIX}/api/gym_class/get`;
 export const GYM_CLASS_UPDATE = `${PREFIX}/api/gym_class/update`;

@@ -115,19 +115,13 @@
                     <div class="store-info-item white">
                         <h5>负责人</h5>
                         <div>
-                            <!-- {{ storeData.phone }} -->
-                        </div>
-                    </div>
-                    <div class="store-info-item  white">
-                        <h5>密码</h5>
-                        <div>
-                            <!-- {{ storeData.phone }} -->
+                            {{ gymAdminInfoSelected.name }}
                         </div>
                     </div>
                     <div class="store-info-item  white">
                         <h5>手机号</h5>
                         <div>
-                            {{ storeData.phone }}
+                            {{ gymAdminInfoSelected.phone }}
                         </div>
                     </div>
                 </div>
@@ -188,6 +182,7 @@ export default {
     },
     computed: mapState({
         coachData: 'coachInfoListSelected',
+        gymAdminInfoSelected: 'gymAdminInfoSelected',
         classInfoListSelected: 'classInfoListSelected'
     }),
     methods: {

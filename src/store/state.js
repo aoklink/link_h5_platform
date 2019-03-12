@@ -8,6 +8,7 @@ export const initVal = {
     userInfo: persistence.getMyInfo(),
     gymInfoList: [],
     gymInfoListSelected: [],
+    gymAdminInfoSelected: {},
     coachInfoListSelected: [],
     classInfoListSelected: [],
     OSSsession: {}

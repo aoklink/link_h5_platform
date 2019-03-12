@@ -108,5 +108,12 @@ export default {
             dispatch(types.GET_CLASS_INFO_LIST_BY_GYMID, {gym_id: payload.gym_id});
         }
         return result;
+    },
+    async [types.GET_GYM_ADMIN_USER_GET_BIND] ({commit}, payload) {
+        let result = await nets.gymAdminUserBindGet(payload);
+        if (result.success) {
+            commit(mutationTypes.MUTATE_GYM_ADMIN_INFO_SELECTED, result.data);
+        }
+        return result;
     }
 };

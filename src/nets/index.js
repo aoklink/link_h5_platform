@@ -37,6 +37,10 @@ export function gymAdminUserUpdate (payload) {
     return wrapAjaxToPromise(axios.post(api.GYM_ADMIN_USER_UPDATE, qs.stringify(payload)));
 }
 
+export function gymAdminUserBindGet (payload) {
+    return wrapAjaxToPromise(axios.post(api.GYM_ADMIN_USER_GET_BIND, qs.stringify(payload)));
+}
+
 export function gymAdminUserVerify (payload) {
     return wrapAjaxToPromise(axios.post(api.GYM_ADMIN_USER_VERIFY, qs.stringify(payload)));
 }

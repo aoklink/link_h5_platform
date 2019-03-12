@@ -43,7 +43,7 @@
 
 <script>
 import FormAddEditGYM from './FormAddEditGYM.vue';
-import {GET_ALL_GYM_INFO, GET_GYM_INFO, GET_COACH_LIST_BY_GYMID, GET_CLASS_INFO_LIST_BY_GYMID} from '../store/action_type.js';
+import {GET_ALL_GYM_INFO, GET_GYM_INFO, GET_COACH_LIST_BY_GYMID, GET_CLASS_INFO_LIST_BY_GYMID, GET_GYM_ADMIN_USER_GET_BIND} from '../store/action_type.js';
 import {ADD_GYM_INFO_LIST_SELECTED} from '../store/mutation_type.js';
 import {mapState} from 'vuex';
 import { Promise } from 'q';
@@ -81,6 +81,7 @@ export default {
             let [resultGymInfo] = await Promise.all([
                 this.$store.dispatch(GET_GYM_INFO, {id: row.id}),
                 this.$store.dispatch(GET_COACH_LIST_BY_GYMID, {gym_id: row.id}),
+                this.$store.dispatch(GET_GYM_ADMIN_USER_GET_BIND, {gym_id: row.id}),
                 this.$store.dispatch(GET_CLASS_INFO_LIST_BY_GYMID, {gym_id: row.id})
             ]);
             if (resultGymInfo.success) {
