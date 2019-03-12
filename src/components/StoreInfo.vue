@@ -97,9 +97,9 @@
                             <div class="class-info-operation">
                                 <span v-if="scope.row.state==0" class="state-offline">下线</span>
                                 <span v-else class="state-online">上线</span>
-                                <button class="btn-see" @click="showClassInfoDialog(scope.row)">
+                                <app-button theme="grey" @click="showClassInfoDialog(scope.row)">
                                     查看
-                                </button>
+                                </app-button>
                             </div>
                         </template>
                     </el-table-column>
@@ -389,6 +389,9 @@ export default {
         margin-top: .5rem;
         min-height: 3rem;
         width: 25rem;
+    }
+    .class-info-operation >span{
+        margin-right: 1em;
     }
 
 </style>
