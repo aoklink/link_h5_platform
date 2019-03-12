@@ -111,14 +111,14 @@ export default {
         }
         return result;
     },
-    async [types.EDIT_GYM] ({dispatch}, payload) {
+    async [types.UPDATE_GYM] ({dispatch}, payload) {
         let result = await nets.gymInfoUpdate(payload);
         if (result.success) {
             dispatch(types.GET_ALL_GYM_INFO);
         }
         return result;
     },
-    async [types.EDIT_CLASS_INFO] ({dispatch}, payload) {
+    async [types.UPDATE_CLASS_INFO_BY_ID] ({dispatch}, payload) {
         let result = await nets.gymClassUpdate(payload);
         if (result.success) {
             dispatch(types.GET_CLASS_INFO_LIST_BY_GYMID, {gym_id: payload.gym_id});
@@ -127,6 +127,18 @@ export default {
     },
     async [types.UPDATE_GYM_ADMIN_USER] (_, payload) {
         let result = await nets.gymAdminUserUpdate(payload);
+        return result;
+    },
+    async [types.DELETE_GYM_COACH_BY_ID] (_, payload) {
+        let result = await nets.gymCoachDelete(payload);
+        return result;
+    },
+    async [types.DELETE_CLASS_BY_ID] (_, payload) {
+        let result = await nets.gymClassDelete(payload);
+        return result;
+    },
+    async [types.UPDATE_GYM_COACH_BY_ID] (_, payload) {
+        let result = await nets.gymCoachUpdate(payload);
         return result;
     }
 };

@@ -204,7 +204,9 @@ import {mapState} from 'vuex';
 import UploadImg from './UploadImg.vue';
 import ImgList from './ImgList.vue';
 import AppButton from './AppButton.vue';
-import { ADD_GYM, ADD_COASH, ADD_GYM_ADMIN, GET_OSS_SESSION, ADD_CLASS_INFO, GET_GYM_INFO, EDIT_GYM, EDIT_CLASS_INFO, GET_CLASS_INFO_LIST_BY_GYMID, UPDATE_GYM_ADMIN_USER, GET_GYM_ADMIN_USER_GET_BIND } from '../store/action_type';
+import { ADD_GYM, ADD_COASH, ADD_GYM_ADMIN, GET_OSS_SESSION, ADD_CLASS_INFO, GET_GYM_INFO, UPDATE_GYM,
+    UPDATE_CLASS_INFO_BY_ID, GET_CLASS_INFO_LIST_BY_GYMID, UPDATE_GYM_ADMIN_USER, GET_GYM_ADMIN_USER_GET_BIND } from
+    '../store/action_type';
 import { md5 } from '../utils/crypto';
 export default {
     components: {
@@ -285,7 +287,7 @@ export default {
         async onSubmitGYMInfo () {
             let result;
             if (this.isEdit) {
-                result = await this.$store.dispatch(EDIT_GYM, {
+                result = await this.$store.dispatch(UPDATE_GYM, {
                     ...this.formGYMInfo,
                     id: this.gymId,
                     display_img_urls: JSON.stringify(this.formGYMInfo.display_img_urls)
@@ -370,7 +372,7 @@ export default {
             this.showAddClassForm = true;
         },
         async onOfflineClass (row) {
-            let result = await this.$store.dispatch(EDIT_CLASS_INFO, {
+            let result = await this.$store.dispatch(UPDATE_CLASS_INFO_BY_ID, {
                 ...row,
                 state: 0
             });
