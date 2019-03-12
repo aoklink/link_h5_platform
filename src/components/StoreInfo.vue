@@ -29,25 +29,25 @@
                 <div class="store-info-item white">
                     <h5>店铺LOGO</h5>
                     <div>
-                        <button class="btn-see">
+                        <app-button theme="grey" @click="showLogoUrl">
                             查看
-                        </button>
+                        </app-button>
                     </div>
                 </div>
                 <div class="store-info-item white">
                     <h5>小程序二维码</h5>
                     <div>
-                        <button class="btn-see">
+                        <app-button theme="grey" @click="showMiniProgramCdoe">
                             查看
-                        </button>
+                        </app-button>
                     </div>
                 </div>
                 <div class="store-info-item white">
                     <h5>展示图</h5>
                     <div>
-                        <button class="btn-see">
+                        <app-button theme="grey" @click="showDisplayImg">
                             查看
-                        </button>
+                        </app-button>
                     </div>
                 </div>
             </div>
@@ -157,12 +157,19 @@
                 </div>
             </div>
         </el-dialog>
+        <img-viewer :visible.sync="isImgViewerVisible" :img-list="imgViewerList" />
     </div>
 </template>
 
 <script>
 import {mapState} from 'vuex';
+import ImgViewer from './ImgViewer.vue';
+import AppButton from './AppButton.vue';
 export default {
+    components: {
+        ImgViewer,
+        AppButton
+    },
     props: {
         storeData: {
             type: Object,
@@ -174,7 +181,9 @@ export default {
     data () {
         return {
             isShowClassInfoDialog: false,
-            classInfoDetail: {}
+            classInfoDetail: {},
+            isImgViewerVisible: false,
+            imgViewerList: []
         };
     },
     computed: mapState({
@@ -182,6 +191,24 @@ export default {
         classInfoListSelected: 'classInfoListSelected'
     }),
     methods: {
+        showLogoUrl () {
+            this.imgViewerList = [this.storeData.logo_url];
+            this.isImgViewerVisible = true;
+        },
+        showDisplayImg () {
+            this.isImgViewerVisible = true;
+            let displayImg = [];
+            try {
+                displayImg = JSON.parse(this.storeData.display_img_urls);
+            } catch (error) {
+
+            }
+            this.imgViewerList = displayImg;
+        },
+        showMiniProgramCdoe () {
+            this.isImgViewerVisible = true;
+            this.imgViewerList = [this.storeData.mini_program_code_url];
+        },
         showClassInfoDialog (detail) {
             this.isShowClassInfoDialog = true;
             this.classInfoDetail = detail;
@@ -312,15 +339,6 @@ export default {
         font-family:PingFangSC-Medium;
         font-weight:500;
         color:rgba(48,56,73,1);
-    }
-    .btn-see{
-        width:1.53rem;
-        height:0.69rem;
-        background:rgba(60,68,86,1);
-        border-radius:0.06rem;
-        color: #fff;
-        border: none;
-        cursor: pointer;
     }
     .store-account .store-info-item{
         width: 10rem;
