@@ -160,7 +160,7 @@
                 </div>
             </el-tab-pane>
             <el-tab-pane label="账号设定" name="fourth">
-                <div class="form-add-account">
+                <div v-if="activeName=='fourth'" class="form-add-account">
                     <h3>
                         账号设定
                     </h3>
