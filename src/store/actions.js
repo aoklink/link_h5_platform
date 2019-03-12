@@ -67,6 +67,29 @@ export default {
         let result = await nets.gymCoachList(payload);
         if (result.success) {
             commit(mutationTypes.MUTATE_COACH_INFO_LIST_SELECTED, result.data);
+        } else {
+            console.error(new Error(result.data));
+            commit(mutationTypes.MUTATE_COACH_INFO_LIST_SELECTED, {});
+        }
+        return result;
+    },
+    async [types.GET_CLASS_INFO_LIST_BY_GYMID] ({commit}, payload) {
+        let result = await nets.gymClassList(payload);
+        if (result.success) {
+            commit(mutationTypes.MUTATE_CLASS_INFO_LIST_SELECTED, result.data);
+        } else {
+            console.error(new Error(result.data));
+            commit(mutationTypes.MUTATE_CLASS_INFO_LIST_SELECTED, {});
+        }
+        return result;
+    },
+    async [types.GET_GYM_ADMIN_USER_GET_BIND] ({commit}, payload) {
+        let result = await nets.gymAdminUserBindGet(payload);
+        if (result.success) {
+            commit(mutationTypes.MUTATE_GYM_ADMIN_INFO_SELECTED, result.data);
+        } else {
+            console.error(new Error(result.data));
+            commit(mutationTypes.MUTATE_GYM_ADMIN_INFO_SELECTED, {});
         }
         return result;
     },
@@ -88,13 +111,6 @@ export default {
         }
         return result;
     },
-    async [types.GET_CLASS_INFO_LIST_BY_GYMID] ({commit}, payload) {
-        let result = await nets.gymClassList(payload);
-        if (result.success) {
-            commit(mutationTypes.MUTATE_CLASS_INFO_LIST_SELECTED, result.data);
-        }
-        return result;
-    },
     async [types.EDIT_GYM] ({dispatch}, payload) {
         let result = await nets.gymInfoUpdate(payload);
         if (result.success) {
@@ -106,13 +122,6 @@ export default {
         let result = await nets.gymClassUpdate(payload);
         if (result.success) {
             dispatch(types.GET_CLASS_INFO_LIST_BY_GYMID, {gym_id: payload.gym_id});
-        }
-        return result;
-    },
-    async [types.GET_GYM_ADMIN_USER_GET_BIND] ({commit}, payload) {
-        let result = await nets.gymAdminUserBindGet(payload);
-        if (result.success) {
-            commit(mutationTypes.MUTATE_GYM_ADMIN_INFO_SELECTED, result.data);
         }
         return result;
     },
