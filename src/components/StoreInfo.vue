@@ -194,7 +194,7 @@ export default {
     .store-info{
         display: flex;
         flex-direction: column;
-        padding: 1rem;
+        padding: .56rem;
         height:27.33rem;
         background:rgba(246,247,248,1);
         border-radius:0.11rem;

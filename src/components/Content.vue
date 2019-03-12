@@ -106,7 +106,7 @@ export default {
         display: flex;
         flex-direction: column;
         flex: 1;
-        padding: 1rem;
+        padding: .56rem;
         font-size: 14px;
         text-align: left;
     }
