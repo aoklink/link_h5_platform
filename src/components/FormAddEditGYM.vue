@@ -13,19 +13,27 @@
                         </div>
                         <div class="app-form-item">
                             <label>联系电话</label>
-                            <input v-model="formGYMInfo.phone" type="text" placeholder="联系电话">
+                            <input v-model="formGYMInfo.phone" autocomplete="false" type="text"
+                                   placeholder="联系电话"
+                            >
                         </div>
                         <div class="app-form-item">
                             <label>所在城市</label>
-                            <input v-model="formGYMInfo.city" type="text" placeholder="所在城市">
+                            <input v-model="formGYMInfo.city" autocomplete="false" type="text"
+                                   placeholder="所在城市"
+                            >
                         </div>
                         <div class="app-form-item">
                             <label>标签</label>
-                            <input v-model="formGYMInfo.label" type="text" placeholder="请输入标签，用空格隔开">
+                            <input v-model="formGYMInfo.label" autocomplete="false" type="text"
+                                   placeholder="请输入标签，用空格隔开"
+                            >
                         </div>
                         <div class="app-form-item gym-info-address">
                             <label>店铺地址</label>
-                            <input v-model="formGYMInfo.address" type="text" placeholder="如：浙江省杭州市西湖区xx街道118号">
+                            <input v-model="formGYMInfo.address" autocomplete="false" type="text"
+                                   placeholder="如：浙江省杭州市西湖区xx街道118号"
+                            >
                         </div>
                         <div class="form-upload-img-item">
                             <label>
@@ -57,17 +65,23 @@
                 <div class="form-add-coach">
                     <h3>
                         教练信息
-                        <button class="form-btn-add" @click="onSubmitCoachInfo">
+                        <app-button theme="grey" size="medium" custom-class="form-btn-add"
+                                    @click="onSubmitCoachInfo"
+                        >
                             点击添加
-                        </button>
+                        </app-button>
                     </h3>
                     <div class="app-form-item">
                         <label>姓名</label>
-                        <input v-model="formCoachInfo.name" type="text" placeholder="请输入教练姓名">
+                        <input v-model="formCoachInfo.name" autocomplete="false" type="text"
+                               placeholder="请输入教练姓名"
+                        >
                     </div>
                     <div class="app-form-item">
                         <label>标签</label>
-                        <input v-model="formCoachInfo.label" type="text" placeholder="请输入标签，用空格隔开">
+                        <input v-model="formCoachInfo.label" autocomplete="false" type="text"
+                               placeholder="请输入标签，用空格隔开"
+                        >
                     </div>
                 </div>
             </el-tab-pane>
@@ -79,15 +93,19 @@
                             <div>
                                 <div class="app-form-item">
                                     <label>课程活动名称</label>
-                                    <input v-model="formClassInfo.title" type="text" placeholder="请输入课程活动名称">
+                                    <input v-model="formClassInfo.title" autocomplete="false" type="text"
+                                           placeholder="请输入课程活动名称"
+                                    >
                                 </div>
                                 <div class="app-form-item">
                                     <label>价格</label>
-                                    <input v-model="formClassInfo.price_info" type="text" placeholder="请输入价格，如19.9">
+                                    <input v-model="formClassInfo.price_info" autocomplete="false" type="text"
+                                           placeholder="请输入价格，如19.9"
+                                    >
                                 </div>
                                 <div class="app-form-item form-class-info-content">
                                     <label>课程内容</label>
-                                    <textarea v-model="formClassInfo.content" placeholder="请输入课程内容" />
+                                    <textarea v-model="formClassInfo.content" autocomplete="false" placeholder="请输入课程内容" />
                                 </div>
                             </div>
                             <div>
@@ -103,9 +121,11 @@
                     <div v-else>
                         <h3>
                             课程活动列表
-                            <button class="form-btn-add" @click="onAddClassInfo">
+                            <app-button custom-class="form-btn-add" theme="grey" size="medium"
+                                        @click="onAddClassInfo"
+                            >
                                 点击添加
-                            </button>
+                            </app-button>
                         </h3>
                         <div>
                             <el-table
@@ -126,12 +146,12 @@
                                 />
                                 <el-table-column align="left" label="操作">
                                     <template slot-scope="scope">
-                                        <button class="btn-class-edit">
+                                        <app-button theme="grey">
                                             编辑
-                                        </button>
-                                        <button class="btn-class-offline" @click="onOfflineClass(scope.row)">
+                                        </app-button>
+                                        <app-button theme="plain" @click="onOfflineClass(scope.row)">
                                             下线
-                                        </button>
+                                        </app-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -146,7 +166,9 @@
                     </h3>
                     <div class="app-form-item">
                         <label>负责人</label>
-                        <input v-model="formAccountInfo.name" type="text" placeholder="请输入负责人名称">
+                        <input v-model="formAccountInfo.name" autocomplete="false" type="text"
+                               placeholder="请输入负责人名称"
+                        >
                     </div>
                     <div class="app-form-item">
                         <label>密码</label>
@@ -156,7 +178,9 @@
                     </div>
                     <div class="app-form-item">
                         <label>手机号</label>
-                        <input v-model="formAccountInfo.phone" type="text" placeholder="请输入手机号">
+                        <input v-model="formAccountInfo.phone" autocomplete="false" type="text"
+                               placeholder="请输入手机号"
+                        >
                     </div>
                 </div>
             </el-tab-pane>
@@ -179,10 +203,12 @@
 import {mapState} from 'vuex';
 import UploadImg from './UploadImg.vue';
 import ImgList from './ImgList.vue';
+import AppButton from './AppButton.vue';
 import { ADD_GYM, ADD_COASH, ADD_GYM_ADMIN, GET_OSS_SESSION, ADD_CLASS_INFO, GET_GYM_INFO, EDIT_GYM, EDIT_CLASS_INFO, GET_CLASS_INFO_LIST_BY_GYMID } from '../store/action_type';
 export default {
     components: {
         UploadImg,
+        AppButton,
         ImgList
     },
     props: {
@@ -392,15 +418,6 @@ export default {
         width: 25.44rem;
         box-sizing: border-box;
     }
-    .form-btn-add{
-        width:3.33rem;
-        height:0.83rem;
-        background:rgba(60,68,86,1);
-        border-radius:0.11rem;
-        color: white;
-        border: none;
-        cursor: pointer;
-    }
     .form-add-store,.form-add-coach, .form-add-account{
         padding:0 1rem;
     }
@@ -408,15 +425,15 @@ export default {
         position: absolute;
         right: 1rem;
     }
+    .form-add-activity .form-btn-add{
+        position: absolute;
+        right: 0;
+    }
     .form-add-activity{
         padding: 0 1rem;
     }
     .form-add-activity h3{
         position: relative;
-    }
-    .form-add-activity .form-btn-add{
-        position: absolute;
-        right: 0;
     }
     .form-add-activity .btn-cancel-class,
     .form-add-activity .btn-add-class{
@@ -466,24 +483,6 @@ export default {
         border-radius:0.06rem;
         border:1px solid rgba(192,199,216,1);
         background: #fff;
-    }
-    .btn-class-edit{
-        width:1.67rem;
-        height:0.69rem;
-        background:rgba(60,68,86,1);
-        border-radius:0.06rem;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-    }
-    .btn-class-offline{
-        margin-left: .25rem;
-        width:1.67rem;
-        height:0.69rem;
-        border-radius:0.06rem;
-        background: none;
-        border:0.03rem solid rgba(60,68,86,1);
-        cursor: pointer;
     }
 
     .form-upload-img-item{
