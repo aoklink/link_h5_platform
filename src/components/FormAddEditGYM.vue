@@ -204,7 +204,8 @@ import {mapState} from 'vuex';
 import UploadImg from './UploadImg.vue';
 import ImgList from './ImgList.vue';
 import AppButton from './AppButton.vue';
-import { ADD_GYM, ADD_COASH, ADD_GYM_ADMIN, GET_OSS_SESSION, ADD_CLASS_INFO, GET_GYM_INFO, EDIT_GYM, EDIT_CLASS_INFO, GET_CLASS_INFO_LIST_BY_GYMID } from '../store/action_type';
+import { ADD_GYM, ADD_COASH, ADD_GYM_ADMIN, GET_OSS_SESSION, ADD_CLASS_INFO, GET_GYM_INFO, EDIT_GYM, EDIT_CLASS_INFO, GET_CLASS_INFO_LIST_BY_GYMID, UPDATE_GYM_ADMIN_USER, GET_GYM_ADMIN_USER_GET_BIND } from '../store/action_type';
+import { md5 } from '../utils/crypto';
 export default {
     components: {
         UploadImg,
@@ -253,7 +254,7 @@ export default {
         };
     },
     computed: {
-        ...mapState(['classInfoListSelected'])
+        ...mapState(['classInfoListSelected', 'gymAdminInfoSelected'])
     },
     async created () {
         this.$store.dispatch(GET_OSS_SESSION);
@@ -315,6 +316,13 @@ export default {
                 this.$store.dispatch(GET_CLASS_INFO_LIST_BY_GYMID, {gym_id: this.gymId});
                 this.activeName = 'third';
             } else if (this.activeName == 'third') {
+                if (this.isEdit) {
+                    let result = await this.$store.dispatch(GET_GYM_ADMIN_USER_GET_BIND, {gym_id: this.gymId});
+                    if (result.success) {
+                        this.formAccountInfo.name = result.data.name;
+                        this.formAccountInfo.phone = result.data.phone;
+                    }
+                }
                 this.activeName = 'fourth';
             } else if (this.activeName == 'fourth') {
                 this.onSubmitAddAccount();
@@ -379,7 +387,20 @@ export default {
             }
         },
         async onSubmitAddAccount () {
-            let result = await this.$store.dispatch(ADD_GYM_ADMIN, {...this.formAccountInfo, gym_id: this.gymId});
+            let result;
+            let payload = {...this.formAccountInfo, gym_id: this.gymId};
+            if (payload.password) {
+                payload.password = md5(payload.password);
+            } else {
+                delete payload.password;
+            }
+            if (this.isEdit) {
+                payload.id = this.gymAdminInfoSelected.id;
+                result = await this.$store.dispatch(UPDATE_GYM_ADMIN_USER, payload);
+            } else {
+                result = await this.$store.dispatch(ADD_GYM_ADMIN, payload);
+            }
+
             if (result.success) {
                 this.$notify({
                     title: this.isEdit ? '编辑成功' : '添加成功',

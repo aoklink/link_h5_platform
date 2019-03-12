@@ -115,5 +115,9 @@ export default {
             commit(mutationTypes.MUTATE_GYM_ADMIN_INFO_SELECTED, result.data);
         }
         return result;
+    },
+    async [types.UPDATE_GYM_ADMIN_USER] (_, payload) {
+        let result = await nets.gymAdminUserUpdate(payload);
+        return result;
     }
 };
