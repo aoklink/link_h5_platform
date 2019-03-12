@@ -36,7 +36,7 @@ export default {
                 memberCount: item.member_count,
                 gymAdminUserId: item.gym_admin_user && item.gym_admin_user.id,
                 gymAdminUserName: item.gym_admin_user && item.gym_admin_user.name,
-                gymAdminUserPhone: item.gym_admin_user && item.gym_admin_userphone
+                gymAdminUserPhone: item.gym_admin_user && item.gym_admin_user.phone
             })));
         }
         return result;

@@ -33,6 +33,7 @@
         <el-dialog :key="dialogAddEditKey" :visible.sync="dialogAddEdit"
                    top="1rem"
                    :show-close="false"
+                   :close-on-click-modal="false"
                    custom-class="dialog-add-edit-gym"
         >
             <form-add-edit-g-y-m :is-edit="dialogIsEdit" :edit-gym-id="editGymId" @close="onClosedialogAddEdit" />
