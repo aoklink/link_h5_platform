@@ -61,6 +61,11 @@ export default {
         height:0.69rem;
         line-height: .69rem;
     }
+    .small{
+        width:3.33rem;
+        height: 0.83rem;
+        line-height: 0.83rem;
+    }
     .medium{
         width:3.33rem;
         height:0.97rem;

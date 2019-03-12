@@ -108,13 +108,13 @@
                                     <textarea v-model="formClassInfo.content" autocomplete="false" placeholder="请输入课程内容" />
                                 </div>
                             </div>
-                            <div>
-                                <button class="btn-cancel-class" @click="showAddClassForm=false">
+                            <div class="form-activity-btn-group">
+                                <app-button theme="plain" size="small" @click="showAddClassForm=false">
                                     取消
-                                </button>
-                                <button class="btn-add-class" @click="onSubmitAddClassInfo">
-                                    添加
-                                </button>
+                                </app-button>
+                                <app-button theme="grey" size="small" @click="onSubmitClassInfo">
+                                    {{ isUpdateClassInfo?'更新':'添加' }}
+                                </app-button>
                             </div>
                         </div>
                     </div>
@@ -146,7 +146,7 @@
                                 />
                                 <el-table-column align="left" label="操作">
                                     <template slot-scope="scope">
-                                        <app-button theme="grey">
+                                        <app-button theme="grey" @click="editClassInfo(scope.row)">
                                             编辑
                                         </app-button>
                                         <app-button theme="plain" @click="onOfflineClass(scope.row)">
@@ -252,7 +252,9 @@ export default {
                 content: ''
             },
             gymId: null,
-            showAddClassForm: false
+            showAddClassForm: false,
+            currentClassInfoIdSelected: null,
+            isUpdateClassInfo: false
         };
     },
     computed: {
@@ -350,26 +352,45 @@ export default {
                 });
             }
         },
-        async onSubmitAddClassInfo () {
-            let result = await this.$store.dispatch(ADD_CLASS_INFO, {
-                ...this.formClassInfo,
-                gym_id: this.gymId
-            });
+        async onSubmitClassInfo () {
+            let result;
+            if (this.isUpdateClassInfo) {
+                result = await this.$store.dispatch(UPDATE_CLASS_INFO_BY_ID, {...this.formClassInfo,
+                    gym_id: this.gymId
+                });
+            } else {
+                result = await this.$store.dispatch(ADD_CLASS_INFO, {
+                    ...this.formClassInfo,
+                    gym_id: this.gymId
+                });
+            }
             if (result.success) {
                 this.$notify({
-                    title: '添加成功',
+                    title: this.isUpdateClassInfo ? '更新成功' : '添加成功',
                     type: 'success'
                 });
                 this.showAddClassForm = false;
             } else {
                 this.$notify.error({
-                    title: '添加失败',
+                    title: this.isUpdateClassInfo ? '更新失败' : '添加失败',
                     message: result.data
                 });
             }
         },
         async onAddClassInfo () {
+            this.formClassInfo = {
+                title: '',
+                price_info: '',
+                content: ''
+            };
             this.showAddClassForm = true;
+            this.isUpdateClassInfo = false;
+        },
+        async editClassInfo (row) {
+            this.formClassInfo = {...row};
+            this.showAddClassForm = true;
+            this.isUpdateClassInfo = true;
+            this.currentClassInfoIdSelected = row.id;
         },
         async onOfflineClass (row) {
             let result = await this.$store.dispatch(UPDATE_CLASS_INFO_BY_ID, {
@@ -458,20 +479,9 @@ export default {
     .form-add-activity h3{
         position: relative;
     }
-    .form-add-activity .btn-cancel-class,
-    .form-add-activity .btn-add-class{
-        position: relative;
+    .form-activity-btn-group{
         margin-top: 1rem;
-        margin-left: .5rem;
-        width:3.33rem;
-        line-height:0.83rem;
-        border-radius:0.11rem;
-        border: 1px solid rgba(192,199,216,1);
-        background: none;
-    }
-    .form-add-activity .btn-add-class{
-        background:rgba(60,68,86,1);
-        color: #fff;
+        text-align: center;
     }
     .form-add-activity .gym-info-input-item{
         display: flex;
