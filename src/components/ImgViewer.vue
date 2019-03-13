@@ -92,10 +92,12 @@ export default {
         transform: rotate(180deg);
     }
     .img-content{
+        margin: 5% 0;
         flex: 1;
         max-height: 100%;
         text-align: center;
         position: relative;
+        background: #fff;
     }
     .img-content img{
         position: absolute;

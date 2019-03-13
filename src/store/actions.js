@@ -30,10 +30,14 @@ export default {
         let result = await nets.gymInfoListAll();
         if (result.success) {
             commit(mutationTypes.MUTATE_GYM_INFO_LIST, result.data.map(item => ({
-                city: item.city,
-                id: item.id,
-                name: item.name,
-                memberCount: item.member_count,
+                city: item.gym_info && item.gym_info.city,
+                id: item.gym_info && item.gym_info.id,
+                name: item.gym_info && item.gym_info.name,
+                memberCount: item.gym_info && item.gym_info.member_count,
+                mini_program_code_url: item.gym_info && item.gym_info.mini_program_code_url,
+                logo_url: item.gym_info && item.gym_info.logo_url,
+                phone: item.gym_info && item.gym_info.phone,
+                label: item.gym_info && item.gym_info.label,
                 gymAdminUserId: item.gym_admin_user && item.gym_admin_user.id,
                 gymAdminUserName: item.gym_admin_user && item.gym_admin_user.name,
                 gymAdminUserPhone: item.gym_admin_user && item.gym_admin_user.phone
@@ -108,6 +112,19 @@ export default {
         let result = await nets.gymClassAdd(payload);
         if (result.success) {
             dispatch(types.GET_CLASS_INFO_LIST_BY_GYMID, {gym_id: result.data.gym_id});
+        }
+        return result;
+    },
+    async [types.GET_CLASS_INFO_BY_ID] ({commit}, payload) {
+        let result = await nets.gymClassGet(payload);
+        if (result.success) {
+            commit(mutationTypes.MUTATE_CLASS_INFO_SELECTED, {
+                price_info: result.data.price_info,
+                content: result.data.content,
+                title: result.data.title,
+                id: result.data.id,
+                gym_id: result.data.gym_id
+            });
         }
         return result;
     },

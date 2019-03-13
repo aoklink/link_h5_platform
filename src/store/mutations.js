@@ -43,6 +43,9 @@ export default {
     [types.MUTATE_COACH_INFO_LIST_SELECTED] (state, payload) {
         state.coachInfoListSelected = [...payload];
     },
+    [types.MUTATE_CLASS_INFO_SELECTED] (state, payload) {
+        state.classInfoSelected = {...payload};
+    },
     [types.MUTATE_CLASS_INFO_LIST_SELECTED] (state, payload = []) {
         state.classInfoListSelected = [...payload];
     },

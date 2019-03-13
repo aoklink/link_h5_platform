@@ -76,7 +76,7 @@
 <script>
 import {mapState} from 'vuex';
 import AppButton from './AppButton.vue';
-import { UPDATE_CLASS_INFO_BY_ID, ADD_CLASS_INFO } from '../store/action_type';
+import { UPDATE_CLASS_INFO_BY_ID, ADD_CLASS_INFO, GET_CLASS_INFO_BY_ID } from '../store/action_type';
 import {verifyEmptyHelper} from '../utils/index.js';
 
 export default {
@@ -102,7 +102,7 @@ export default {
         };
     },
     computed: {
-        ...mapState(['classInfoListSelected'])
+        ...mapState(['classInfoListSelected', 'classInfoSelected'])
     },
     methods: {
         async onSubmitClassInfo () {
@@ -158,10 +158,18 @@ export default {
             this.isUpdateClassInfo = false;
         },
         async editClassInfo (row) {
-            this.formClassInfo = {...row};
-            this.showAddClassForm = true;
-            this.isUpdateClassInfo = true;
-            this.currentClassInfoIdSelected = row.id;
+            let result = await this.$store.dispatch(GET_CLASS_INFO_BY_ID, {id: row.id});
+            if (result.success) {
+                this.formClassInfo = {...this.classInfoSelected};
+                this.showAddClassForm = true;
+                this.isUpdateClassInfo = true;
+                this.currentClassInfoIdSelected = row.id;
+            } else {
+                this.$notify.error({
+                    title: '获取数据失败',
+                    message: result.data
+                });
+            }
         },
         async onOfflineClass (row) {
             let result = await this.$store.dispatch(UPDATE_CLASS_INFO_BY_ID, {

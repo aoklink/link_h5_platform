@@ -11,6 +11,7 @@ export const initVal = {
     gymAdminInfoSelected: {},
     coachInfoListSelected: [],
     classInfoListSelected: [],
+    classInfoSelected: {},
     OSSsession: {}
 };
 

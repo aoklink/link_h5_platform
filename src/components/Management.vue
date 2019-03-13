@@ -15,7 +15,7 @@
             >
                 <el-table-column label="健身房名称" prop="name" />
                 <el-table-column label="联系人" prop="gymAdminUserName" />
-                <el-table-column label="联系方式" prop="gymAdminUserPhone" />
+                <el-table-column label="联系方式" prop="phone" />
                 <el-table-column label="城市" prop="city" />
                 <el-table-column label="用户数" prop="memberCount" />
                 <el-table-column align="left" label="操作">
