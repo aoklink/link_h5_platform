@@ -345,7 +345,26 @@ export default {
         position: relative;
         flex: 1;
     }
-
+    .form-add-edit-gym .el-tabs__nav.is-top{
+        line-height: 1.67rem;
+        margin-left: 20px;
+    }
+    .form-add-edit-gym .el-tabs__item:hover{
+        color: #303133;
+        cursor: default;
+    }
+    .form-add-edit-gym #tab-first{
+        padding-left: 0;
+    }
+    .form-add-edit-gym .el-tabs__item.is-active{
+        color: #000;
+        font-weight: 600;
+    }
+    .form-add-edit-gym .el-tabs__active-bar{
+        width:0.83rem!important;
+        height:0.11rem;
+        background:rgba(255,192,1,1);
+    }
     .btn-close-dialog-form-add-edit-gym{
         position: absolute;
         top:.5rem;
@@ -363,6 +382,9 @@ export default {
     }
     .form-add-store,.form-add-coach, .form-add-account{
         padding:0 1rem;
+    }
+    .form-add-coach h3{
+        padding-bottom: .47rem;
     }
     .form-add-coach .form-btn-add{
         position: absolute;
