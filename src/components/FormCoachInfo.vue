@@ -26,12 +26,27 @@
             </label>
             <upload-img v-model="formCoachInfo.img_url" @error="onUploadImgError" />
         </div>
+        <div>
+            <h3>教练列表</h3>
+            <el-table :data="coachInfoListSelected" height="400" stripe
+                      style="width: 90%"
+            >
+                <el-table-column prop="name" label="姓名" />
+                <el-table-column prop="label" label="标签" />
+                <el-table-column label="头像">
+                    <template v-if="scope.row.img_url" slot-scope="scope">
+                        <img :src="scope.row.img_url" class="head-img">
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
     </div>
 </template>
 <script>
+import {mapState} from 'vuex';
 import UploadImg from './UploadImg.vue';
 import AppButton from './AppButton.vue';
-import { ADD_COASH } from
+import { ADD_COASH, GET_COACH_LIST_BY_GYMID } from
     '../store/action_type';
 import {verifyEmptyHelper} from '../utils/index.js';
 export default {
@@ -54,6 +69,9 @@ export default {
             }
         };
     },
+    computed: {
+        ...mapState(['coachInfoListSelected'])
+    },
     methods: {
         async onUploadImgError (msg) {
             this.$notify.error({
@@ -72,6 +90,7 @@ export default {
             }
             let result = await this.$store.dispatch(ADD_COASH, {...this.formCoachInfo, gym_id: this.gymId});
             if (result.success) {
+                this.$store.dispatch(GET_COACH_LIST_BY_GYMID, {gym_id: this.gymId});
                 this.$notify({
                     title: '添加成功',
                     type: 'success'
@@ -90,5 +109,9 @@ export default {
 <style scoped>
     .form-add-coach .app-form-item{
         margin-bottom: .39rem;
+    }
+    .head-img{
+        width: 2.22rem;
+        height: 2.22rem;
     }
 </style>

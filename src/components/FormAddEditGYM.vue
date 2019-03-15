@@ -115,7 +115,7 @@ import AppButton from './AppButton.vue';
 import FormClassInfo from './FormClassInfo.vue';
 import FormCoachInfo from './FormCoachInfo.vue';
 import { ADD_GYM, ADD_COASH, ADD_GYM_ADMIN, GET_OSS_SESSION, GET_GYM_INFO, UPDATE_GYM
-    , GET_CLASS_INFO_LIST_BY_GYMID, UPDATE_GYM_ADMIN_USER, GET_GYM_ADMIN_USER_GET_BIND } from
+    , GET_CLASS_INFO_LIST_BY_GYMID, UPDATE_GYM_ADMIN_USER, GET_GYM_ADMIN_USER_GET_BIND, GET_COACH_LIST_BY_GYMID } from
     '../store/action_type';
 import { md5 } from '../utils/crypto';
 import {verifyEmptyHelper} from '../utils/index.js';
@@ -179,7 +179,7 @@ export default {
         }
     },
     methods: {
-        async  onTabBeforeLeave (activeName) {
+        onTabBeforeLeave (activeName) {
             return activeName == this.activeName;
         },
         onClose () {
@@ -239,6 +239,7 @@ export default {
             if (this.activeName == 'first') {
                 let result = await this.onSubmitGYMInfo();
                 if (result.success) {
+                    this.$store.dispatch(GET_COACH_LIST_BY_GYMID, {gym_id: this.gymId});
                     this.activeName = 'second';
                 }
             } else if (this.activeName == 'second') {
