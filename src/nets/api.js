@@ -1,7 +1,7 @@
 const PREFIX = process.env.NODE_ENV === 'production' ? 'http://47.98.195.210:3499' : 'http://192.168.9.37:10002';
 
 export const LOGIN = `${PREFIX}/api/account/platform/login`;
-export const GET_OSS_SESSION = `http://47.98.195.210:3990`;
+export const GET_OSS_SESSION = `http://47.111.161.136:3990`;
 
 export const USER_ADD = `${PREFIX}/api/account/add`;
 export const USER_VERIFY = `${PREFIX}/api/account/verify`;

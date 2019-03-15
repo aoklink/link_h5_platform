@@ -123,6 +123,7 @@ export default {
                 content: result.data.content,
                 title: result.data.title,
                 id: result.data.id,
+                img_urls: result.data.img_urls,
                 gym_id: result.data.gym_id
             });
         }

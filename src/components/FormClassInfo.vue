@@ -16,6 +16,15 @@
                                placeholder="请输入价格，如19.9"
                         >
                     </div>
+                    <div class="form-upload-img-item img-show">
+                        <label>
+                            <h6>课程活动图片</h6>
+                        </label>
+                        <div class="img-show-list">
+                            <img-list v-model="formClassInfo.img_urls" />
+                            <upload-img :one-image="false" @error="onUploadImgError" @addimg="onAddDisplayImg" />
+                        </div>
+                    </div>
                     <div class="app-form-item form-class-info-content">
                         <label>课程内容</label>
                         <textarea v-model="formClassInfo.content" autocomplete="false" placeholder="请输入课程内容" />
@@ -76,12 +85,16 @@
 <script>
 import {mapState} from 'vuex';
 import AppButton from './AppButton.vue';
+import UploadImg from './UploadImg.vue';
+import ImgList from './ImgList.vue';
 import { UPDATE_CLASS_INFO_BY_ID, ADD_CLASS_INFO, GET_CLASS_INFO_BY_ID } from '../store/action_type';
 import {verifyEmptyHelper} from '../utils/index.js';
 
 export default {
     components: {
-        AppButton
+        AppButton,
+        UploadImg,
+        ImgList
     },
     props: {
         gymId: {
@@ -94,7 +107,8 @@ export default {
             formClassInfo: {
                 title: '',
                 price_info: '',
-                content: ''
+                content: '',
+                img_urls: []
             },
             showAddClassForm: false,
             currentClassInfoIdSelected: null,
@@ -105,6 +119,15 @@ export default {
         ...mapState(['classInfoListSelected', 'classInfoSelected'])
     },
     methods: {
+        async onUploadImgError (msg) {
+            this.$notify.error({
+                title: '图片上传失败',
+                message: msg
+            });
+        },
+        onAddDisplayImg (url) {
+            this.formClassInfo.img_urls = [...this.formClassInfo.img_urls, url];
+        },
         async onSubmitClassInfo () {
             let validResult = verifyEmptyHelper(this.formClassInfo, [
                 {
@@ -127,12 +150,14 @@ export default {
             let result;
             if (this.isUpdateClassInfo) {
                 result = await this.$store.dispatch(UPDATE_CLASS_INFO_BY_ID, {...this.formClassInfo,
-                    gym_id: this.gymId
+                    gym_id: this.gymId,
+                    img_urls: JSON.stringify(this.formClassInfo.img_urls)
                 });
             } else {
                 result = await this.$store.dispatch(ADD_CLASS_INFO, {
                     ...this.formClassInfo,
-                    gym_id: this.gymId
+                    gym_id: this.gymId,
+                    img_urls: JSON.stringify(this.formClassInfo.img_urls)
                 });
             }
             if (result.success) {
@@ -152,7 +177,8 @@ export default {
             this.formClassInfo = {
                 title: '',
                 price_info: '',
-                content: ''
+                content: '',
+                img_urls: []
             };
             this.showAddClassForm = true;
             this.isUpdateClassInfo = false;
@@ -161,6 +187,12 @@ export default {
             let result = await this.$store.dispatch(GET_CLASS_INFO_BY_ID, {id: row.id});
             if (result.success) {
                 this.formClassInfo = {...this.classInfoSelected};
+                this.formClassInfo.img_urls = [];
+                try {
+                    this.formClassInfo.img_urls = JSON.parse(this.classInfoSelected.img_urls);
+                } catch (error) {
+
+                }
                 this.showAddClassForm = true;
                 this.isUpdateClassInfo = true;
                 this.currentClassInfoIdSelected = row.id;
@@ -194,6 +226,9 @@ export default {
 </script>
 
 <style scoped>
+    .form-add-activity .app-form-item{
+        margin-bottom: .39rem;
+    }
     .form-add-activity .form-btn-add{
         position: absolute;
         right: 0;

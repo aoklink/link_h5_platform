@@ -1,6 +1,6 @@
 <template>
     <div class="form-add-edit-gym">
-        <el-tabs :value="activeName" :before-leave="onTabBeforeLevel">
+        <el-tabs :value="activeName" :before-leave="onTabBeforeLeave">
             <el-tab-pane label="店铺资料" name="first">
                 <div class="form-add-store">
                     <h3>店铺资料</h3>
@@ -62,28 +62,7 @@
                 </div>
             </el-tab-pane>
             <el-tab-pane label="教练信息" name="second">
-                <div class="form-add-coach">
-                    <h3>
-                        教练信息
-                        <app-button theme="grey" size="medium" custom-class="form-btn-add"
-                                    @click="onSubmitCoachInfo"
-                        >
-                            点击添加
-                        </app-button>
-                    </h3>
-                    <div class="app-form-item">
-                        <label>姓名</label>
-                        <input v-model="formCoachInfo.name" autocomplete="false" type="text"
-                               placeholder="请输入教练姓名"
-                        >
-                    </div>
-                    <div class="app-form-item">
-                        <label>标签</label>
-                        <input v-model="formCoachInfo.label" autocomplete="false" type="text"
-                               placeholder="请输入标签，用空格隔开"
-                        >
-                    </div>
-                </div>
+                <form-coach-info :gym-id="gymId" />
             </el-tab-pane>
             <el-tab-pane label="课程活动" name="third">
                 <form-class-info :gym-id="gymId" />
@@ -115,7 +94,7 @@
             </el-tab-pane>
         </el-tabs>
         <button class="btn-close-dialog-form-add-edit-gym" @click="onClose">
-            X
+            <i class="el-icon-close" />
         </button>
         <div class="dialog-footer">
             <button class="btn-quit" @click="onClose">
@@ -134,6 +113,7 @@ import UploadImg from './UploadImg.vue';
 import ImgList from './ImgList.vue';
 import AppButton from './AppButton.vue';
 import FormClassInfo from './FormClassInfo.vue';
+import FormCoachInfo from './FormCoachInfo.vue';
 import { ADD_GYM, ADD_COASH, ADD_GYM_ADMIN, GET_OSS_SESSION, GET_GYM_INFO, UPDATE_GYM
     , GET_CLASS_INFO_LIST_BY_GYMID, UPDATE_GYM_ADMIN_USER, GET_GYM_ADMIN_USER_GET_BIND } from
     '../store/action_type';
@@ -145,6 +125,7 @@ export default {
         UploadImg,
         AppButton,
         ImgList,
+        FormCoachInfo,
         FormClassInfo
     },
     props: {
@@ -169,10 +150,6 @@ export default {
                 logo_url: '',
                 display_img_urls: [],
                 mini_program_code_url: ''
-            },
-            formCoachInfo: {
-                name: '',
-                label: ''
             },
             formAccountInfo: {
                 name: '',
@@ -202,7 +179,7 @@ export default {
         }
     },
     methods: {
-        onTabBeforeLevel (activeName) {
+        async  onTabBeforeLeave (activeName) {
             return activeName == this.activeName;
         },
         onClose () {
@@ -422,49 +399,4 @@ export default {
         background: #fff;
     }
 
-    .form-upload-img-item{
-        display:  inline-flex;
-        flex-direction:  row;
-        width:12.22rem;
-        height:2.94rem;
-        padding: .33rem;
-        margin-bottom: .33rem;
-        box-sizing: border-box;
-        border: 1px solid rgba(225, 227, 232, 1);
-    }
-    .form-upload-img-item   label{
-        flex:1;
-    }
-    .form-upload-img-item:nth-of-type(2n){
-        margin-right: .83rem;
-    }
-    .form-upload-img-item p,.form-upload-img-item h6{
-        margin: 0;
-        padding: 0;
-        color: #5B637E;
-    }
-    .form-upload-img-item p{
-        font-size: 14px;
-    }
-    .form-upload-img-item h6{
-        font-size: 16px;
-        margin-bottom: .39rem;
-    }
-    .form-upload-img-item.img-show{
-        width: 25.28rem;
-        height: 4rem;
-        margin-right: 0;
-        display: flex;
-        flex-direction: column;
-    }
-    .form-upload-img-item.img-show label{
-        display: flex;
-    }
-    .form-upload-img-item.img-show h6{
-        margin-bottom: 0;
-        margin-right: .33rem;
-    }
-    .img-show-list {
-        display: flex;
-    }
 </style>

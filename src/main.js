@@ -6,6 +6,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'normalize.css';
 import './assets/form-item-input.css';
+import './assets/form-upload-img-item.css';
 
 Vue.use(ElementUI);
 
