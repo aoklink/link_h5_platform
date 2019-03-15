@@ -1,14 +1,20 @@
 <template>
-    <ul class="img-list">
-        <li v-for="(src,index) in value" :key="src">
-            <img :src="src">
-            <i class="el-icon-error btn-delete" @click="onDelete(index)" />
-        </li>
-    </ul>
+    <div class="img-list">
+        <draggable :list="value" draggable=".img-list-item">
+            <div v-for="(src,index) in value" :key="src" class="img-list-item">
+                <img :src="src">
+                <i class="el-icon-error btn-delete" @click="onDelete(index)" />
+            </div>
+        </draggable>
+    </div>
 </template>
 
 <script>
+import draggable from 'vuedraggable';
 export default {
+    components: {
+        draggable
+    },
     props: {
         value: {
             type: Array,
@@ -27,14 +33,15 @@ export default {
 
 <style scoped>
     .img-list{
+        flex: 1;
+    }
+    .img-list>div{
         padding: 0;
         margin: 0;
         display: flex;
         flex-direction: row;
-        flex: 1;
-        list-style: none;
     }
-    .img-list li{
+    .img-list-item{
         position: relative;
         padding: 0;
         margin: 0;

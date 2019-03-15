@@ -162,7 +162,7 @@ export default {
     computed: {
         ...mapState(['classInfoListSelected', 'gymAdminInfoSelected'])
     },
-    async created () {
+    async mounted () {
         this.$store.dispatch(GET_OSS_SESSION);
         if (this.isEdit) {
             this.gymId = this.editGymId;
