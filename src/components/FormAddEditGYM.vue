@@ -19,9 +19,23 @@
                         </div>
                         <div class="app-form-item">
                             <label>所在城市</label>
-                            <input v-model="formGYMInfo.city" autocomplete="false" type="text"
-                                   placeholder="所在城市"
-                            >
+                            <div class="select-group">
+                                <el-select v-model="formArea.province" placeholder="省">
+                                    <el-option v-for="province in provinceList" :key="province" :label="province"
+                                               :value="province"
+                                    />
+                                </el-select>
+                                <el-select v-model="formArea.city" placeholder="市">
+                                    <el-option v-for="city in cityList" :key="city" :label="city"
+                                               :value="city"
+                                    />
+                                </el-select>
+                                <el-select v-model="formArea.district" placeholder="区/县">
+                                    <el-option v-for="district in districtList" :key="district" :label="district"
+                                               :value="district"
+                                    />
+                                </el-select>
+                            </div>
                         </div>
                         <div class="app-form-item">
                             <label>标签</label>
@@ -119,6 +133,7 @@ import { ADD_GYM, ADD_COASH, ADD_GYM_ADMIN, GET_OSS_SESSION, GET_GYM_INFO, UPDAT
     '../store/action_type';
 import { md5 } from '../utils/crypto';
 import {verifyEmptyHelper} from '../utils/index.js';
+import area from '../utils/area.js';
 
 export default {
     components: {
@@ -141,9 +156,13 @@ export default {
     data () {
         return {
             activeName: 'first',
+            formArea: {
+                province: '',
+                city: '',
+                district: ''
+            },
             formGYMInfo: {
                 name: '',
-                city: '',
                 address: '',
                 label: '',
                 phone: '',
@@ -160,6 +179,25 @@ export default {
         };
     },
     computed: {
+        city () {
+            return this.formArea.province && this.formArea.city && this.formArea.district
+                ? `${this.formArea.province}-${this.formArea.city}-${this.formArea.district}` : '';
+        },
+        provinceList () {
+            return Object.keys(area);
+        },
+        cityList () {
+            let city = area[this.formArea.province];
+            return city ? Object.keys(city) : [];
+        },
+        districtList () {
+            let district = [];
+            try {
+                district = area[this.formArea.province][this.formArea.city];
+            } catch (error) {
+            }
+            return district;
+        },
         ...mapState(['classInfoListSelected', 'gymAdminInfoSelected'])
     },
     async mounted () {
@@ -175,6 +213,14 @@ export default {
 
                 }
                 this.formGYMInfo = {...result.data, display_img_urls: displayImgUrls};
+                try {
+                    let city = result.data.city.split('-');
+                    this.formArea.province = city[0];
+                    this.formArea.city = city[1];
+                    this.formArea.district = city[2];
+                } catch (error) {
+
+                }
             }
         }
     },
@@ -195,10 +241,6 @@ export default {
                     label: '店铺名称'
                 },
                 {
-                    field: 'city',
-                    label: '所在城市'
-                },
-                {
                     field: 'address',
                     label: '店铺地址'
                 },
@@ -209,7 +251,25 @@ export default {
             ]);
             if (!validResult.valid) {
                 this.$message.warning(validResult.msg);
-                return;
+                return {success: false};
+            }
+            validResult = verifyEmptyHelper(this.formArea, [
+                {
+                    field: 'province',
+                    label: '省份'
+                },
+                {
+                    field: 'city',
+                    label: '城市'
+                },
+                {
+                    field: 'district',
+                    label: '区县'
+                }
+            ]);
+            if (!validResult.valid) {
+                this.$message.warning(validResult.msg);
+                return {success: false};
             }
 
             let result;
@@ -217,10 +277,12 @@ export default {
                 result = await this.$store.dispatch(UPDATE_GYM, {
                     ...this.formGYMInfo,
                     id: this.gymId,
+                    city: this.city,
                     display_img_urls: JSON.stringify(this.formGYMInfo.display_img_urls)
                 });
             } else {
                 result = await this.$store.dispatch(ADD_GYM, {...this.formGYMInfo,
+                    city: this.city,
                     display_img_urls: JSON.stringify(this.formGYMInfo.display_img_urls)
                 });
             }
@@ -399,5 +461,7 @@ export default {
         border:1px solid rgba(192,199,216,1);
         background: #fff;
     }
-
+    .select-group .el-select{
+        width: 4rem;
+    }
 </style>
