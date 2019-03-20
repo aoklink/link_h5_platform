@@ -38,6 +38,13 @@
                         <img :src="scope.row.img_url" class="head-img">
                     </template>
                 </el-table-column>
+                <el-table-column label="操作">
+                    <template slot-scope="scope">
+                        <app-button size="mini" theme="red" @click="onDeleteCoach(scope.row.id)">
+                            删除
+                        </app-button>
+                    </template>
+                </el-table-column>
             </el-table>
         </div>
     </div>
@@ -46,7 +53,7 @@
 import {mapState} from 'vuex';
 import UploadImg from './UploadImg.vue';
 import AppButton from './AppButton.vue';
-import { ADD_COASH, GET_COACH_LIST_BY_GYMID } from
+import { ADD_COASH, GET_COACH_LIST_BY_GYMID, DELETE_GYM_COACH_BY_ID } from
     '../store/action_type';
 import {verifyEmptyHelper} from '../utils/index.js';
 export default {
@@ -98,6 +105,23 @@ export default {
             } else {
                 this.$notify.error({
                     title: '添加失败',
+                    message: result.data
+                });
+            }
+        },
+        async onDeleteCoach (id) {
+            let result = await this.$store.dispatch(DELETE_GYM_COACH_BY_ID, {
+                id
+            });
+            if (result.success) {
+                this.$store.dispatch(GET_COACH_LIST_BY_GYMID, {gym_id: this.gymId});
+                this.$notify({
+                    title: '删除成功',
+                    type: 'success'
+                });
+            } else {
+                this.$notify.error({
+                    title: '删除失败',
                     message: result.data
                 });
             }

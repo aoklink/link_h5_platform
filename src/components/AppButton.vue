@@ -71,6 +71,12 @@ export default {
         height:0.97rem;
     }
 
+    .red{
+        background-color: #f56c6c;
+        color: #fff;
+        border: 1px solid #f56c6c;
+    }
+
     .yellow{
         background:rgba(255,192,1,1);
     }
