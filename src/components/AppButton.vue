@@ -77,16 +77,23 @@ export default {
         border: 1px solid #f56c6c;
     }
 
+    .green{
+        color: #fff;
+        background-color: #67c23a;
+        border: 1px solid #67c23a;
+    }
+
     .yellow{
         background:rgba(255,192,1,1);
+        border: 1px solid rgba(255,192,1,1);
     }
     .plain {
         border:1px solid rgba(60,68,86,1);
-
     }
     .grey{
         background:rgba(60,68,86,1);
         color: #fff;
+        border: 1px solid rgba(60,68,86,1);
     }
 
 </style>

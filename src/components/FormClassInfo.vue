@@ -71,8 +71,8 @@
                             <app-button theme="grey" @click="editClassInfo(scope.row)">
                                 编辑
                             </app-button>
-                            <app-button theme="plain" @click="onOfflineClass(scope.row)">
-                                下线
+                            <app-button :theme="scope.row.state==0?'plain':'green'" @click="onChangeState(scope.row)">
+                                {{ scope.row.state==0?'下线':'上线' }}
                             </app-button>
                         </template>
                     </el-table-column>
@@ -203,19 +203,19 @@ export default {
                 });
             }
         },
-        async onOfflineClass (row) {
+        async onChangeState (row) {
             let result = await this.$store.dispatch(UPDATE_CLASS_INFO_BY_ID, {
                 ...row,
-                state: 0
+                state: row.state == 0 ? 1 : 0
             });
             if (result.success) {
                 this.$notify({
-                    title: '下线成功',
+                    title: '更改成功',
                     type: 'success'
                 });
             } else {
                 this.$notify.error({
-                    title: '下线失败',
+                    title: '更改失败',
                     message: result.data
                 });
             }
