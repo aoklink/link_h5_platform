@@ -49,6 +49,9 @@
                                    placeholder="如：浙江省杭州市西湖区xx街道118号"
                             >
                         </div>
+                        <div>
+                            <address-map :region="formArea.city" :keyword="formGYMInfo.address" />
+                        </div>
                         <div class="form-upload-img-item">
                             <label>
                                 <h6>店铺logo</h6>
@@ -134,9 +137,11 @@ import { ADD_GYM, ADD_COASH, ADD_GYM_ADMIN, GET_OSS_SESSION, GET_GYM_INFO, UPDAT
 import { md5 } from '../utils/crypto';
 import {verifyEmptyHelper} from '../utils/index.js';
 import area from '../utils/area.js';
+import AddressMap from './AddressMap.vue';
 
 export default {
     components: {
+        AddressMap,
         UploadImg,
         AppButton,
         ImgList,
@@ -463,5 +468,10 @@ export default {
     }
     .select-group .el-select{
         width: 4rem;
+    }
+
+    .form-add-store .form-upload-img-item:nth-of-type(2n){
+        margin-right: 0;
+        margin-left: .83rem;
     }
 </style>
