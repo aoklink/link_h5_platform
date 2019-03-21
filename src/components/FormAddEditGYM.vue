@@ -114,12 +114,17 @@
             <i class="el-icon-close" />
         </button>
         <div class="dialog-footer">
-            <button class="btn-quit" @click="onClose">
+            <app-button size="large" theme="plain" @click="onClose">
                 取消
-            </button>
-            <button class="btn-next" @click="onNext">
+            </app-button>
+            <app-button v-if="activeName!='first'" size="large" theme="yellow"
+                        @click="onPrev"
+            >
+                上一步
+            </app-button>
+            <app-button size="large" theme="yellow" @click="onNext">
                 {{ activeName=='fourth'?'保存':'下一步' }}
-            </button>
+            </app-button>
         </div>
     </div>
 </template>
@@ -302,6 +307,15 @@ export default {
             }
             return result;
         },
+        onPrev () {
+            if (this.activeName == 'second') {
+                this.activeName = 'first';
+            } else if (this.activeName == 'third') {
+                this.activeName = 'second';
+            } else if (this.activeName == 'fourth') {
+                this.activeName = 'third';
+            }
+        },
         async onNext () {
             if (this.activeName == 'first') {
                 let result = await this.onSubmitGYMInfo();
@@ -451,20 +465,7 @@ export default {
         text-align: right;
     }
     .dialog-footer >button{
-        width:2.78rem;
-        height:1.11rem;
         margin-left: .3rem;
-        background:rgba(255,192,1,1);
-        border-radius:0.06rem;
-        border: none;
-        cursor: pointer;
-    }
-    .dialog-footer .btn-quit{
-        width:2.22rem;
-        height:1.11rem;
-        border-radius:0.06rem;
-        border:1px solid rgba(192,199,216,1);
-        background: #fff;
     }
     .select-group .el-select{
         width: 4rem;

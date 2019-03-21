@@ -10,13 +10,13 @@ export default {
         size: {
             type: String,
             default: 'mini',
-            validator: (value) => ['medium', 'small', 'mini'].includes(value)
+            validator: (value) => ['medium', 'small', 'mini', 'large'].includes(value)
         },
         theme: {
             type: String,
             default: 'plain',
             validator (value) {
-                return ['plain', 'yellow', 'grey'].includes(value);
+                return ['plain', 'yellow', 'grey', 'green', 'red'].includes(value);
             }
         },
         customClass: {
@@ -69,6 +69,12 @@ export default {
     .medium{
         width:3.33rem;
         height:0.97rem;
+    }
+
+    .large{
+        width:2.78rem;
+        height:1.11rem;
+        border-radius:0.06rem;
     }
 
     .red{
