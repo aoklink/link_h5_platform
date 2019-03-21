@@ -17,7 +17,7 @@
                 <div class="store-info-item">
                     <h5>店铺地址</h5>
                     <div>
-                        {{ storeData.address }}
+                        {{ address }}
                     </div>
                 </div>
                 <div class="store-info-item">
@@ -180,11 +180,21 @@ export default {
             imgViewerList: []
         };
     },
-    computed: mapState({
-        coachData: 'coachInfoListSelected',
-        gymAdminInfoSelected: 'gymAdminInfoSelected',
-        classInfoListSelected: 'classInfoListSelected'
-    }),
+    computed: {
+        address () {
+            try {
+                return JSON.parse(this.storeData.address).address;
+            } catch (error) {
+
+            }
+            return '';
+        },
+        ...mapState({
+            coachData: 'coachInfoListSelected',
+            gymAdminInfoSelected: 'gymAdminInfoSelected',
+            classInfoListSelected: 'classInfoListSelected'
+        })
+    },
     methods: {
         showLogoUrl () {
             this.imgViewerList = [this.storeData.logo_url];
