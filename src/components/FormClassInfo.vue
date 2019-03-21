@@ -129,6 +129,10 @@ export default {
             this.formClassInfo.img_urls = [...this.formClassInfo.img_urls, url];
         },
         async onSubmitClassInfo () {
+            if (this.formClassInfo.img_urls.length == 0) {
+                this.$message.warning('展示图片不能为空');
+                return;
+            }
             let validResult = verifyEmptyHelper(this.formClassInfo, [
                 {
                     field: 'title',

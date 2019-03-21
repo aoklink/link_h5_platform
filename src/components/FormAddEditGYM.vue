@@ -255,6 +255,10 @@ export default {
             this.formGYMInfo.display_img_urls = [...this.formGYMInfo.display_img_urls, url];
         },
         async onSubmitGYMInfo () {
+            if (this.formGYMInfo.display_img_urls.length == 0) {
+                this.$message.warning('展示图片不能为空');
+                return {success: false};
+            }
             let validResult = verifyEmptyHelper(this.formGYMInfo, [
                 {
                     field: 'name',
@@ -267,6 +271,14 @@ export default {
                 {
                     field: 'phone',
                     label: '联系电话'
+                },
+                {
+                    field: 'mini_program_code_url',
+                    label: '小程序二维码'
+                },
+                {
+                    field: 'logo_url',
+                    label: '店铺logo'
                 }
             ]);
             if (!validResult.valid) {

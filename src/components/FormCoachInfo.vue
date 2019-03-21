@@ -90,6 +90,9 @@ export default {
             let validResult = verifyEmptyHelper(this.formCoachInfo, [{
                 field: 'name',
                 label: '姓名'
+            }, {
+                field: 'img_url',
+                label: '教练照片'
             }]);
             if (!validResult.valid) {
                 this.$message.warning(validResult.msg);
