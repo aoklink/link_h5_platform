@@ -1,32 +1,41 @@
 <template>
     <div class="form-add-coach">
-        <h3>
-            教练信息
+        <h3 v-if="!showAddCoachForm">
             <app-button theme="grey" size="medium" custom-class="form-btn-add"
-                        @click="onSubmitCoachInfo"
+                        @click="onAdd"
             >
                 点击添加
             </app-button>
         </h3>
-        <div class="app-form-item">
-            <label>姓名</label>
-            <input v-model="formCoachInfo.name" autocomplete="false" type="text"
-                   placeholder="请输入教练姓名"
-            >
+        <div v-if="showAddCoachForm">
+            <div class="app-form-item">
+                <label>姓名</label>
+                <input v-model="formCoachInfo.name" autocomplete="false" type="text"
+                       placeholder="请输入教练姓名"
+                >
+            </div>
+            <div class="app-form-item">
+                <label>标签</label>
+                <input v-model="formCoachInfo.label" autocomplete="false" type="text"
+                       placeholder="请输入标签，用空格隔开"
+                >
+            </div>
+            <div class="form-upload-img-item">
+                <label>
+                    <h6>教练照片</h6>
+                </label>
+                <upload-img v-model="formCoachInfo.img_url" @error="onUploadImgError" />
+            </div>
+            <div class="form-coach-btn-group">
+                <app-button theme="plain" size="small" @click="showAddCoachForm=false">
+                    取消
+                </app-button>
+                <app-button theme="grey" size="small" @click="onSubmitCoachInfo">
+                    {{ isUpdateCoachInfo?'更新':'添加' }}
+                </app-button>
+            </div>
         </div>
-        <div class="app-form-item">
-            <label>标签</label>
-            <input v-model="formCoachInfo.label" autocomplete="false" type="text"
-                   placeholder="请输入标签，用空格隔开"
-            >
-        </div>
-        <div class="form-upload-img-item">
-            <label>
-                <h6>教练照片</h6>
-            </label>
-            <upload-img v-model="formCoachInfo.img_url" @error="onUploadImgError" />
-        </div>
-        <div>
+        <div v-else>
             <h3>教练列表</h3>
             <el-table :data="coachInfoListSelected" height="400" stripe
                       style="width: 90%"
@@ -40,6 +49,9 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
+                        <app-button size="mini" theme="yellow" @click="onEdit(scope.row)">
+                            编辑
+                        </app-button>
                         <app-button size="mini" theme="red" @click="onDeleteCoach(scope.row.id)">
                             删除
                         </app-button>
@@ -53,7 +65,7 @@
 import {mapState} from 'vuex';
 import UploadImg from './UploadImg.vue';
 import AppButton from './AppButton.vue';
-import { ADD_COASH, GET_COACH_LIST_BY_GYMID, DELETE_GYM_COACH_BY_ID } from
+import { ADD_COASH, GET_COACH_LIST_BY_GYMID, DELETE_GYM_COACH_BY_ID, UPDATE_GYM_COACH_BY_ID } from
     '../store/action_type';
 import {verifyEmptyHelper} from '../utils/index.js';
 export default {
@@ -73,13 +85,31 @@ export default {
                 name: '',
                 label: '',
                 img_url: ''
-            }
+            },
+            showAddCoachForm: false,
+            isUpdateCoachInfo: false
         };
     },
     computed: {
         ...mapState(['coachInfoListSelected'])
     },
     methods: {
+        onAdd () {
+            this.formCoachInfo = {
+                name: '',
+                label: '',
+                img_url: ''
+            };
+            this.showAddCoachForm = true;
+            this.isUpdateCoachInfo = false;
+        },
+        onEdit (row) {
+            this.formCoachInfo = {
+                ...row
+            };
+            this.showAddCoachForm = true;
+            this.isUpdateCoachInfo = true;
+        },
         async onUploadImgError (msg) {
             this.$notify.error({
                 title: '图片上传失败',
@@ -98,16 +128,25 @@ export default {
                 this.$message.warning(validResult.msg);
                 return;
             }
-            let result = await this.$store.dispatch(ADD_COASH, {...this.formCoachInfo, gym_id: this.gymId});
+            let result;
+            if (this.isUpdateCoachInfo) {
+                result = await this.$store.dispatch(UPDATE_GYM_COACH_BY_ID,
+                    {...this.formCoachInfo,
+                        gym_id: this.gymId
+                    });
+            } else {
+                result = await this.$store.dispatch(ADD_COASH, {...this.formCoachInfo, gym_id: this.gymId});
+            }
             if (result.success) {
                 this.$store.dispatch(GET_COACH_LIST_BY_GYMID, {gym_id: this.gymId});
                 this.$notify({
-                    title: '添加成功',
+                    title: `${this.isUpdateCoachInfo ? '更新' : '添加'}成功`,
                     type: 'success'
                 });
+                this.showAddCoachForm = false;
             } else {
                 this.$notify.error({
-                    title: '添加失败',
+                    title: `${this.isUpdateCoachInfo ? '更新' : '添加'}失败`,
                     message: result.data
                 });
             }
@@ -138,7 +177,11 @@ export default {
         margin-bottom: .39rem;
     }
     .head-img{
-        width: 2.22rem;
-        height: 2.22rem;
+        max-width: 2.22rem;
+        max-height: 2.22rem;
+    }
+    .form-coach-btn-group{
+        margin-top: 1rem;
+        text-align: center;
     }
 </style>
