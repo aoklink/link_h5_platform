@@ -50,7 +50,7 @@
                             >
                         </div>
                         <div>
-                            <address-map :region="formArea.city" :keyword="formGYMInfo.address" />
+                            <address-map :keyword="formGYMInfo.address" :position="formMap.position" @change="onMapChange" />
                         </div>
                         <div class="form-upload-img-item">
                             <label>
@@ -171,6 +171,9 @@ export default {
                 city: '',
                 district: ''
             },
+            formMap: {
+                position: null
+            },
             formGYMInfo: {
                 name: '',
                 address: '',
@@ -228,6 +231,10 @@ export default {
                     this.formArea.province = city[0];
                     this.formArea.city = city[1];
                     this.formArea.district = city[2];
+
+                    let address = JSON.parse(result.data.address);
+                    this.formGYMInfo.address = address.address;
+                    this.formMap.position = address.position;
                 } catch (error) {
 
                 }
@@ -235,6 +242,9 @@ export default {
         }
     },
     methods: {
+        onMapChange (position) {
+            this.formMap.position = position;
+        },
         onTabBeforeLeave (activeName) {
             return activeName == this.activeName;
         },
@@ -281,6 +291,16 @@ export default {
                 this.$message.warning(validResult.msg);
                 return {success: false};
             }
+            validResult = verifyEmptyHelper(this.formMap, [
+                {
+                    field: 'position',
+                    label: '地图标记'
+                }
+            ]);
+            if (!validResult.valid) {
+                this.$message.warning(validResult.msg);
+                return {success: false};
+            }
 
             let result;
             if (this.isEdit) {
@@ -288,11 +308,19 @@ export default {
                     ...this.formGYMInfo,
                     id: this.gymId,
                     city: this.city,
+                    address: JSON.stringify({
+                        position: this.formMap.position,
+                        address: this.formGYMInfo.address
+                    }),
                     display_img_urls: JSON.stringify(this.formGYMInfo.display_img_urls)
                 });
             } else {
                 result = await this.$store.dispatch(ADD_GYM, {...this.formGYMInfo,
                     city: this.city,
+                    address: JSON.stringify({
+                        position: this.formMap.position,
+                        address: this.formGYMInfo.address
+                    }),
                     display_img_urls: JSON.stringify(this.formGYMInfo.display_img_urls)
                 });
             }
