@@ -1,4 +1,4 @@
-const PREFIX = process.env.NODE_ENV === 'production' ? 'http://47.98.195.210:3499' : 'http://192.168.9.37:10002';
+const PREFIX = process.env.NODE_ENV === 'production' ? 'http://47.98.195.210:3499' : 'http://192.168.9.244:8045';
 
 export const LOGIN = `${PREFIX}/api/account/platform/login`;
 export const GET_OSS_SESSION = `http://47.111.161.136:3990`;
