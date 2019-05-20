@@ -1,7 +1,9 @@
-const PREFIX = process.env.NODE_ENV === 'production' ? 'http://47.98.195.210:3499' : 'http://192.168.9.244:8045';
+// const PREFIX = process.env.NODE_ENV === 'production' ? 'http://www.linkfeeling.cn' : 'http://www.linkfeeling.cn';
+const PREFIX = process.env.NODE_ENV === 'production' ? 'http://bg.linkfeeling.cn' : 'http://bg.linkfeeling.cn';
+// const PREFIX = process.env.NODE_ENV === 'production' ? 'http://test.linkfeeling.cn' : 'http://test.linkfeeling.cn';
 
 export const LOGIN = `${PREFIX}/api/account/platform/login`;
-export const GET_OSS_SESSION = `http://47.111.161.136:3990`;
+export const GET_OSS_SESSION = `http://oss.linkfeeling.cn/access_callback`;
 
 export const USER_ADD = `${PREFIX}/api/account/add`;
 export const USER_VERIFY = `${PREFIX}/api/account/verify`;

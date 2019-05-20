@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Login from './views/Login.vue';
+import BaseBind from './components/BaseBind.vue';
+import BaseList from './components/BaseList.vue';
 import {
     isLogin
 } from './utils/auth';
@@ -14,16 +16,38 @@ const router = new Router({
     routes: [{
         name: 'Login',
         path: '/Login',
-        component: Login
+        component: Login,
+        meta: {
+            keepAlive: false
+        }
     },
     {
         path: '/',
         name: 'home',
         component: Home,
         meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            keepAlive: true
         },
         children: []
+    },
+    {
+        name: 'basebind',
+        path: '/BaseBind',
+        component: BaseBind,
+        displayName: '手环管理',
+        meta: {
+            keepAlive: true
+        },
+    },
+    {
+        name: 'baselist',
+        path: '/BaseList',
+        component: BaseList,
+        displayName: '店铺手环信息',
+        meta: {
+            keepAlive: true
+        },
     }
     ]
 });

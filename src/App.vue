@@ -1,8 +1,37 @@
 <template>
     <div id="app">
-        <router-view />
+        <template v-if="$route.meta.keepAlive">
+            <keep-alive>
+                <Banner v-if="headerShow" />
+            </keep-alive>
+            <div class="allCon">
+                <keep-alive>
+                    <Nav v-if="headerShow" />
+                </keep-alive>
+                <div class="main-container">
+                    <router-view />
+                </div>
+                
+            </div>
+        </template>    
+        <router-view v-if="!$route.meta.keepAlive"></router-view>
     </div>
 </template>
+<script>
+import Banner from './components/Banner';
+import Nav from './components/nav';
+export default {
+    components: {
+        Nav,
+        Banner
+    },
+    data () {
+        return {
+            headerShow: true
+        };
+    }
+};
+</script>
 
 <style>
     html{
@@ -38,5 +67,15 @@
 
     #nav a.router-link-exact-active {
         color: #42b983;
+    }
+    .allCon{
+        height: 100%;
+        width: 100%;
+        display: flex;
+    }
+
+    .main-container{
+        flex: 1;
+        height: 100%;
     }
 </style>

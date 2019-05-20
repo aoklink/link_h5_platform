@@ -1,29 +1,21 @@
 <template>
-    <div class="container">
-        <div class="menu">
-            <div class="menu-item">
-                <img src="../assets/icon1.png">
-                店铺管理
-            </div>
-        </div>
-        <div class="content">
-            <div class="tab-content">
-                <el-tabs v-model="tabIdSelected" type="border-card"
-                         @tab-remove="removeTab"
+    <div class="content">
+        <div class="tab-content">
+            <el-tabs v-model="tabIdSelected" type="border-card"
+                     @tab-remove="removeTab"
+            >
+                <el-tab-pane name="fixedtab">
+                    <span slot="label" class="content-tab-label">店铺管理</span>
+                    <management @addTab="addTab" />
+                </el-tab-pane>
+                <el-tab-pane v-for="(item) in gymInfoListSelected" :key="item.id"
+                             closable
+                             :name="item.id+''"
                 >
-                    <el-tab-pane name="fixedtab">
-                        <span slot="label" class="content-tab-label">店铺管理</span>
-                        <management @addTab="addTab" />
-                    </el-tab-pane>
-                    <el-tab-pane v-for="(item) in gymInfoListSelected" :key="item.id"
-                                 closable
-                                 :name="item.id+''"
-                    >
-                        <span slot="label" class="content-tab-label">店铺信息</span>
-                        <store-info :store-data="item" />
-                    </el-tab-pane>
-                </el-tabs>
-            </div>
+                    <span slot="label" class="content-tab-label">店铺信息</span>
+                    <store-info :store-data="item" />
+                </el-tab-pane>
+            </el-tabs>
         </div>
     </div>
 </template>
@@ -75,7 +67,7 @@ export default {
 </script>
 
 <style>
-    .container{
+    /* .container{
         display: flex;
         flex-direction: row;
         flex:1;
@@ -101,7 +93,7 @@ export default {
         display: inline-block;
         margin:0 .5rem 0 1rem;
         vertical-align: middle;
-    }
+    } */
     .content{
         display: flex;
         flex-direction: column;
@@ -135,5 +127,28 @@ export default {
     }
     .tab-content .el-tabs{
         width: 100%;
+    }
+    .main-container{
+        border-top: 0.5rem solid #F6F7F8;
+        border-left: 0.5rem solid #F6F7F8;
+    }
+</style>
+
+<style scoped>
+    .menu-hidden{
+        background: #fff;
+        text-align: left;
+        font-size: 0.39rem;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(60,68,86,1);
+        line-height: 1.39rem;
+    }
+    .menu-white{
+        display: inline-block;
+        margin: 0 .5rem 0 1rem;
+        vertical-align: middle;
+        width: 25px;
+        height: 25px;
     }
 </style>
