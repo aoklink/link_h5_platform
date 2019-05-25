@@ -3,19 +3,10 @@
         <div class="table">
             <div class="crumbs">
                 <div class="oo">
-                    {{shopname}}手环管理
+                    传感器管理
                 </div>
                 <div class="celllist">
-                    {{shopname}}手环列表
-                    <div @click="editVisiblep = true" class="addccb">
-                                        添加手环
-                                        <svg width="14px" height="14px" class="svgg">
-                                            <line x1="7" y1="0" x2="7" y2="14"
-                    style="stroke:#888EA7;stroke-width:1"/>
-                                            <line x1="0" y1="7" x2="14" y2="7"
-                    style="stroke:#888EA7;stroke-width:1"/>
-                                        </svg>
-                                    </div>
+                    店铺传感器信息
                 </div>
             </div>
             <div class="container">
@@ -29,31 +20,24 @@
                     <el-button type="primary" icon="search" @click="search">搜索</el-button>
                     <el-button type="primary" icon="search" @click="tadd">添加手环</el-button>
                 </div> -->
-                <el-table ref="multipleTable" :data="data" border
+                <el-table ref="multipleTable" :data="tableData" border
                         class="table" @selection-change="handleSelectionChange"
                 >
                     <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
-                    <el-table-column prop="id" label="手环编号" 
+                    <el-table-column prop="gym_name" label="健身房名称" 
                                     style="color: red !important"
                     />
-                    <el-table-column prop="bracelet_id" label="手环ID"
+                    <el-table-column prop="count" label="手环数量"
                                     style="color: red !important"
                     />
-                    <el-table-column prop="electric" label="电量">
-                        <template slot-scope="scope">
-                            <div type="text" >
-                                {{ tableData[scope.$index].electric }}
-                            </div>
-                        </template>
-                    </el-table-column>
                     <el-table-column label="操作" align="center" padding="0"
                                     prop="status"
                     >
                         <template slot-scope="scope">
-                            <div class="cc" type="text" @click="handleEdit(scope.$index, scope.row)">
-                                {{ tableData[scope.$index].status==0?'编辑':'编辑' }}
-                            </div>
-                            <div :class="tableData[scope.$index].status == 0?'ee':'ee'" type="text" class="red" @click="handleDelete(scope.$index, scope.row)">删除</div>
+                            <router-link :class="tableData[scope.$index].status == 0?'cc':'cc'"  :to="{ path: '/basebind', query: { inquiry: tableData[scope.$index].name,gym: tableData[scope.$index].gym_name }}">
+                                {{ tableData[scope.$index].status==0?'管理':'管理' }}
+                            </router-link>
+                            <!-- <div :class="tableData[scope.$index].status == 0?'ee':'ee'" type="text" class="red" @click="handleDelete(scope.$index, scope.row)">删除</div> -->
                         </template>
                     </el-table-column>
                 </el-table>
@@ -104,11 +88,38 @@
                 </div>
             </div>
 
-            <!-- 编辑弹出框 -->
+            <!-- 绑定弹出框 -->
+            <!-- <el-dialog title="手环绑定" :visible.sync="editVisible" width="500px">
+                <el-form ref="form" :model="form" label-width="90px">
+                    <el-form-item label="手环编号">
+                        <div v-model="form.bracelet_id">
+                            {{ form.bracelet_id }}
+                        </div>
+                    </el-form-item>
+                    <el-form-item label="手环ID" class="eltt">
+                        <div v-model="form.bracelet_id">
+                            {{ form.bracelet_id }}
+                        </div>
+                    </el-form-item>
+                    <el-form-item label="配置uwb">
+                        <el-input v-model="form.user_name" />
+                    </el-form-item>
+                    <el-form-item label="nfc解码器">
+                        <el-input v-model="form.phone_num" />
+                    </el-form-item>
+                    <el-form-item label="领取会员">
+                        <el-input v-model="form.phone_num" />
+                    </el-form-item>
+                </el-form>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="editVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="saveEdit">确 定</el-button>
+                </span>
+            </el-dialog> -->
             <div class="bindlog" v-if="editVisible">
                 <div class="bindbox">
                     <div class="bdup">
-                        <div>手环编辑
+                        <div>手环绑定
                             <span></span>
                             <span @click="editVisible=false">
                                 <svg width="10px" height="10px" class="svg">
@@ -121,13 +132,25 @@
                         </div>
                     </div>
                     <div class="bdmd">
-                        <div class="bdta bdtb">
-                            <span class="icuu">手环编号</span>
-                            <input type="text" v-model="form.id" placeholder="请输入手环编号">
+                        <div class="bdta">
+                            <span>手环编号</span>
+                            <span>{{ form.id }}</span>
                         </div>
+                        <div class="bdta">
+                            <span>手环ID</span>
+                            <span>{{ form.bracelet_id }}</span>
+                        </div>
+                        <div class="bdta">
+                            <span>配置uwb</span>
+                            <span>{{ form.uwb_id }}</span>
+                        </div>
+                        <!-- <div class="bdta bdtb">
+                            <span>配置uwb</span>
+                            <input type="text" v-model="form.uwb_id" placeholder="请输入定位模块的id">
+                        </div> -->
                         <div class="bdta bdtb">
-                            <span class="icuu">手环ID</span>
-                            <input type="text" v-model="form.bracelet_id" placeholder="请输入会员手机号">
+                            <span>领取会员</span>
+                            <input type="text" v-model="form.phone_num" placeholder="请输入会员手机号">
                         </div>
                     </div>
                     <div class="bdbt">
@@ -136,42 +159,7 @@
                     </div>
                 </div>
             </div>
-            <!-- 添加手环 -->
-            <div class="bindlog" v-if="editVisiblep">
-                <div class="bindbox">
-                    <div class="bdup">
-                        <div>手环添加
-                            <span></span>
-                            <span @click="editVisiblep=false">
-                                <svg width="10px" height="10px" class="svg">
-                                    <line x1="0" y1="0" x2="10" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
-                                    <line x1="10" y1="0" x2="0" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
-                                </svg>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="bdmd">
-                        <div class="bdta bdtb">
-                            <span class="icuu">手环编号</span>
-                            <input type="text" v-model="form.id" placeholder="请输入手环编号">
-                        </div>
-                        <div class="bdta bdtb">
-                            <span class="icuu">手环ID</span>
-                            <input type="text" v-model="form.bbid" placeholder="请输入手环ID">
-                        </div>
-                        <div class="bdta bdtb">
-                            <span class="icuu">uwb编号</span>
-                            <input type="text" v-model="form.uwb_id" placeholder="请输入uwb编号">
-                        </div>
-                    </div>
-                    <div class="bdbt">
-                        <span @click="editVisiblep=false">取消</span>
-                        <span @click="saveAdd">确定</span>
-                    </div>
-                </div>
-            </div>
+
             <!-- 删除提示框 -->
             <!-- <el-dialog title="提示" :visible.sync="delVisible" width="300px"
                     center
@@ -191,60 +179,7 @@
                     <el-button type="primary" @click="deleteRow">确 定</el-button>
                 </span>
             </el-dialog> -->
-            <div class="bindlog" v-if="delVisiblea">
-                <div class="unbindbox">
-                    <div class="ubdup">
-                        <div>删除手环
-                            <span></span>
-                            <span @click="delVisiblea=false">
-                                <svg width="10px" height="10px" class="svg">
-                                    <line x1="0" y1="0" x2="10" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
-                                    <line x1="10" y1="0" x2="0" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
-                                </svg>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="ubdmd" :model="form">
-                        <span class="dece"></span>
-                        <div class="ubdta">是否确认删除手环</div>
-                        <div class="debbp">{{ form.bracelet_id }}</div>
-                    </div>
-                    <div class="ubdbt" :model="form">
-                        <span @click="delVisiblea=false">取消</span>
-                        <span @click="delyzy(form.student_count,form.uid,1)">删除手环</span>
-                    </div>
-                </div>
-            </div>
-            <!-- lll -->
             <div class="bindlog" v-if="delVisible">
-                <div class="unbindbox">
-                    <div class="ubdup">
-                        <div>删除手环
-                            <span></span>
-                            <span @click="delVisible=false">
-                                <svg width="10px" height="10px" class="svg">
-                                    <line x1="0" y1="0" x2="10" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
-                                    <line x1="10" y1="0" x2="0" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
-                                </svg>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="ubdmd" :model="form">
-                        <span class="dece"></span>
-                        <div class="ubdta">确认删除？删除后无法恢复</div>
-                        <div class="debbp">{{ form.bracelet_id }}</div>
-                    </div>
-                    <div class="ubdbt" :model="form">
-                        <span @click="delVisible=false">取消</span>
-                        <span @click="deleteRow(form.student_count,form.uid,1)">删除手环</span>
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="bindlog" v-if="delVisible">
                 <div class="unbindbox">
                     <div class="ubdup">
                         <div>删除手环
@@ -268,7 +203,7 @@
                         <span @click="deleteRow">删除手环</span>
                     </div>
                 </div>
-            </div> -->
+            </div>
         </div>
     </div>
 </template>
@@ -277,13 +212,13 @@
 import global from '../components/Global'
 // this.$axios.defaults.headers.post['Content-Type'] = 'application/json'
 export default {
-    name: 'Basebind',
+    name: 'shopbind',
     data () {
         return {
             // localhost: 'http://bg.linkfeeling.cn',
             localhost: 'http://test.linkfeeling.cn',
             // url: './static/vuetable.json',
-            url: 'http://ll.linkfeeling.cn/api/platform/bracelet/data',
+            url: 'http://bg.linkfeeling.cn/api/platform/bracelet/data',
             tableData: [],
             yybox: {},
             ttbox: [],
@@ -294,10 +229,8 @@ export default {
             del_list: [],
             is_search: false,
             editVisible: false,
-            editVisiblep: false,
             unBindVisible: false,
             taddVisible: false,
-            delVisiblea: false,
             delVisible: false,
             taddcellnumber: '',
             form: {
@@ -309,35 +242,31 @@ export default {
                 status: '',
                 bind_time: '',
                 id: '',
-                uwb_id: '',
-                bbid: ''
+                uwb_id: ''
             },
             idx: -1
         };
     },
     computed: {
-        data () {
-            return this.tableData.filter((d) => {
-                let is_del = false;
-                for (let i = 0; i < this.del_list.length; i++) {
-                    if (d.bracelet_id === this.del_list[i].bracelet_id) {
-                        is_del = true;
-                        break;
-                    }
-                }
-                if (!is_del) {
-                    console.log(d);
-                    if (d.bracelet_id.indexOf(this.select_cate) > -1) {
-                        return d;
-                    }
-                }
-            });
-        }
+        // data () {
+        //     return this.tableData.filter((d) => {
+        //         let is_del = false;
+        //         for (let i = 0; i < this.del_list.length; i++) {
+        //             if (d.bracelet_id === this.del_list[i].bracelet_id) {
+        //                 is_del = true;
+        //                 break;
+        //             }
+        //         }
+        //         if (!is_del) {
+        //             console.log(d);
+        //             if (d.bracelet_id.indexOf(this.select_cate) > -1) {
+        //                 return d;
+        //             }
+        //         }
+        //     });
+        // }
     },
     created () {
-        this.shopname = this.$route.query.inquiry;
-        global.gym_name = this.$route.query.gym;
-        localStorage.setItem("gym_name",this.$route.query.gym);
         this.getData();
     },
     mounted () {
@@ -392,7 +321,7 @@ export default {
                 page: this.cur_page
             };
             console.log(this);
-            this.$axios.post(this.localhost+'/api/platform/link/gym_bracelet/list', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}}
+            this.$axios.post(this.localhost+'/api/platform/link/bracelet/list', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}}
             )
                 .then((res) => {
                     console.log(res.data.data);
@@ -405,21 +334,6 @@ export default {
                     aDiv.sort(function (a, b) { return a.id - b.id; });
                     console.log(aDiv);
                     this.tableData = aDiv;
-                    console.log(this.tableData.filter((d) => {
-                        let is_del = false;
-                        for (let i = 0; i < this.del_list.length; i++) {
-                            if (d.bracelet_id === this.del_list[i].bracelet_id) {
-                                is_del = true;
-                                break;
-                            }
-                        }
-                        if (!is_del) {
-                            console.log(d);
-                            if (d.bracelet_id.indexOf(this.select_cate) > -1) {
-                                return d;
-                            }
-                        }
-                    }));
                 })
                 .catch((res) => {
                     console.log(res);
@@ -453,74 +367,24 @@ export default {
         //         console.log(res)
         //     })
         // },
-        // 添加手环请求接口
-        saveAdd () {
-            let that = this;
-            if(this.form.id.length == 0){
-                that.$message.error(`手环编号不能为空`);
-                return;
-            }
-            if(this.form.bbid.length == 0){
-                that.$message.error(`手环ID不能为空`);
-                return;
-            }
-            if(this.form.uwb_id.length == 0){
-                that.$message.error(`uwb编号不能为空`);
-                return;
-            }
-            console.log(that.tableData)
-            // for(var i=0;i<that.tableData.length;i++){
-            //     if(that.form.phone_num == that.tableData[i].phone_num){
-            //         that.$message.error(`该手机号已绑定手环,请先解绑`);
-            //         return
-            //     }
-            // }
-            let datt = {
-                gym_name: global.gym_name || localStorage.getItem("gym_name"),
-                bracelet_id: this.form.bbid,
-                id: this.form.id,
-                uwb_id: this.form.uwb_id,
-                page: this.cur_page
-            };
-            this.$axios.post(this.localhost + '/api/platform/bracelet/add', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
-                .then((res) => {
-                    console.log(res.data.code);
-                    if (res.data.code == 200) {
-                        that.$set(that.tableData, that.idx, that.form);
-                        that.editVisiblep = false;
-                        that.$message.success(`添加手环成功`);
-                        that.getData();
-                    }
-                    if (res.data.code == 101) {
-                        that.$message.error(`该手环已存在`);
-                    }
-                })
-                .catch((res) => {
-                    console.log(res);
-                });
-        },
         // 绑定手环请求接口
         getedit () {
             let that = this;
-            if(this.form.bracelet_id.length == 0){
-                that.$message.error(`手环ID不能为空`);
-                return;
+            if (!(/^1[3456789]\d{9}$/.test(this.form.phone_num))) {
+                that.$message.error(`手机号格式错误`);
+                return
             }
-            console.log(that.tableData)
-            // for(var i=0;i<that.tableData.length;i++){
-            //     if(that.form.phone_num == that.tableData[i].phone_num){
-            //         that.$message.error(`该手机号已绑定手环,请先解绑`);
-            //         return
-            //     }
-            // }
             let datt = {
                 gym_name: global.gym_name || localStorage.getItem("gym_name"),
                 bracelet_id: this.form.bracelet_id,
                 id: this.form.id,
+                uwb_id: this.form.uwb_id,
+                user_name: this.form.user_name,
+                phone_num: this.form.phone_num,
                 bind_time: Date.parse(new Date()),
                 page: this.cur_page
             };
-            this.$axios.post(this.localhost + '/api/platform/link/bracelet/update', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
+            this.$axios.post(this.localhost + '/api/platform/bracelet/bind', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
                 .then((res) => {
                     console.log(res.data.code);
                     if (res.data.code == 200) {
@@ -529,8 +393,8 @@ export default {
                         that.$message.success(`绑定手环成功`);
                         that.getData();
                     }
-                    if (res.data.code == 402) {
-                        that.$message.error(`该手环已存在`);
+                    if (res.data.code == 103) {
+                        that.$message.error(`手机号未注册`);
                     }
                 })
                 .catch((res) => {
@@ -596,21 +460,40 @@ export default {
         filterTag (value, row) {
             return row.tag === value;
         },
-        handleEdit (index, row) {
+        handleEdit (index, row, status) {
             let that = this;
             this.idx = index;
+            console.log(status);
             const item = this.tableData[index];
-            this.editVisible = true;
-            that.form = {
-                bracelet_id: item.bracelet_id,
-                id: item.id,
-                uwb_id: item.uwb_id,
-                user_name: item.user_name,
-                date: item.date,
-                address: item.address,
-                phone_num: item.phone_num,
-                status: item.status,
-                bind_time: Date.parse(new Date())
+            if (status == 0) {
+                this.editVisible = true;
+                that.form = {
+                    bracelet_id: item.bracelet_id,
+                    id: item.id,
+                    uwb_id: item.uwb_id,
+                    user_name: item.user_name,
+                    date: item.date,
+                    address: item.address,
+                    phone_num: item.phone_num,
+                    status: item.status,
+                    bind_time: Date.parse(new Date())
+                };
+                // that.getedit()
+                console.log('status = 0');
+            } else if (status == 1) {
+                this.unBindVisible = true;
+                that.form = {
+                    bracelet_id: item.bracelet_id,
+                    id: item.id,
+                    user_name: item.user_name,
+                    date: item.date,
+                    address: item.address,
+                    phone_num: item.phone_num,
+                    status: item.status,
+                    bind_time: Date.parse(new Date())
+                };
+                // that.getfalseedit()
+                console.log('status = 1');
             }
         },
         tadd () {
@@ -623,7 +506,7 @@ export default {
                 bracelet_id: item.bracelet_id,
                 id: item.id,
             };
-            this.delVisiblea = true;
+            this.delVisible = true;
         },
         delAll () {
             const length = this.multipleSelection.length;
@@ -653,10 +536,6 @@ export default {
         saveUn () {
             this.getfalseedit();
         },
-        delyzy (cc,uid) {
-            this.delVisiblea = false;
-            this.delVisible = true;
-        },
         // 确定删除
         deleteRow () {
             this.getdel();
@@ -667,6 +546,9 @@ export default {
 </script>
 
 <style>
+    a{
+        text-decoration: none;
+    }
     .container .el-table thead{
         color: #5A6286;
         font-size:12px;
@@ -859,7 +741,7 @@ export default {
         position: relative;
         border:1px solid rgba(225,227,232,1);
     }
-    .bdta .icuu{
+    .bdta .hnha{
         position: absolute;
         height: 17px;
         line-height: 17px;
@@ -870,7 +752,7 @@ export default {
         top: 11px;
         left: 20px;
     }
-    .bdta span:nth-of-type(2){
+    /* .bdta span:nth-of-type(2){
         position: absolute;
         height: 17px;
         font-family:PingFangSC-Regular;
@@ -882,7 +764,7 @@ export default {
         font-weight:500;
         color:rgba(48,56,73,1);
         line-height:20px;
-    }
+    } */
     .bdbt{
         margin-top: 30px;
         height: 70px;
@@ -962,7 +844,7 @@ export default {
         border-radius:2px;
         text-align: center;
     }
-    .bdta input{
+    /* .bdta input{
         position: absolute;
         height: 17px;
         font-family:PingFangSC-Regular;
@@ -975,7 +857,7 @@ export default {
         color:rgba(48,56,73,1);
         line-height:20px;
         width: 200px;
-    }
+    } */
     .bdtb{
         background: #fff;
     }
@@ -1043,6 +925,9 @@ export default {
     .has-gutter tr th:last-of-type .cell{
         padding: 0 !important;
     }
+    .el-table__header{
+        width: 100% !important;
+    }
 </style>
 
 <style scoped>
@@ -1106,15 +991,6 @@ export default {
         font-family:PingFangSC-Medium;
         font-weight:500;
         color:rgba(60,68,86,1);
-        position: relative;
-    }
-    .addp{
-        position: absolute;
-        right: 0;
-        display: inline-block;
-        width:200px;
-        height: 20px;
-        color: #000;
     }
     .container{
         border-radius: 0;
@@ -1148,7 +1024,7 @@ export default {
     .cc{
         background: #FFC001;
         height: 25px;
-        width: 60px;
+        width: 3.806rem;
         display: inline-block;
         color: rgba(60,68,86,1);
         font-size: 12px;
@@ -1156,11 +1032,10 @@ export default {
         line-height: 25px;
         font-family:PingFangSC-Medium;
         font-weight:500;
-        letter-spacing: 2px;
+        letter-spacing: 0px;
         margin: 0 auto;
         border-radius: 0.05rem;
-        position: absolute;
-        left: 0;
+        cursor: pointer;
     }
     .dd{
         background: #3C4456;
@@ -1193,7 +1068,6 @@ export default {
         font-family:PingFangSC-Medium;
         position: absolute;
         right: 0%;
-        cursor: pointer;
     }
     .content{
         background: #F6F7F8;
@@ -1220,31 +1094,5 @@ export default {
     }
     thead tr th:last-child .cell{
         padding: 0 !important;
-    }
-    .addccb{
-        width: 3rem;
-        height: 0.9rem;
-        line-height: 0.9rem;
-        background: #3C4456;
-        color: #fff;
-        position: absolute;
-        right: 0.45rem;
-        font-size:0.35rem;
-        font-family:PingFangSC-Medium;
-        font-weight:500;
-        top: 0.375rem;
-        text-indent: 1.173rem;
-        cursor: pointer;
-    }
-    .svgg{
-        position: absolute;
-        top: 0.275rem;
-        left: 0.475rem;
-    }
-    .debbp{
-        padding-top: 20px;
-        height: 30px;
-        text-align: center;
-        font-size: 20px;
     }
 </style>

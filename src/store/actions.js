@@ -34,6 +34,7 @@ export default {
                 id: item.gym_info && item.gym_info.id,
                 name: item.gym_info && item.gym_info.name,
                 memberCount: item.gym_info && item.gym_info.member_count,
+                gym_name: item.gym_info && item.gym_info.gym_name,
                 mini_program_code_url: item.gym_info && item.gym_info.mini_program_code_url,
                 logo_url: item.gym_info && item.gym_info.logo_url,
                 phone: item.gym_info && item.gym_info.phone,

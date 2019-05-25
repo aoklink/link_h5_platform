@@ -3,7 +3,12 @@ import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Login from './views/Login.vue';
 import BaseBind from './components/BaseBind.vue';
-import BaseList from './components/BaseList.vue';
+import ShopBind from './components/ShopBind.vue';
+import ShopCoordinate from './components/ShopCoordinate.vue';
+import BaseCoordinate from './components/BaseCoordinate.vue';
+import ShopSensor from './components/ShopSensor.vue';
+import BaseSensor from './components/BaseSensor.vue';
+
 import {
     isLogin
 } from './utils/auth';
@@ -41,10 +46,46 @@ const router = new Router({
         },
     },
     {
-        name: 'baselist',
-        path: '/BaseList',
-        component: BaseList,
+        name: 'shopbind',
+        path: '/ShopBind',
+        component: ShopBind,
         displayName: '店铺手环信息',
+        meta: {
+            keepAlive: true
+        },
+    },
+    {
+        name: 'shopcoordinate',
+        path: '/ShopCoordinate',
+        component: ShopCoordinate,
+        displayName: '坐标设置',
+        meta: {
+            keepAlive: true
+        },
+    },
+    {
+        name: 'basecoordinate',
+        path: '/BaseCoordinate',
+        component: BaseCoordinate,
+        displayName: '店铺坐标信息',
+        meta: {
+            keepAlive: true
+        },
+    },
+    {
+        name: 'shopsensor',
+        path: '/ShopSensor',
+        component: ShopSensor,
+        displayName: '传感器管理',
+        meta: {
+            keepAlive: true
+        },
+    },
+    {
+        name: 'basesensor',
+        path: '/BaseSensor',
+        component: BaseSensor,
+        displayName: '店铺传感器信息',
         meta: {
             keepAlive: true
         },

@@ -10,8 +10,7 @@
                 </keep-alive>
                 <div class="main-container">
                     <router-view />
-                </div>
-                
+                </div>           
             </div>
         </template>    
         <router-view v-if="!$route.meta.keepAlive"></router-view>
@@ -69,13 +68,13 @@ export default {
         color: #42b983;
     }
     .allCon{
-        height: 100%;
+        height: calc(100% - 1.67rem);
         width: 100%;
         display: flex;
     }
 
     .main-container{
         flex: 1;
-        height: 100%;
+        height: calc(100% - 0.5rem);
     }
 </style>

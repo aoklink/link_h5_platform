@@ -3,12 +3,12 @@
         <div class="table">
             <div class="crumbs">
                 <div class="oo">
-                    {{shopname}}手环管理
+                    {{shopname}}传感器
                 </div>
                 <div class="celllist">
-                    {{shopname}}手环列表
+                    {{shopname}}传感器列表
                     <div @click="editVisiblep = true" class="addccb">
-                                        添加手环
+                                        添加传感器
                                         <svg width="14px" height="14px" class="svgg">
                                             <line x1="7" y1="0" x2="7" y2="14"
                     style="stroke:#888EA7;stroke-width:1"/>
@@ -29,31 +29,67 @@
                     <el-button type="primary" icon="search" @click="search">搜索</el-button>
                     <el-button type="primary" icon="search" @click="tadd">添加手环</el-button>
                 </div> -->
-                <el-table ref="multipleTable" :data="data" border
+                <el-table ref="multipleTable" :data="tableData" border
                         class="table" @selection-change="handleSelectionChange"
                 >
                     <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
-                    <el-table-column prop="id" label="手环编号" 
+                    <el-table-column prop="id" label="编号" 
                                     style="color: red !important"
                     />
-                    <el-table-column prop="bracelet_id" label="手环ID"
+                    <el-table-column prop="transducer_name" label="传感器"
                                     style="color: red !important"
                     />
+                    <el-table-column prop="transducer_id" label="设备ID">
+                        <template slot-scope="scope">
+                            <div type="text">
+                                {{ tableData[scope.$index].transducer_id }}
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <!-- <el-table-column prop="status" label="状态" width="150">
+                        <template slot-scope="scope">
+                            <div type="text" :class="tableData[scope.$index].status == 1?'aa':'bb'">
+                                {{ tableData[scope.$index].status == 1?'使用中':'空闲' }}
+                            </div>
+                        </template>
+                    </el-table-column> -->
+                    <el-table-column prop="relation_device" label="所属器械">
+                        <template slot-scope="scope">
+                            <div type="text">
+                                {{ tableData[scope.$index].relation_device }}
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="remark" label="备注">
+                        <template slot-scope="scope">
+                            <div type="text">
+                                {{ tableData[scope.$index].remark }}
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="weight" label="对应重量">
+                        <template slot-scope="scope">
+                            <div type="text">
+                                {{ tableData[scope.$index].weight }}
+                            </div>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="electric" label="电量">
                         <template slot-scope="scope">
-                            <div type="text" >
+                            <div type="text">
                                 {{ tableData[scope.$index].electric }}
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" align="center" padding="0"
+                    <el-table-column label="操作" align="center"
                                     prop="status"
+                                    width=200
                     >
                         <template slot-scope="scope">
-                            <div class="cc" type="text" @click="handleEdit(scope.$index, scope.row)">
+                            <div class="cc" type="text" @click="handleEdit(scope.$index, scope.row, tableData[scope.$index].id)">
                                 {{ tableData[scope.$index].status==0?'编辑':'编辑' }}
                             </div>
-                            <div :class="tableData[scope.$index].status == 0?'ee':'ee'" type="text" class="red" @click="handleDelete(scope.$index, scope.row)">删除</div>
+                            <div :class="tableData[scope.$index].status == 0?'ee':'ee'" type="text" class="red" @click="handleDelete(scope.$index, scope.row, tableData[scope.$index].id)">删除</div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -67,8 +103,8 @@
             <!-- <el-dialog title="解除绑定" :visible.sync="unBindVisible" width="500px"> -->
                 <!-- <el-form ref="form" :model="form" label-width="50px">
                     <el-form-item label="手环">
-                        <div v-model="form.bracelet_id">
-                            {{ form.bracelet_id }}
+                        <div v-model="form.id">
+                            {{ form.id }}
                         </div>
                     </el-form-item>
                 </el-form>
@@ -103,44 +139,11 @@
                     </div>
                 </div>
             </div>
-
-            <!-- 编辑弹出框 -->
-            <div class="bindlog" v-if="editVisible">
-                <div class="bindbox">
-                    <div class="bdup">
-                        <div>手环编辑
-                            <span></span>
-                            <span @click="editVisible=false">
-                                <svg width="10px" height="10px" class="svg">
-                                    <line x1="0" y1="0" x2="10" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
-                                    <line x1="10" y1="0" x2="0" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
-                                </svg>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="bdmd">
-                        <div class="bdta bdtb">
-                            <span class="icuu">手环编号</span>
-                            <input type="text" v-model="form.id" placeholder="请输入手环编号">
-                        </div>
-                        <div class="bdta bdtb">
-                            <span class="icuu">手环ID</span>
-                            <input type="text" v-model="form.bracelet_id" placeholder="请输入会员手机号">
-                        </div>
-                    </div>
-                    <div class="bdbt">
-                        <span @click="editVisible=false">取消</span>
-                        <span @click="saveEdit">确定</span>
-                    </div>
-                </div>
-            </div>
-            <!-- 添加手环 -->
+            <!-- 添加传感器 -->
             <div class="bindlog" v-if="editVisiblep">
                 <div class="bindbox">
                     <div class="bdup">
-                        <div>手环添加
+                        <div>添加传感器
                             <span></span>
                             <span @click="editVisiblep=false">
                                 <svg width="10px" height="10px" class="svg">
@@ -153,48 +156,182 @@
                         </div>
                     </div>
                     <div class="bdmd">
-                        <div class="bdta bdtb">
-                            <span class="icuu">手环编号</span>
-                            <input type="text" v-model="form.id" placeholder="请输入手环编号">
+                        <div class="bptit">选择传感器</div>
+                        <div class="bnbox">
+                            <div class="bnca" @click="islec(0)">
+                                <svg width="10px" height="10px" class="svgy" v-show="oka == 0">
+                                    <circle cx="4" cy="4" r="3"
+stroke-width="1" fill="#4F8CFF"/>
+                                </svg>
+                                <svg width="14px" height="14px" class="svgz">
+                                    <circle cx="6" cy="6" r="5"
+stroke-width="1" stroke="red" fill="transparent"/>
+                                </svg>
+                                uwb基站
+                            </div>
+                            <div class="bncb" @click="islec(1)">
+                                <svg width="10px" height="10px" class="svgy" v-show="oka == 1">
+                                    <circle cx="4" cy="4" r="3"
+stroke-width="1" fill="#4F8CFF"/>
+                                </svg>
+                                <svg width="14px" height="14px" class="svgz">
+                                    <circle cx="6" cy="6" r="5"
+stroke-width="1" stroke="red" fill="transparent"/>
+                                </svg>
+                                uwb子模块
+                            </div>
+                            <div class="bncc" @click="islec(2)">
+                                <svg width="10px" height="10px" class="svgy" v-show="oka == 2">
+                                    <circle cx="4" cy="4" r="3"
+stroke-width="1" fill="#4F8CFF"/>
+                                </svg>
+                                <svg width="14px" height="14px" class="svgz">
+                                    <circle cx="6" cy="6" r="5"
+stroke-width="1" stroke="red" fill="transparent"/>
+                                </svg>
+                                拉力传感器
+                            </div>
+                            <div class="bncd" @click="islec(3)">
+                                <svg width="10px" height="10px" class="svgy" v-show="oka == 3">
+                                    <circle cx="4" cy="4" r="3"
+stroke-width="1" fill="#4F8CFF"/>
+                                </svg>
+                                <svg width="14px" height="14px" class="svgz">
+                                    <circle cx="6" cy="6" r="5"
+stroke-width="1" stroke="red" fill="transparent"/>
+                                </svg>
+                                hank
+                            </div>
                         </div>
-                        <div class="bdta bdtb">
-                            <span class="icuu">手环ID</span>
-                            <input type="text" v-model="form.bbid" placeholder="请输入手环ID">
-                        </div>
-                        <div class="bdta bdtb">
-                            <span class="icuu">uwb编号</span>
-                            <input type="text" v-model="form.uwb_id" placeholder="请输入uwb编号">
+                        <div class="bmma">
+                            <div class="bdta bdtb">
+                                <span class="hnha">关联器械</span>
+                                <div class="ddbox">
+                                    <el-select v-model="value" placeholder="选择器械">
+                                        <el-option
+                                        v-for="item in options"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </div>
+                            </div>
+                            <div class="bdta bdtb">
+                                <span class="hnha">设备ID</span>
+                                <input class="inuu" type="text" v-model="form.bpu" placeholder="请输入备注">
+                            </div>
+                            <div class="bdta bdtb">
+                                <span class="hnha">备注</span>
+                                <input class="inuu" type="text" v-model="form.cpu" placeholder="请输入备注">
+                            </div>
                         </div>
                     </div>
                     <div class="bdbt">
                         <span @click="editVisiblep=false">取消</span>
-                        <span @click="saveAdd">确定</span>
+                        <span @click="saveadd">确定</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 绑定弹出框 -->
+            <div class="bindlog" v-if="editVisible">
+                <div class="bindbox">
+                    <div class="bdup">
+                        <div>编辑传感器
+                            <span></span>
+                            <span @click="editVisible=false">
+                                <svg width="10px" height="10px" class="svg">
+                                    <line x1="0" y1="0" x2="10" y2="10"
+            style="stroke:#888EA7;stroke-width:1"/>
+                                    <line x1="10" y1="0" x2="0" y2="10"
+            style="stroke:#888EA7;stroke-width:1"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="bdmd">
+                        <div class="bptit">选择传感器</div>
+                        <div class="bnbox">
+                            <div class="bnca" @click="islec(0)">
+                                <svg width="10px" height="10px" class="svgy" v-show="oka == 0">
+                                    <circle cx="4" cy="4" r="3"
+stroke-width="1" fill="#4F8CFF"/>
+                                </svg>
+                                <svg width="14px" height="14px" class="svgz">
+                                    <circle cx="6" cy="6" r="5"
+stroke-width="1" stroke="red" fill="transparent"/>
+                                </svg>
+                                uwb基站
+                            </div>
+                            <div class="bncb" @click="islec(1)">
+                                <svg width="10px" height="10px" class="svgy" v-show="oka == 1">
+                                    <circle cx="4" cy="4" r="3"
+stroke-width="1" fill="#4F8CFF"/>
+                                </svg>
+                                <svg width="14px" height="14px" class="svgz">
+                                    <circle cx="6" cy="6" r="5"
+stroke-width="1" stroke="red" fill="transparent"/>
+                                </svg>
+                                uwb子模块
+                            </div>
+                            <div class="bncc" @click="islec(2)">
+                                <svg width="10px" height="10px" class="svgy" v-show="oka == 2">
+                                    <circle cx="4" cy="4" r="3"
+stroke-width="1" fill="#4F8CFF"/>
+                                </svg>
+                                <svg width="14px" height="14px" class="svgz">
+                                    <circle cx="6" cy="6" r="5"
+stroke-width="1" stroke="red" fill="transparent"/>
+                                </svg>
+                                拉力传感器
+                            </div>
+                            <div class="bncd" @click="islec(3)">
+                                <svg width="10px" height="10px" class="svgy" v-show="oka == 3">
+                                    <circle cx="4" cy="4" r="3"
+stroke-width="1" fill="#4F8CFF"/>
+                                </svg>
+                                <svg width="14px" height="14px" class="svgz">
+                                    <circle cx="6" cy="6" r="5"
+stroke-width="1" stroke="red" fill="transparent"/>
+                                </svg>
+                                hank
+                            </div>
+                        </div>
+                        <div class="bmma">
+                            <div class="bdta bdtb">
+                                <span class="hnha">关联器械</span>
+                                <div class="ddbox">
+                                    <el-select v-model="value" placeholder="选择器械">
+                                        <el-option
+                                        v-for="item in options"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </div>
+                            </div>
+                            <div class="bdta bdtb">
+                                <span class="hnha">设备ID</span>
+                                <input class="inuu" type="text" v-model="form.bpu" placeholder="请输入设备ID">
+                            </div>
+                            <div class="bdta bdtb">
+                                <span class="hnha">备注</span>
+                                <input class="inuu" type="text" v-model="form.cpu" placeholder="请输入备注">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bdbt">
+                        <span @click="editVisible=false">取消</span>
+                        <span @click="saveEdit">确定</span>
                     </div>
                 </div>
             </div>
             <!-- 删除提示框 -->
-            <!-- <el-dialog title="提示" :visible.sync="delVisible" width="300px"
-                    center
-            >
-                <el-form ref="form" :model="form" label-width="50px">
-                    <el-form-item label="手环">
-                        <div v-model="form.bracelet_id">
-                            {{ form.bracelet_id }}
-                        </div>
-                    </el-form-item>
-                </el-form>
-                <div class="del-dialog-cnt">
-                    删除不可恢复，是否确定删除？
-                </div>
-                <span slot="footer" class="dialog-footer">
-                    <el-button @click="delVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="deleteRow">确 定</el-button>
-                </span>
-            </el-dialog> -->
             <div class="bindlog" v-if="delVisiblea">
                 <div class="unbindbox">
                     <div class="ubdup">
-                        <div>删除手环
+                        <div>删除传感器
                             <span></span>
                             <span @click="delVisiblea=false">
                                 <svg width="10px" height="10px" class="svg">
@@ -208,12 +345,12 @@
                     </div>
                     <div class="ubdmd" :model="form">
                         <span class="dece"></span>
-                        <div class="ubdta">是否确认删除手环</div>
-                        <div class="debbp">{{ form.bracelet_id }}</div>
+                        <div class="ubdta">是否确认删除删除传感器</div>
+                        <div class="debbp">{{ form.transducer_name }}</div>
                     </div>
                     <div class="ubdbt" :model="form">
                         <span @click="delVisiblea=false">取消</span>
-                        <span @click="delyzy(form.student_count,form.uid,1)">删除手环</span>
+                        <span @click="delyzy(form.student_count,form.uid,1)">删除传感器</span>
                     </div>
                 </div>
             </div>
@@ -221,7 +358,7 @@
             <div class="bindlog" v-if="delVisible">
                 <div class="unbindbox">
                     <div class="ubdup">
-                        <div>删除手环
+                        <div>删除传感器
                             <span></span>
                             <span @click="delVisible=false">
                                 <svg width="10px" height="10px" class="svg">
@@ -236,39 +373,14 @@
                     <div class="ubdmd" :model="form">
                         <span class="dece"></span>
                         <div class="ubdta">确认删除？删除后无法恢复</div>
-                        <div class="debbp">{{ form.bracelet_id }}</div>
+                        <div class="debbp">{{ form.transducer_name }}</div>
                     </div>
                     <div class="ubdbt" :model="form">
                         <span @click="delVisible=false">取消</span>
-                        <span @click="deleteRow(form.student_count,form.uid,1)">删除手环</span>
+                        <span @click="deleteRow(form.student_count,form.uid,1)">删除传感器</span>
                     </div>
                 </div>
             </div>
-            <!-- <div class="bindlog" v-if="delVisible">
-                <div class="unbindbox">
-                    <div class="ubdup">
-                        <div>删除手环
-                            <span></span>
-                            <span @click="delVisible=false">
-                                <svg width="10px" height="10px" class="svg">
-                                    <line x1="0" y1="0" x2="10" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
-                                    <line x1="10" y1="0" x2="0" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
-                                </svg>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="ubdmd">
-                        <span class="dece"></span>
-                        <div class="ubdta">是否确认删除手环</div>
-                    </div>
-                    <div class="ubdbt">
-                        <span @click="delVisible=false">取消</span>
-                        <span @click="deleteRow">删除手环</span>
-                    </div>
-                </div>
-            </div> -->
         </div>
     </div>
 </template>
@@ -277,16 +389,19 @@
 import global from '../components/Global'
 // this.$axios.defaults.headers.post['Content-Type'] = 'application/json'
 export default {
-    name: 'Basebind',
+    name: 'basesensor',
     data () {
         return {
             // localhost: 'http://bg.linkfeeling.cn',
             localhost: 'http://test.linkfeeling.cn',
             // url: './static/vuetable.json',
-            url: 'http://ll.linkfeeling.cn/api/platform/bracelet/data',
+            url: 'http://bg.linkfeeling.cn/api/platform/bracelet/data',
+            oka: 0,
             tableData: [],
             yybox: {},
+            activeName: 'first',
             ttbox: [],
+            shopname: '',
             cur_page: 1,
             multipleSelection: [],
             select_cate: '',
@@ -295,44 +410,74 @@ export default {
             is_search: false,
             editVisible: false,
             editVisiblep: false,
+            delVisiblea: false,
             unBindVisible: false,
             taddVisible: false,
-            delVisiblea: false,
             delVisible: false,
             taddcellnumber: '',
             form: {
                 user_name: '',
                 date: '',
                 address: '',
-                bracelet_id: '',
+                id: '',
                 phone_num: '',
                 status: '',
                 bind_time: '',
-                id: '',
                 uwb_id: '',
-                bbid: ''
+                apu: '',
+                bpu: '',
+                cpu: '',
+                transducer_name: 'uwb基站'
             },
-            idx: -1
+            idx: -1,
+            actived: 0,
+            items: [{
+                'tab': 'itemsuwb基站',
+                'tabContent': 'content1'
+            },{
+                'tab': 'tab2',
+                'tabContent': 'content2'
+            },{
+                'tab': 'tab3',
+                'tabContent': 'content3'
+            },{
+                'tab': 'tab4',
+                'tabContent': 'content4'
+            }],
+            options: [{
+                value: '跑步机',
+                label: '跑步机'
+                }, {
+                value: '椭圆机',
+                label: '椭圆机'
+                },{
+                value: '飞鸟架',
+                label: '飞鸟架'
+                }, {
+                value: '单车',
+                label: '单车'
+            }],
+            value: '',
         };
     },
     computed: {
-        data () {
-            return this.tableData.filter((d) => {
-                let is_del = false;
-                for (let i = 0; i < this.del_list.length; i++) {
-                    if (d.bracelet_id === this.del_list[i].bracelet_id) {
-                        is_del = true;
-                        break;
-                    }
-                }
-                if (!is_del) {
-                    console.log(d);
-                    if (d.bracelet_id.indexOf(this.select_cate) > -1) {
-                        return d;
-                    }
-                }
-            });
-        }
+        // data () {
+        //     return this.tableData.filter((d) => {
+        //         let is_del = false;
+        //         for (let i = 0; i < this.del_list.length; i++) {
+        //             if (d.id === this.del_list[i].id) {
+        //                 is_del = true;
+        //                 break;
+        //             }
+        //         }
+        //         if (!is_del) {
+        //             console.log(d);
+        //             if ((d.id).indexOf(this.select_cate) > -1) {
+        //                 return d;
+        //             }
+        //         }
+        //     });
+        // }
     },
     created () {
         this.shopname = this.$route.query.inquiry;
@@ -341,16 +486,33 @@ export default {
         this.getData();
     },
     mounted () {
-
     },
     updated () {
         console.log(this.del_list);
     },
     methods: {
+        islec (ok) {
+            this.oka = ok
+            if(ok == 0){
+                this.form.transducer_name = 'uwb基站'
+            }
+            if(ok == 1){
+                this.form.transducer_name = 'uwb子模块'
+            }
+            if(ok == 2){
+                this.form.transducer_name = '拉力传感器'
+            }
+            if(ok == 3){
+                this.form.transducer_name = 'hank'
+            }
+        },
         // 分页导航
         handleCurrentChange (val) {
             this.cur_page = val;
             this.getData();
+        },
+        handleClick(tab, event) {
+            console.log(tab, event);
         },
         getDd: function (no) {
             var date = no;
@@ -392,7 +554,7 @@ export default {
                 page: this.cur_page
             };
             console.log(this);
-            this.$axios.post(this.localhost+'/api/platform/link/gym_bracelet/list', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}}
+            this.$axios.post(this.localhost+'/api/platform/link/gym_transducer/list', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}}
             )
                 .then((res) => {
                     console.log(res.data.data);
@@ -408,14 +570,14 @@ export default {
                     console.log(this.tableData.filter((d) => {
                         let is_del = false;
                         for (let i = 0; i < this.del_list.length; i++) {
-                            if (d.bracelet_id === this.del_list[i].bracelet_id) {
+                            if (d.id === this.del_list[i].id) {
                                 is_del = true;
                                 break;
                             }
                         }
                         if (!is_del) {
                             console.log(d);
-                            if (d.bracelet_id.indexOf(this.select_cate) > -1) {
+                            if ((d.id).indexOf(this.select_cate) > -1) {
                                 return d;
                             }
                         }
@@ -433,7 +595,7 @@ export default {
         //     let that =this;
         //     let datt = {
         //         gym_name: 'link_office',
-        //         bracelet_id: this.taddcellnumber,
+        //         id: this.taddcellnumber,
         //         user_name: '',
         //         phone_num: '',
         //         bind_time: '',
@@ -453,46 +615,34 @@ export default {
         //         console.log(res)
         //     })
         // },
-        // 添加手环请求接口
-        saveAdd () {
+        // 添加传感器请求接口
+        saveadd () {
             let that = this;
-            if(this.form.id.length == 0){
-                that.$message.error(`手环编号不能为空`);
+            console.log(this.form.transducer_name)
+            if(this.form.bpu.length == 0){
+                that.$message.error(`请填写设备ID`);
                 return;
             }
-            if(this.form.bbid.length == 0){
-                that.$message.error(`手环ID不能为空`);
-                return;
-            }
-            if(this.form.uwb_id.length == 0){
-                that.$message.error(`uwb编号不能为空`);
-                return;
-            }
-            console.log(that.tableData)
-            // for(var i=0;i<that.tableData.length;i++){
-            //     if(that.form.phone_num == that.tableData[i].phone_num){
-            //         that.$message.error(`该手机号已绑定手环,请先解绑`);
-            //         return
-            //     }
-            // }
             let datt = {
                 gym_name: global.gym_name || localStorage.getItem("gym_name"),
-                bracelet_id: this.form.bbid,
-                id: this.form.id,
-                uwb_id: this.form.uwb_id,
+                transducer_name: this.form.transducer_name,
+                transducer_id: this.form.bpu,
+                relation_device: this.value,
+                weight: this.form.phone_num,
+                remark: this.form.cpu,
                 page: this.cur_page
             };
-            this.$axios.post(this.localhost + '/api/platform/bracelet/add', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
+            this.$axios.post(this.localhost + '/api/platform/link/transducer/save', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
                 .then((res) => {
                     console.log(res.data.code);
                     if (res.data.code == 200) {
                         that.$set(that.tableData, that.idx, that.form);
                         that.editVisiblep = false;
-                        that.$message.success(`添加手环成功`);
+                        that.$message.success(`添加传感器成功`);
                         that.getData();
                     }
-                    if (res.data.code == 101) {
-                        that.$message.error(`该手环已存在`);
+                    if (res.data.code == 103) {
+                        that.$message.error(`手机号未注册`);
                     }
                 })
                 .catch((res) => {
@@ -502,35 +652,27 @@ export default {
         // 绑定手环请求接口
         getedit () {
             let that = this;
-            if(this.form.bracelet_id.length == 0){
-                that.$message.error(`手环ID不能为空`);
-                return;
-            }
-            console.log(that.tableData)
-            // for(var i=0;i<that.tableData.length;i++){
-            //     if(that.form.phone_num == that.tableData[i].phone_num){
-            //         that.$message.error(`该手机号已绑定手环,请先解绑`);
-            //         return
-            //     }
-            // }
             let datt = {
                 gym_name: global.gym_name || localStorage.getItem("gym_name"),
-                bracelet_id: this.form.bracelet_id,
+                transducer_name: this.form.transducer_name,
+                transducer_id: this.form.bpu,
+                relation_device: this.value,
+                weight: this.form.phone_num,
+                remark: this.form.cpu,
                 id: this.form.id,
-                bind_time: Date.parse(new Date()),
                 page: this.cur_page
             };
-            this.$axios.post(this.localhost + '/api/platform/link/bracelet/update', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
+            this.$axios.post(this.localhost + '/api/platform/link/transducer/update', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
                 .then((res) => {
                     console.log(res.data.code);
                     if (res.data.code == 200) {
                         that.$set(that.tableData, that.idx, that.form);
                         that.editVisible = false;
-                        that.$message.success(`绑定手环成功`);
+                        that.$message.success(`编辑传感器成功`);
                         that.getData();
                     }
-                    if (res.data.code == 402) {
-                        that.$message.error(`该手环已存在`);
+                    if (res.data.code == 103) {
+                        that.$message.error(`手机号未注册`);
                     }
                 })
                 .catch((res) => {
@@ -542,7 +684,7 @@ export default {
             let that = this;
             let datt = {
                 gym_name: global.gym_name || localStorage.getItem("gym_name"),
-                bracelet_id: this.form.bracelet_id,
+                id: this.form.id,
                 phone_num: this.form.phone_num,
                 unbind_time: Date.parse(new Date()),
                 page: this.cur_page
@@ -568,11 +710,11 @@ export default {
             let that = this;
             let datt = {
                 gym_name: global.gym_name || localStorage.getItem("gym_name"),
-                bracelet_id: this.form.bracelet_id,
+                id: this.form.id,
                 page: this.cur_page
             };
             console.log('del');
-            this.$axios.post(this.localhost+'/api/platform/bracelet/delete', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
+            this.$axios.post(this.localhost+'/api/platform/link/transducer/delete', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
                 .then((res) => {
                     if (res.data.code == 200) {
                         that.$message.success('删除成功');
@@ -596,13 +738,17 @@ export default {
         filterTag (value, row) {
             return row.tag === value;
         },
-        handleEdit (index, row) {
+        chickvalue () {
+            console.log(this.value)
+            console.log(this.valuea)
+        },
+        handleEdit (index, row, id) {
             let that = this;
             this.idx = index;
+            this.form.id = id
             const item = this.tableData[index];
             this.editVisible = true;
             that.form = {
-                bracelet_id: item.bracelet_id,
                 id: item.id,
                 uwb_id: item.uwb_id,
                 user_name: item.user_name,
@@ -611,17 +757,18 @@ export default {
                 phone_num: item.phone_num,
                 status: item.status,
                 bind_time: Date.parse(new Date())
-            }
+            };
         },
         tadd () {
             this.taddVisible = true;
         },
-        handleDelete (index, row) {
+        handleDelete (index, row, id) {
+            this.form.id = id
             this.idx = index;
             const item = this.tableData[index];
             this.form = {
-                bracelet_id: item.bracelet_id,
                 id: item.id,
+                transducer_name: item.transducer_name,
             };
             this.delVisiblea = true;
         },
@@ -630,7 +777,7 @@ export default {
             let str = '';
             this.del_list = this.del_list.concat(this.multipleSelection);
             for (let i = 0; i < length; i++) {
-                str += this.multipleSelection[i].bracelet_id + ' ';
+                str += this.multipleSelection[i].id + ' ';
             }
             this.$message.error('删除了' + str);
             this.multipleSelection = [];
@@ -653,11 +800,11 @@ export default {
         saveUn () {
             this.getfalseedit();
         },
+        // 确定删除
         delyzy (cc,uid) {
             this.delVisiblea = false;
             this.delVisible = true;
         },
-        // 确定删除
         deleteRow () {
             this.getdel();
         }
@@ -667,6 +814,9 @@ export default {
 </script>
 
 <style>
+    a{
+        text-decoration: none;
+    }
     .container .el-table thead{
         color: #5A6286;
         font-size:12px;
@@ -760,7 +910,7 @@ export default {
     }
     .bindbox{
         width: 500px;
-        height: 482px;
+        height: 512px;
         box-sizing: border-box;
         background: #fff;
         margin: 50px auto 0;
@@ -859,7 +1009,7 @@ export default {
         position: relative;
         border:1px solid rgba(225,227,232,1);
     }
-    .bdta .icuu{
+    .bdta .hnha{
         position: absolute;
         height: 17px;
         line-height: 17px;
@@ -870,7 +1020,7 @@ export default {
         top: 11px;
         left: 20px;
     }
-    .bdta span:nth-of-type(2){
+    /* .bdta span:nth-of-type(2){
         position: absolute;
         height: 17px;
         font-family:PingFangSC-Regular;
@@ -882,9 +1032,9 @@ export default {
         font-weight:500;
         color:rgba(48,56,73,1);
         line-height:20px;
-    }
+    } */
     .bdbt{
-        margin-top: 30px;
+        margin-top: 52px;
         height: 70px;
         border-top:1px solid rgba(229,231,235,1);
         position: relative;
@@ -922,6 +1072,7 @@ export default {
         font-weight:500;
         border-radius:2px;
         text-align: center;
+        cursor: pointer;
     }
     .ubdbt{
         height: 70px;
@@ -962,7 +1113,7 @@ export default {
         border-radius:2px;
         text-align: center;
     }
-    .bdta input{
+    .bdta .iucc{
         position: absolute;
         height: 17px;
         font-family:PingFangSC-Regular;
@@ -1042,6 +1193,48 @@ export default {
     }
     .has-gutter tr th:last-of-type .cell{
         padding: 0 !important;
+    }
+    .el-table__header{
+        width: 100% !important;
+    }
+    .ddbox .el-input__inner{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5rem;
+        height: 0.56rem;
+        display: inline-block;
+    }
+    .ddbox .el-input,.ddbox .el-input__inner{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 11.2rem;
+        height: 0.56rem;
+        display: inline-block;
+        padding: 0;
+        border: 0;
+    }
+    .ddbox .el-input__suffix{
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: inline-bloxk;
+        width: 0.6rem;
+        height: 100%;
+    }
+    .ddbox .el-input__suffix-inner{
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+    }
+    .ddbox .el-icon-arrow-up:before{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #000;
     }
 </style>
 
@@ -1147,25 +1340,24 @@ export default {
     }
     .cc{
         background: #FFC001;
-        height: 25px;
-        width: 60px;
+        height: 0.694rem;
+        width: 1.67rem;
         display: inline-block;
         color: rgba(60,68,86,1);
         font-size: 12px;
         text-align: center;
-        line-height: 25px;
+        line-height: 0.694rem;
         font-family:PingFangSC-Medium;
         font-weight:500;
-        letter-spacing: 2px;
-        margin: 0 auto;
+        letter-spacing: 0px;
         border-radius: 0.05rem;
         position: absolute;
-        left: 0;
+        left: 0.2rem;
     }
     .dd{
         background: #3C4456;
         height: 25px;
-        width: 60px;
+        width: 1.67rem;
         display: inline-block;
         font-size: 12px;
         text-align: center;
@@ -1175,24 +1367,23 @@ export default {
         color:#fff;
         letter-spacing: 2px;
         font-family:PingFangSC-Medium;
-        margin: 0 auto;
         border-radius: 0.05rem;
     }
     .ee{
         background: #fff;
         border: 1px solid #3C4456;
-        height: 25px;
-        width: 60px;
+        height: 0.694rem;
+        width: 1.67rem;
         letter-spacing: 2px;
         display: inline-block;
         font-size: 12px;
         text-align: center;
-        line-height: 25px;
+        line-height: 0.694rem;
         font-weight:500;
         color:#3C4456;
         font-family:PingFangSC-Medium;
         position: absolute;
-        right: 0%;
+        right: 0.3rem;
         cursor: pointer;
     }
     .content{
@@ -1221,8 +1412,142 @@ export default {
     thead tr th:last-child .cell{
         padding: 0 !important;
     }
+    .bdta .hnha{
+        position: absolute;
+        height: 17px;
+        line-height: 17px;
+        font-size:12px;
+        font-family:PingFangSC-Regular;
+        font-weight:400;
+        color:rgba(91,99,126,1);
+        top: 11px;
+        left: 20px;
+    }
+    .bdta .inuu{
+        position: absolute;
+        height: 17px;
+        font-family:PingFangSC-Regular;
+        color:rgba(91,99,126,1);
+        top: 35px;
+        left: 20px;
+        font-size:14px;
+        font-family:PingFangSC-Medium;
+        font-weight:500;
+        color:rgba(48,56,73,1);
+        line-height:20px;
+        width: 200px;
+    }
+    .clearboth::after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    .tab-slider{
+        height:auto;
+        width:400px;
+        margin:50px auto;
+    }
+    .tab-slider .tab{
+        display:flex;
+        height:40px;
+        line-height:40px;
+        background:#ccc;
+    }
+    .tab-slider .tab span{
+        display:block;
+        width:100%;
+        text-align:center;
+        cursor:default;
+    }
+    .tab-slider .tab .active{
+        background:red;
+    }
+    .tab-slider .tab-content{
+        height:300px;
+        width:400px;
+        overflow:hidden;
+    }
+    .tab-slider .tab-content .item{
+        float:left;
+        height:300px;
+        width:400px;
+        line-height:300px;
+        text-align:center;
+        font-size:60px;
+        background:#eee;
+    }
+    .tab-slider .wrapbox{
+        width:2000px;
+        transition: all 1s;
+    }
+    .bptit{
+        height:17px;
+        font-size:12px;
+        font-family:PingFangSC-Regular;
+        font-weight:400;
+        color:rgba(91,99,126,1);
+        line-height:17px;
+        text-indent: 20px;
+    }
+    .bnbox{
+        height: 64px;
+        width: 100%;
+        padding-top: 11px;
+        padding-bottom: 30px;
+        position: relative;
+    }
+    .bnbox .bnca{
+        display: inline-block;
+        width: 30%;
+        height: 20px;
+        position: absolute;
+        top: 0;
+        left: 18px;
+        text-indent: 18px;
+        line-height: 20px;
+    }
+    .bnbox .bncb{
+        display: inline-block;
+        width: 30%;
+        height: 20px;
+        position: absolute;
+        top: 0;
+        left: 174px;
+        text-indent: 18px;
+        line-height: 20px;
+    }
+    .bnbox .bncc{
+        display: inline-block;
+        width: 30%;
+        height: 20px;
+        position: absolute;
+        left: 328px;
+        text-indent: 18px;
+        top: 0;
+        line-height: 20px;
+    }
+    .bnbox .bncd{
+        display: inline-block;
+        width: 30%;
+        height: 20px;
+        position: absolute;
+        top: 59px;
+        left: 18px;
+        text-indent: 18px;
+        line-height: 20px;
+    }
+    .svgy{
+        position: absolute;
+        left: 2px;
+        top: 5px;
+    }
+    .svgz{
+        position: absolute;
+        left: 0;
+        top: 3px
+    }
     .addccb{
-        width: 3rem;
+        width: 3.5rem;
         height: 0.9rem;
         line-height: 0.9rem;
         background: #3C4456;
@@ -1240,6 +1565,20 @@ export default {
         position: absolute;
         top: 0.275rem;
         left: 0.475rem;
+    }
+    .ddbox{
+        width: 11.2rem;
+        height: 0.56rem;
+        position: absolute;
+        top: 1rem;
+        right: 0.36rem;
+    }
+    .ddbox .el-select{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
     }
     .debbp{
         padding-top: 20px;

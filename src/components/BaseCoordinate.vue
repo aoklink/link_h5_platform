@@ -3,12 +3,12 @@
         <div class="table">
             <div class="crumbs">
                 <div class="oo">
-                    {{shopname}}手环管理
+                    {{shopname}}坐标管理
                 </div>
                 <div class="celllist">
-                    {{shopname}}手环列表
+                    坐标列表
                     <div @click="editVisiblep = true" class="addccb">
-                                        添加手环
+                                        添加器械
                                         <svg width="14px" height="14px" class="svgg">
                                             <line x1="7" y1="0" x2="7" y2="14"
                     style="stroke:#888EA7;stroke-width:1"/>
@@ -29,31 +29,48 @@
                     <el-button type="primary" icon="search" @click="search">搜索</el-button>
                     <el-button type="primary" icon="search" @click="tadd">添加手环</el-button>
                 </div> -->
-                <el-table ref="multipleTable" :data="data" border
+                <el-table ref="multipleTable" :data="tableData" border
                         class="table" @selection-change="handleSelectionChange"
                 >
                     <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
-                    <el-table-column prop="id" label="手环编号" 
+                    <el-table-column prop="id" label="编号" 
                                     style="color: red !important"
                     />
-                    <el-table-column prop="bracelet_id" label="手环ID"
+                    <el-table-column prop="device_category" label="器械名称"
                                     style="color: red !important"
                     />
-                    <el-table-column prop="electric" label="电量">
+                    <el-table-column prop="category" label="器械类型">
                         <template slot-scope="scope">
-                            <div type="text" >
-                                {{ tableData[scope.$index].electric }}
+                            <div type="text">
+                                <!-- {{ tableData[scope.$index].status == 1?tableData[scope.$index].uwb_id:'-' }} -->
+                                {{ tableData[scope.$index].category }}
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" align="center" padding="0"
+                    <el-table-column prop="one_cdn_x" label="坐标" width=400>
+                        <template slot-scope="scope">
+                            <div class="hyyn">
+                                {{ tableData[scope.$index].one_cdn_x+','+tableData[scope.$index].one_cdn_y+'&nbsp;&nbsp;&nbsp;&nbsp;'+tableData[scope.$index].two_cdn_x+','+tableData[scope.$index].two_cdn_y+'&nbsp;&nbsp;&nbsp;&nbsp;'+tableData[scope.$index].thr_cdn_x+','+tableData[scope.$index].thr_cdn_y+'&nbsp;&nbsp;&nbsp;&nbsp;'+tableData[scope.$index].four_cdn_x+','+tableData[scope.$index].four_cdn_y}}
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="remark" label="备注">
+                        <template slot-scope="scope">
+                            <div type="text">
+                                <!-- {{ tableData[scope.$index].remark == 1?tableData[scope.$index].remark:'-' }} -->
+                                {{ tableData[scope.$index].remark }}
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" align="center"
                                     prop="status"
+                                    width=200
                     >
                         <template slot-scope="scope">
-                            <div class="cc" type="text" @click="handleEdit(scope.$index, scope.row)">
-                                {{ tableData[scope.$index].status==0?'编辑':'编辑' }}
+                            <div class="cc" type="text" @click="handleEdit(scope.$index,tableData[scope.$index].id)">
+                                编辑
                             </div>
-                            <div :class="tableData[scope.$index].status == 0?'ee':'ee'" type="text" class="red" @click="handleDelete(scope.$index, scope.row)">删除</div>
+                            <div class="ee" type="text"  @click="handleDelete(scope.$index, scope.row, tableData[scope.$index].id)">删除</div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -64,19 +81,6 @@
             </div>
 
             <!-- 解绑弹出框 -->
-            <!-- <el-dialog title="解除绑定" :visible.sync="unBindVisible" width="500px"> -->
-                <!-- <el-form ref="form" :model="form" label-width="50px">
-                    <el-form-item label="手环">
-                        <div v-model="form.bracelet_id">
-                            {{ form.bracelet_id }}
-                        </div>
-                    </el-form-item>
-                </el-form>
-                <span slot="footer" class="dialog-footer">
-                    <el-button @click="unBindVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="saveUn">确 定</el-button>
-                </span>
-            </el-dialog> -->
             <div class="bindlog" v-if="unBindVisible">
                 <div class="unbindbox">
                     <div class="ubdup">
@@ -103,44 +107,11 @@
                     </div>
                 </div>
             </div>
-
-            <!-- 编辑弹出框 -->
-            <div class="bindlog" v-if="editVisible">
-                <div class="bindbox">
-                    <div class="bdup">
-                        <div>手环编辑
-                            <span></span>
-                            <span @click="editVisible=false">
-                                <svg width="10px" height="10px" class="svg">
-                                    <line x1="0" y1="0" x2="10" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
-                                    <line x1="10" y1="0" x2="0" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
-                                </svg>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="bdmd">
-                        <div class="bdta bdtb">
-                            <span class="icuu">手环编号</span>
-                            <input type="text" v-model="form.id" placeholder="请输入手环编号">
-                        </div>
-                        <div class="bdta bdtb">
-                            <span class="icuu">手环ID</span>
-                            <input type="text" v-model="form.bracelet_id" placeholder="请输入会员手机号">
-                        </div>
-                    </div>
-                    <div class="bdbt">
-                        <span @click="editVisible=false">取消</span>
-                        <span @click="saveEdit">确定</span>
-                    </div>
-                </div>
-            </div>
-            <!-- 添加手环 -->
+            <!-- 添加器械 -->
             <div class="bindlog" v-if="editVisiblep">
                 <div class="bindbox">
                     <div class="bdup">
-                        <div>手环添加
+                        <div>添加器械
                             <span></span>
                             <span @click="editVisiblep=false">
                                 <svg width="10px" height="10px" class="svg">
@@ -153,17 +124,53 @@
                         </div>
                     </div>
                     <div class="bdmd">
-                        <div class="bdta bdtb">
-                            <span class="icuu">手环编号</span>
-                            <input type="text" v-model="form.id" placeholder="请输入手环编号">
+                        <div class="bdta">
+                            <span class="hnha">器械选择</span>
+                            <div class="xcbox">
+                                <el-select v-model="value" placeholder="选择类型"  @change="chickvalue">
+                                    <el-option
+                                    v-for="item in options"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                                    v-model="item.value">
+                                    </el-option>
+                                </el-select>
+                            </div>
+                            <div class="ccbox">
+                                <el-select v-model="valuea" placeholder="选择器械">
+                                    <el-option
+                                    v-for="item in optiona"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </div>
                         </div>
-                        <div class="bdta bdtb">
-                            <span class="icuu">手环ID</span>
-                            <input type="text" v-model="form.bbid" placeholder="请输入手环ID">
+                        <div class="bdta">
+                            <span class="hnha">坐标1</span>
+                            <div class="hnhc">坐标2</div>
+                            <input class="hnhb" type="text" v-model="form.ax" placeholder="X">
+                            <input class="hnhd" type="text" v-model="form.ay" placeholder="Y">
+                            <input class="hnhe" type="text" v-model="form.bx" placeholder="X">
+                            <input class="hnhf" type="text" v-model="form.by" placeholder="Y">
                         </div>
+                        <div class="bdta">
+                            <span class="hnha">坐标3</span>
+                            <div class="hnhc">坐标4</div>
+                            <input class="hnhb" type="text" v-model="form.cx" placeholder="X">
+                            <input class="hnhd" type="text" v-model="form.cy" placeholder="Y">
+                            <input class="hnhe" type="text" v-model="form.dx" placeholder="X">
+                            <input class="hnhf" type="text" v-model="form.dy" placeholder="Y">
+                        </div>
+                        <!-- <div class="bdta bdtb">
+                            <span>配置uwb</span>
+                            <input type="text" v-model="form.uwb_id" placeholder="请输入定位模块的id">
+                        </div> -->
                         <div class="bdta bdtb">
-                            <span class="icuu">uwb编号</span>
-                            <input type="text" v-model="form.uwb_id" placeholder="请输入uwb编号">
+                            <span class="hnha">备注</span>
+                            <input class="inuu" type="text" v-model="form.txt" placeholder="请输入备注">
                         </div>
                     </div>
                     <div class="bdbt">
@@ -172,6 +179,79 @@
                     </div>
                 </div>
             </div>
+            <!-- 绑定弹出框 -->
+            <div class="bindlog" v-if="editVisible">
+                <div class="bindbox">
+                    <div class="bdup">
+                        <div>添加器械
+                            <span></span>
+                            <span @click="editVisible=false">
+                                <svg width="10px" height="10px" class="svg">
+                                    <line x1="0" y1="0" x2="10" y2="10"
+            style="stroke:#888EA7;stroke-width:1"/>
+                                    <line x1="10" y1="0" x2="0" y2="10"
+            style="stroke:#888EA7;stroke-width:1"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="bdmd">
+                        <div class="bdta">
+                            <span class="hnha">器械选择</span>
+                            <div class="xcbox">
+                                <el-select v-model="value" placeholder="选择类型"  @change="chickvalue">
+                                    <el-option
+                                    v-for="item in options"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                                    v-model="item.value">
+                                    </el-option>
+                                </el-select>
+                            </div>
+                            <div class="ccbox">
+                                <el-select v-model="valuea" placeholder="选择器械">
+                                    <el-option
+                                    v-for="item in optiona"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </div>
+                        </div>
+                        <div class="bdta">
+                            <span class="hnha">坐标1</span>
+                            <div class="hnhc">坐标2</div>
+                            <input class="hnhb" type="text" v-model="form.ax" placeholder="X">
+                            <input class="hnhd" type="text" v-model="form.ay" placeholder="Y">
+                            <input class="hnhe" type="text" v-model="form.bx" placeholder="X">
+                            <input class="hnhf" type="text" v-model="form.by" placeholder="Y">
+                        </div>
+                        <div class="bdta">
+                            <span class="hnha">坐标3</span>
+                            <div class="hnhc">坐标4</div>
+                            <input class="hnhb" type="text" v-model="form.cx" placeholder="X">
+                            <input class="hnhd" type="text" v-model="form.cy" placeholder="Y">
+                            <input class="hnhe" type="text" v-model="form.dx" placeholder="X">
+                            <input class="hnhf" type="text" v-model="form.dy" placeholder="Y">
+                        </div>
+                        <!-- <div class="bdta bdtb">
+                            <span>配置uwb</span>
+                            <input type="text" v-model="form.uwb_id" placeholder="请输入定位模块的id">
+                        </div> -->
+                        <div class="bdta bdtb">
+                            <span class="hnha">备注</span>
+                            <input class="inuu" type="text" v-model="form.txt" placeholder="请输入备注">
+                        </div>
+                    </div>
+                    <div class="bdbt">
+                        <span @click="editVisible=false">取消</span>
+                        <span @click="saveEdit">确定</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- 删除提示框 -->
             <!-- <el-dialog title="提示" :visible.sync="delVisible" width="300px"
                     center
@@ -194,7 +274,7 @@
             <div class="bindlog" v-if="delVisiblea">
                 <div class="unbindbox">
                     <div class="ubdup">
-                        <div>删除手环
+                        <div>删除器械
                             <span></span>
                             <span @click="delVisiblea=false">
                                 <svg width="10px" height="10px" class="svg">
@@ -208,12 +288,12 @@
                     </div>
                     <div class="ubdmd" :model="form">
                         <span class="dece"></span>
-                        <div class="ubdta">是否确认删除手环</div>
-                        <div class="debbp">{{ form.bracelet_id }}</div>
+                        <div class="ubdta">是否确认删除器械</div>
+                        <div class="debbp">{{ form.device_category }}</div>
                     </div>
                     <div class="ubdbt" :model="form">
                         <span @click="delVisiblea=false">取消</span>
-                        <span @click="delyzy(form.student_count,form.uid,1)">删除手环</span>
+                        <span @click="delyzy(form.student_count,form.uid,1)">删除器械</span>
                     </div>
                 </div>
             </div>
@@ -221,7 +301,7 @@
             <div class="bindlog" v-if="delVisible">
                 <div class="unbindbox">
                     <div class="ubdup">
-                        <div>删除手环
+                        <div>删除器械
                             <span></span>
                             <span @click="delVisible=false">
                                 <svg width="10px" height="10px" class="svg">
@@ -236,18 +316,18 @@
                     <div class="ubdmd" :model="form">
                         <span class="dece"></span>
                         <div class="ubdta">确认删除？删除后无法恢复</div>
-                        <div class="debbp">{{ form.bracelet_id }}</div>
+                        <div class="debbp">{{ form.device_category }}</div>
                     </div>
                     <div class="ubdbt" :model="form">
                         <span @click="delVisible=false">取消</span>
-                        <span @click="deleteRow(form.student_count,form.uid,1)">删除手环</span>
+                        <span @click="deleteRow(form.student_count,form.uid,1)">删除器械</span>
                     </div>
                 </div>
             </div>
             <!-- <div class="bindlog" v-if="delVisible">
                 <div class="unbindbox">
                     <div class="ubdup">
-                        <div>删除手环
+                        <div>删除器械
                             <span></span>
                             <span @click="delVisible=false">
                                 <svg width="10px" height="10px" class="svg">
@@ -261,11 +341,11 @@
                     </div>
                     <div class="ubdmd">
                         <span class="dece"></span>
-                        <div class="ubdta">是否确认删除手环</div>
+                        <div class="ubdta">是否确认删除器械</div>
                     </div>
                     <div class="ubdbt">
                         <span @click="delVisible=false">取消</span>
-                        <span @click="deleteRow">删除手环</span>
+                        <span @click="deleteRow">删除器械</span>
                     </div>
                 </div>
             </div> -->
@@ -277,16 +357,17 @@
 import global from '../components/Global'
 // this.$axios.defaults.headers.post['Content-Type'] = 'application/json'
 export default {
-    name: 'Basebind',
+    name: 'BaseXy',
     data () {
         return {
             // localhost: 'http://bg.linkfeeling.cn',
             localhost: 'http://test.linkfeeling.cn',
             // url: './static/vuetable.json',
-            url: 'http://ll.linkfeeling.cn/api/platform/bracelet/data',
+            url: 'http://bg.linkfeeling.cn/api/platform/bracelet/data',
             tableData: [],
             yybox: {},
             ttbox: [],
+            idt: '',
             cur_page: 1,
             multipleSelection: [],
             select_cate: '',
@@ -297,9 +378,10 @@ export default {
             editVisiblep: false,
             unBindVisible: false,
             taddVisible: false,
-            delVisiblea: false,
             delVisible: false,
+            delVisiblea: false,
             taddcellnumber: '',
+            shopname: '',
             form: {
                 user_name: '',
                 date: '',
@@ -310,29 +392,62 @@ export default {
                 bind_time: '',
                 id: '',
                 uwb_id: '',
-                bbid: ''
+                ax: '',
+                ay: '',
+                bc: '',
+                by: '',
+                cx: '',
+                cy: '',
+                dx: '',
+                dy: '',
+                txt: ''
             },
-            idx: -1
+            idx: -1,
+            options: [{
+                value: '有氧运动',
+                label: '有氧运动'
+                }, {
+                value: '力量运动',
+                label: '力量运动'
+                }, {
+                value: 'HIIT',
+                label: 'HIIT'
+            }],
+            optiona: [{
+                value: '跑步机',
+                label: '跑步机'
+                }, {
+                value: '椭圆机',
+                label: '椭圆机'
+                },{
+                value: '飞鸟架',
+                label: '飞鸟架'
+                }, {
+                value: '单车',
+                label: '单车'
+            }],
+            value: '',
+            valuea: ''
         };
     },
     computed: {
-        data () {
-            return this.tableData.filter((d) => {
-                let is_del = false;
-                for (let i = 0; i < this.del_list.length; i++) {
-                    if (d.bracelet_id === this.del_list[i].bracelet_id) {
-                        is_del = true;
-                        break;
-                    }
-                }
-                if (!is_del) {
-                    console.log(d);
-                    if (d.bracelet_id.indexOf(this.select_cate) > -1) {
-                        return d;
-                    }
-                }
-            });
-        }
+        // data () {
+        //     return this.tableData.filter((d) => {
+        //         let is_del = false;
+        //         for (let i = 0; i < this.del_list.length; i++) {
+        //             if (d.id === this.del_list[i].id) {
+        //                 is_del = true;
+        //                 break;
+        //             }
+        //         }
+        //         if (!is_del) {
+        //             console.log(d);
+        //             if (d.id.indexOf(this.select_cate) > -1) {
+        //                 return d;
+        //             }
+        //         }
+        //     });
+        // }
     },
     created () {
         this.shopname = this.$route.query.inquiry;
@@ -347,6 +462,13 @@ export default {
         console.log(this.del_list);
     },
     methods: {
+        handleClick () {
+            alert('button click')
+        },
+        chickvalue () {
+            console.log(this.value)
+            console.log(this.valuea)
+        },
         // 分页导航
         handleCurrentChange (val) {
             this.cur_page = val;
@@ -392,7 +514,7 @@ export default {
                 page: this.cur_page
             };
             console.log(this);
-            this.$axios.post(this.localhost+'/api/platform/link/gym_bracelet/list', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}}
+            this.$axios.post(this.localhost+'/api/platform/link/coordinate/list', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}}
             )
                 .then((res) => {
                     console.log(res.data.data);
@@ -405,21 +527,21 @@ export default {
                     aDiv.sort(function (a, b) { return a.id - b.id; });
                     console.log(aDiv);
                     this.tableData = aDiv;
-                    console.log(this.tableData.filter((d) => {
-                        let is_del = false;
-                        for (let i = 0; i < this.del_list.length; i++) {
-                            if (d.bracelet_id === this.del_list[i].bracelet_id) {
-                                is_del = true;
-                                break;
-                            }
-                        }
-                        if (!is_del) {
-                            console.log(d);
-                            if (d.bracelet_id.indexOf(this.select_cate) > -1) {
-                                return d;
-                            }
-                        }
-                    }));
+                    // console.log(this.tableData.filter((d) => {
+                    //     let is_del = false;
+                    //     for (let i = 0; i < this.del_list.length; i++) {
+                    //         if (d.id === this.del_list[i].id) {
+                    //             is_del = true;
+                    //             break;
+                    //         }
+                    //     }
+                    //     if (!is_del) {
+                    //         console.log(d);
+                    //         if (d.id.indexOf(this.select_cate) > -1) {
+                    //             return d;
+                    //         }
+                    //     }
+                    // }));
                 })
                 .catch((res) => {
                     console.log(res);
@@ -453,84 +575,86 @@ export default {
         //         console.log(res)
         //     })
         // },
-        // 添加手环请求接口
+        // 添加器械请求接口
         saveAdd () {
+            console.log(this.idt)
             let that = this;
-            if(this.form.id.length == 0){
-                that.$message.error(`手环编号不能为空`);
+            console.log(this.form.ax.length)
+            if(this.form.ax.length == 0 || this.form.ay.length == 0 || this.form.bx.length == 0 || this.form.by.length == 0 || this.form.cx.length == 0 || this.form.cy.length == 0 || this.form.dx.length == 0 || this.form.dy.length == 0){
+                that.$message.error(`请填写坐标`);
                 return;
             }
-            if(this.form.bbid.length == 0){
-                that.$message.error(`手环ID不能为空`);
+            if(this.value.length == 0 || this.valuea.length == 0){
+                that.$message.error(`请选择类型或器械`);
                 return;
             }
-            if(this.form.uwb_id.length == 0){
-                that.$message.error(`uwb编号不能为空`);
-                return;
-            }
-            console.log(that.tableData)
-            // for(var i=0;i<that.tableData.length;i++){
-            //     if(that.form.phone_num == that.tableData[i].phone_num){
-            //         that.$message.error(`该手机号已绑定手环,请先解绑`);
-            //         return
-            //     }
-            // }
             let datt = {
                 gym_name: global.gym_name || localStorage.getItem("gym_name"),
-                bracelet_id: this.form.bbid,
-                id: this.form.id,
-                uwb_id: this.form.uwb_id,
-                page: this.cur_page
+                one_cdn_x: this.form.ax,
+                one_cdn_y: this.form.ay,
+                two_cdn_x: this.form.bx,
+                two_cdn_y: this.form.by,
+                thr_cdn_x: this.form.cx,
+                thr_cdn_y: this.form.cy,
+                four_cdn_x: this.form.dx,
+                four_cdn_y: this.form.dy,
+                remark: this.form.txt,
+                category: this.value,
+                device_category: this.valuea,
+                page: this.cur_page,
+                id: this.idt
             };
-            this.$axios.post(this.localhost + '/api/platform/bracelet/add', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
+            // this.$axios.post(this.localhost + '/api/platform/link/coordinate/save', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
+            this.$axios.post(this.localhost + '/api/platform/link/coordinate/save', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
                 .then((res) => {
                     console.log(res.data.code);
                     if (res.data.code == 200) {
                         that.$set(that.tableData, that.idx, that.form);
                         that.editVisiblep = false;
-                        that.$message.success(`添加手环成功`);
+                        that.$message.success(`添加器械成功`);
                         that.getData();
                     }
-                    if (res.data.code == 101) {
-                        that.$message.error(`该手环已存在`);
+                    if (res.data.code == 500) {
+                        that.$message.error(`坐标格式不正确·`);
                     }
                 })
                 .catch((res) => {
                     console.log(res);
                 });
         },
-        // 绑定手环请求接口
+        // 编辑器械请求接口
         getedit () {
+            console.log(this.idt)
             let that = this;
-            if(this.form.bracelet_id.length == 0){
-                that.$message.error(`手环ID不能为空`);
-                return;
-            }
-            console.log(that.tableData)
-            // for(var i=0;i<that.tableData.length;i++){
-            //     if(that.form.phone_num == that.tableData[i].phone_num){
-            //         that.$message.error(`该手机号已绑定手环,请先解绑`);
-            //         return
-            //     }
-            // }
             let datt = {
                 gym_name: global.gym_name || localStorage.getItem("gym_name"),
-                bracelet_id: this.form.bracelet_id,
-                id: this.form.id,
+                one_cdn_x: this.form.ax,
+                one_cdn_y: this.form.ay,
+                two_cdn_x: this.form.bx,
+                two_cdn_y: this.form.by,
+                thr_cdn_x: this.form.cx,
+                thr_cdn_y: this.form.cy,
+                four_cdn_x: this.form.dx,
+                four_cdn_y: this.form.dy,
+                remark: this.form.txt,
+                category: this.value,
+                device_category: this.valuea,
                 bind_time: Date.parse(new Date()),
-                page: this.cur_page
+                page: this.cur_page,
+                id: this.idt
             };
-            this.$axios.post(this.localhost + '/api/platform/link/bracelet/update', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
+            // this.$axios.post(this.localhost + '/api/platform/link/coordinate/save', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
+            this.$axios.post(this.localhost + '/api/platform/link/coordinate/update', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
                 .then((res) => {
                     console.log(res.data.code);
                     if (res.data.code == 200) {
                         that.$set(that.tableData, that.idx, that.form);
                         that.editVisible = false;
-                        that.$message.success(`绑定手环成功`);
+                        that.$message.success(`编辑器械成功`);
                         that.getData();
                     }
-                    if (res.data.code == 402) {
-                        that.$message.error(`该手环已存在`);
+                    if (res.data.data == false) {
+                        that.$message.error(`坐标格式不正确·`);
                     }
                 })
                 .catch((res) => {
@@ -568,11 +692,11 @@ export default {
             let that = this;
             let datt = {
                 gym_name: global.gym_name || localStorage.getItem("gym_name"),
-                bracelet_id: this.form.bracelet_id,
+                id: this.idt,
                 page: this.cur_page
             };
             console.log('del');
-            this.$axios.post(this.localhost+'/api/platform/bracelet/delete', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
+            this.$axios.post(this.localhost+'/api/platform/link/coordinate/delete', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
                 .then((res) => {
                     if (res.data.code == 200) {
                         that.$message.success('删除成功');
@@ -596,10 +720,12 @@ export default {
         filterTag (value, row) {
             return row.tag === value;
         },
-        handleEdit (index, row) {
+        handleEdit (index, id) {
             let that = this;
             this.idx = index;
+            this.idt = id
             const item = this.tableData[index];
+            // if (status == 0) {
             this.editVisible = true;
             that.form = {
                 bracelet_id: item.bracelet_id,
@@ -611,16 +737,33 @@ export default {
                 phone_num: item.phone_num,
                 status: item.status,
                 bind_time: Date.parse(new Date())
-            }
+            };
+            console.log('status = 0');
+            // } else if (status == 1) {
+            //     this.unBindVisible = true;
+            //     that.form = {
+            //         bracelet_id: item.bracelet_id,
+            //         id: item.id,
+            //         user_name: item.user_name,
+            //         date: item.date,
+            //         address: item.address,
+            //         phone_num: item.phone_num,
+            //         status: item.status,
+            //         bind_time: Date.parse(new Date())
+            //     };
+            //     // that.getfalseedit()
+            //     console.log('status = 1');
+            // }
         },
         tadd () {
             this.taddVisible = true;
         },
-        handleDelete (index, row) {
+        handleDelete (index, row, id) {
+            this.idt = id
             this.idx = index;
             const item = this.tableData[index];
             this.form = {
-                bracelet_id: item.bracelet_id,
+                device_category: item.device_category,
                 id: item.id,
             };
             this.delVisiblea = true;
@@ -653,11 +796,11 @@ export default {
         saveUn () {
             this.getfalseedit();
         },
+        // 确定删除
         delyzy (cc,uid) {
             this.delVisiblea = false;
             this.delVisible = true;
         },
-        // 确定删除
         deleteRow () {
             this.getdel();
         }
@@ -667,6 +810,9 @@ export default {
 </script>
 
 <style>
+    a{
+        text-decoration: none;
+    }
     .container .el-table thead{
         color: #5A6286;
         font-size:12px;
@@ -823,6 +969,7 @@ export default {
         width: 60px;
         box-sizing: border-box;
         text-align: center;
+        cursor: pointer;
     }
     .ubdup div span:nth-of-type(2){
         position: absolute;
@@ -833,6 +980,7 @@ export default {
         width: 60px;
         box-sizing: border-box;
         text-align: center;
+        cursor: pointer;
     }
     .svg{
         margin: 0 auto;
@@ -851,37 +999,6 @@ export default {
         padding: 40px 0 0px;
         position: relative;
         border-bottom: 1px solid #E5E7EB;
-    }
-    .bdta{
-        height: 70px;
-        box-sizing: border-box;
-        background:rgba(246,247,248,1);
-        position: relative;
-        border:1px solid rgba(225,227,232,1);
-    }
-    .bdta .icuu{
-        position: absolute;
-        height: 17px;
-        line-height: 17px;
-        font-size:12px;
-        font-family:PingFangSC-Regular;
-        font-weight:400;
-        color:rgba(91,99,126,1);
-        top: 11px;
-        left: 20px;
-    }
-    .bdta span:nth-of-type(2){
-        position: absolute;
-        height: 17px;
-        font-family:PingFangSC-Regular;
-        color:rgba(91,99,126,1);
-        top: 35px;
-        left: 20px;
-        font-size:14px;
-        font-family:PingFangSC-Medium;
-        font-weight:500;
-        color:rgba(48,56,73,1);
-        line-height:20px;
     }
     .bdbt{
         margin-top: 30px;
@@ -905,6 +1022,7 @@ export default {
         border-radius:2px;
         text-align: center;
         border:1px solid rgba(192,199,216,1);
+        cursor: pointer;
     }
     .bdbt span:nth-of-type(2){
         box-sizing: border-box;
@@ -922,6 +1040,7 @@ export default {
         font-weight:500;
         border-radius:2px;
         text-align: center;
+
     }
     .ubdbt{
         height: 70px;
@@ -944,6 +1063,7 @@ export default {
         border-radius:2px;
         border:1px solid rgba(192,199,216,1);
         text-align: center;
+        cursor: pointer;
     }
     .ubdbt span:nth-of-type(2){
         box-sizing: border-box;
@@ -961,8 +1081,9 @@ export default {
         font-weight:500;
         border-radius:2px;
         text-align: center;
+        cursor: pointer;
     }
-    .bdta input{
+    .bdta .inuu{
         position: absolute;
         height: 17px;
         font-family:PingFangSC-Regular;
@@ -1043,6 +1164,48 @@ export default {
     .has-gutter tr th:last-of-type .cell{
         padding: 0 !important;
     }
+    .el-table__header{
+        width: 100% !important;
+    }
+    .xcbox .el-input__inner,.ccbox .el-input__inner{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5rem;
+        height: 0.56rem;
+        display: inline-block;
+    }
+    .xcbox .el-input,.xcbox .el-input__inner,.ccbox .el-input,.ccbox .el-input__inner{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5rem;
+        height: 0.56rem;
+        display: inline-block;
+        padding: 0;
+        border: 0;
+    }
+    .xcbox .el-input__suffix,.ccbox .el-input__suffix{
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: inline-bloxk;
+        width: 0.6rem;
+        height: 100%;
+    }
+    .xcbox .el-input__suffix-inner,.ccbox .el-input__suffix-inner{
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+    }
+    .xcbox .el-icon-arrow-up:before,.ccbox .el-icon-arrow-up:before{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #000;
+    }
 </style>
 
 <style scoped>
@@ -1108,14 +1271,6 @@ export default {
         color:rgba(60,68,86,1);
         position: relative;
     }
-    .addp{
-        position: absolute;
-        right: 0;
-        display: inline-block;
-        width:200px;
-        height: 20px;
-        color: #000;
-    }
     .container{
         border-radius: 0;
         padding: 0;
@@ -1147,25 +1302,24 @@ export default {
     }
     .cc{
         background: #FFC001;
-        height: 25px;
-        width: 60px;
+        height: 0.694rem;
+        width: 1.67rem;
         display: inline-block;
         color: rgba(60,68,86,1);
         font-size: 12px;
         text-align: center;
-        line-height: 25px;
+        line-height: 0.694rem;
         font-family:PingFangSC-Medium;
         font-weight:500;
-        letter-spacing: 2px;
-        margin: 0 auto;
+        letter-spacing: 0px;
         border-radius: 0.05rem;
         position: absolute;
-        left: 0;
+        left: .1rem;
     }
     .dd{
         background: #3C4456;
         height: 25px;
-        width: 60px;
+        width: 1.67rem;
         display: inline-block;
         font-size: 12px;
         text-align: center;
@@ -1175,24 +1329,23 @@ export default {
         color:#fff;
         letter-spacing: 2px;
         font-family:PingFangSC-Medium;
-        margin: 0 auto;
         border-radius: 0.05rem;
     }
     .ee{
         background: #fff;
         border: 1px solid #3C4456;
-        height: 25px;
-        width: 60px;
+        height: 0.694rem;
+        width: 1.67rem;
         letter-spacing: 2px;
         display: inline-block;
         font-size: 12px;
         text-align: center;
-        line-height: 25px;
+        line-height: 0.694rem;
         font-weight:500;
         color:#3C4456;
         font-family:PingFangSC-Medium;
         position: absolute;
-        right: 0%;
+        right: 0.1rem;
         cursor: pointer;
     }
     .content{
@@ -1221,30 +1374,183 @@ export default {
     thead tr th:last-child .cell{
         padding: 0 !important;
     }
-    .addccb{
-        width: 3rem;
-        height: 0.9rem;
-        line-height: 0.9rem;
-        background: #3C4456;
-        color: #fff;
+    .bdta{
+        height: 70px;
+        box-sizing: border-box;
+        background:#fff;
+        position: relative;
+        border:1px solid rgba(225,227,232,1);
+    }
+    .bdta .hnha{
         position: absolute;
-        right: 0.45rem;
-        font-size:0.35rem;
+        height: 17px;
+        line-height: 17px;
+        font-size:12px;
+        font-family:PingFangSC-Regular;
+        font-weight:400;
+        color:rgba(91,99,126,1);
+        top: 11px;
+        left: 20px;
+    }
+    .hnhc{
+        position: absolute;
+        height: 17px;
+        line-height: 17px;
+        font-size:12px;
+        font-family:PingFangSC-Regular;
+        font-weight:400;
+        color:rgba(91,99,126,1);
+        top: 11px;
+        left: 6.28rem;
+    }
+    .bdta .hnhb{
+        position: absolute;
+        height: 17px;
+        font-family:PingFangSC-Regular;
+        color:rgba(91,99,126,1);
+        top: 35px;
+        left: 20px;
+        font-size:14px;
         font-family:PingFangSC-Medium;
         font-weight:500;
-        top: 0.375rem;
-        text-indent: 1.173rem;
-        cursor: pointer;
+        color:rgba(48,56,73,1);
+        line-height:20px;
+        border: 0;
+        outline: none;
+        width: 1.8rem;
     }
-    .svgg{
+    .bdta .hnhd{
         position: absolute;
-        top: 0.275rem;
-        left: 0.475rem;
+        height: 17px;
+        font-family:PingFangSC-Regular;
+        color:rgba(91,99,126,1);
+        top: 35px;
+        left: 3rem;
+        font-size:14px;
+        font-family:PingFangSC-Medium;
+        font-weight:500;
+        color:rgba(48,56,73,1);
+        line-height:20px;
+        border: 0;
+        outline: none;
+        width: 1.8rem;
     }
-    .debbp{
-        padding-top: 20px;
-        height: 30px;
-        text-align: center;
-        font-size: 20px;
+    .bdta .hnhe{
+        position: absolute;
+        height: 17px;
+        font-family:PingFangSC-Regular;
+        color:rgba(91,99,126,1);
+        top: 35px;
+        left: 6.28rem;
+        font-size:14px;
+        font-family:PingFangSC-Medium;
+        font-weight:500;
+        color:rgba(48,56,73,1);
+        line-height:20px;
+        border: 0;
+        outline: none;
+        width: 1.8rem;
     }
+    .bdta .hnhf{
+        position: absolute;
+        height: 17px;
+        font-family:PingFangSC-Regular;
+        color:rgba(91,99,126,1);
+        top: 35px;
+        left: 8.72rem;
+        font-size:14px;
+        font-family:PingFangSC-Medium;
+        font-weight:500;
+        color:rgba(48,56,73,1);
+        line-height:20px;
+        border: 0;
+        outline: none;
+        width: 1.8rem;
+    }
+    ::-webkit-input-placeholder {
+        color: #BFC4D1;
+    }
+    .bdta .hnhb:focus {
+        border: 0;
+    }
+    .xcbox{
+        width: 5rem;
+        height: 0.56rem;
+        position: absolute;
+        top: 1rem;
+        left: 0.58rem;
+    }
+    .xcbox .el-input__inner{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .xcbox .el-select,.ccbox .el-select{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .xcbox .el-input__inner{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5rem;
+        background: yellow;
+        height: 0.56rem;
+        display: inline-block;
+    }
+    .xcbox .el-input{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5rem !important;
+        background: yellow !important;
+        height: 0.56rem !important;
+        display: inline-block;
+    }
+    .ccbox{
+        width: 5rem;
+        height: 0.56rem;
+        position: absolute;
+        top: 1rem;
+        right: 0.36rem;
+    }
+    .addccb{
+    width: 3rem;
+    height: 0.9rem;
+    line-height: 0.9rem;
+    background: #3C4456;
+    color: #fff;
+    position: absolute;
+    right: 0.45rem;
+    font-size:0.35rem;
+    font-family:PingFangSC-Medium;
+    font-weight:500;
+    top: 0.375rem;
+    text-indent: 1.173rem;
+    cursor: pointer;
+}
+.svgg{
+    position: absolute;
+    top: 0.275rem;
+    left: 0.475rem;
+}
+.hyyn{
+    width: 10rem;
+}
+.debbp{
+    padding-top: 20px;
+    height: 30px;
+    text-align: center;
+    font-size: 20px;
+}
+.hnhc{
+    position: absolute;
+    top:11px;
+    left: 225px;
+}
 </style>

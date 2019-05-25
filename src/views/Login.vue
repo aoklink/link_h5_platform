@@ -83,10 +83,10 @@ export default {
 }
 .login-form{
     position: relative;
-    top:3rem;
+    top:1rem;
     left: 3rem;
     width:17.67rem;
-    height:22.08rem;
+    height:calc(100% - 3rem);
     background:rgba(255,255,255,1);
     box-shadow:0rem 0.28rem 1.11rem 0rem rgba(35,44,96,0.06);
 }
@@ -107,7 +107,7 @@ export default {
 }
 .login-form-title{
     padding-left: 3rem;
-    padding-top: 1rem;
+    padding-top: 0rem;
 }
 .login-form-title h2{
     font-size:0.67rem;
@@ -125,7 +125,7 @@ export default {
 }
 .login-form-input{
     padding-left: 3rem;
-    padding-top: 2rem;
+    padding-top: 1rem;
 }
 .login-form-input-row{
     width:12.22rem;
@@ -169,7 +169,7 @@ export default {
 }
 .login-form-footer{
     padding-left: 3rem;
-    padding-top: 2rem;
+    padding-top: 1rem;
 }
 
 .btn-login{
@@ -185,7 +185,7 @@ export default {
 .login-form-footer p{
     width:12.33rem;
     margin: 0;
-    padding: 3rem 0 0;
+    padding: 1rem 0 1rem;
     text-align: center;
     font-size: 14px;
     font-family:PingFangSC-Regular;
