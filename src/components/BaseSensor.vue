@@ -233,7 +233,7 @@ stroke-width="1" stroke="red" fill="transparent"/>
                     </div>
                 </div>
             </div>
-            <!-- 绑定弹出框 -->
+            <!-- 编辑弹出框 -->
             <div class="bindlog" v-if="editVisible">
                 <div class="bindbox">
                     <div class="bdup">
@@ -748,7 +748,20 @@ export default {
             this.idx = index;
             this.form.id = id
             const item = this.tableData[index];
+            if( item.transducer_name == 'uwb基站'){
+                that.oka = 0
+            }
+            if( item.transducer_name == 'uwb子模块'){
+                that.oka = 1
+            }
+            if( item.transducer_name == '拉力传感器'){
+                that.oka = 2
+            }
+            if( item.transducer_name == 'hank'){
+                that.oka = 3
+            }
             this.editVisible = true;
+            this.value = item.relation_device;
             that.form = {
                 id: item.id,
                 uwb_id: item.uwb_id,
@@ -757,7 +770,10 @@ export default {
                 address: item.address,
                 phone_num: item.phone_num,
                 status: item.status,
-                bind_time: Date.parse(new Date())
+                bind_time: Date.parse(new Date()),
+                bpu: item.transducer_id,
+                cpu: item.remark,
+                transducer_name: item.transducer_name
             };
         },
         tadd () {
