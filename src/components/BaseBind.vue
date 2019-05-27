@@ -300,6 +300,8 @@ export default {
             delVisiblea: false,
             delVisible: false,
             taddcellnumber: '',
+            old_bracelet_id: '',
+            old_id: '',
             form: {
                 user_name: '',
                 date: '',
@@ -389,7 +391,8 @@ export default {
             // };
             let datt = {
                 gym_name: global.gym_name || localStorage.getItem("gym_name"),
-                page: this.cur_page
+                page: this.cur_page,
+                page_size: 50
             };
             console.log(this);
             this.$axios.post(this.localhost+'/api/platform/link/gym_bracelet/list', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}}
@@ -513,20 +516,45 @@ export default {
             //         return
             //     }
             // }
-            let datt = {
-                gym_name: global.gym_name || localStorage.getItem("gym_name"),
-                bracelet_id: this.form.bracelet_id,
-                id: this.form.id,
-                bind_time: Date.parse(new Date()),
-                page: this.cur_page
-            };
+            if(this.form.bracelet_id == this.old_bracelet_id && this.old_id == this.form.id){
+                that.$message.error(`该手环ID与手环编号信息未发生改变`);
+                return;
+            }
+            if(this.form.bracelet_id != this.old_bracelet_id && this.old_id != this.form.id){
+                var datt = {
+                    gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                    bracelet_id: this.form.bracelet_id,
+                    old_bracelet_id: this.old_bracelet_id,
+                    id: this.form.id,
+                    bind_time: Date.parse(new Date()),
+                    page: this.cur_page
+                }
+            }
+            if(this.form.bracelet_id != this.old_bracelet_id && this.old_id == this.form.id){
+                var datt = {
+                    gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                    bracelet_id: this.form.bracelet_id,
+                    old_bracelet_id: this.old_bracelet_id,
+                    bind_time: Date.parse(new Date()),
+                    page: this.cur_page
+                }
+            }
+            if(this.form.bracelet_id == this.old_bracelet_id && this.old_id != this.form.id){
+                var datt = {
+                    gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                    old_bracelet_id: this.old_bracelet_id,
+                    id: this.form.id,
+                    bind_time: Date.parse(new Date()),
+                    page: this.cur_page
+                }
+            }
             this.$axios.post(this.localhost + '/api/platform/link/bracelet/update', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
                 .then((res) => {
                     console.log(res.data.code);
                     if (res.data.code == 200) {
                         that.$set(that.tableData, that.idx, that.form);
                         that.editVisible = false;
-                        that.$message.success(`绑定手环成功`);
+                        that.$message.success(`编辑手环成功`);
                         that.getData();
                     }
                     if (res.data.code == 402) {
@@ -600,6 +628,8 @@ export default {
             let that = this;
             this.idx = index;
             const item = this.tableData[index];
+            this.old_bracelet_id = this.tableData[index].bracelet_id;
+            this.old_id = this.tableData[index].id
             this.editVisible = true;
             that.form = {
                 bracelet_id: item.bracelet_id,

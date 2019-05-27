@@ -511,7 +511,8 @@ export default {
             // };
             let datt = {
                 gym_name: global.gym_name || localStorage.getItem("gym_name"),
-                page: this.cur_page
+                page: this.cur_page,
+                page_size: 50
             };
             console.log(this);
             this.$axios.post(this.localhost+'/api/platform/link/coordinate/list', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}}
