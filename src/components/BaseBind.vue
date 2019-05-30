@@ -212,7 +212,7 @@
                     </div>
                     <div class="ubdbt" :model="form">
                         <span @click="delVisiblea=false">取消</span>
-                        <span @click="delyzy(form.student_count,form.uid,1)">删除手环</span>
+                        <span @click="deleteRow(form.student_count,form.uid,1)">删除手环</span>
                     </div>
                 </div>
             </div>
@@ -599,10 +599,10 @@ export default {
                     if (res.data.code == 200) {
                         that.$message.success('删除成功');
                         that.tableData.splice(this.idx, 1);
-                        that.delVisible = false;
+                        that.delVisiblea = false;
                     } else if (res.data.code == 106) {
                         that.$message.success('请先解绑');
-                        that.delVisible = false;
+                        that.delVisiblea = false;
                     }
                 })
                 .catch((res) => {
