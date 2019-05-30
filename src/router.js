@@ -42,6 +42,7 @@ const router = new Router({
         component: BaseBind,
         displayName: '手环管理',
         meta: {
+            requiresAuth: true,
             keepAlive: true
         },
     },
@@ -51,6 +52,7 @@ const router = new Router({
         component: ShopBind,
         displayName: '店铺手环信息',
         meta: {
+            requiresAuth: true,
             keepAlive: true
         },
     },
@@ -60,6 +62,7 @@ const router = new Router({
         component: ShopCoordinate,
         displayName: '坐标设置',
         meta: {
+            requiresAuth: true,
             keepAlive: true
         },
     },
@@ -69,6 +72,7 @@ const router = new Router({
         component: BaseCoordinate,
         displayName: '店铺坐标信息',
         meta: {
+            requiresAuth: true,
             keepAlive: true
         },
     },
@@ -78,6 +82,7 @@ const router = new Router({
         component: ShopSensor,
         displayName: '传感器管理',
         meta: {
+            requiresAuth: true,
             keepAlive: true
         },
     },
@@ -87,6 +92,7 @@ const router = new Router({
         component: BaseSensor,
         displayName: '店铺传感器信息',
         meta: {
+            requiresAuth: true,
             keepAlive: true
         },
     }
@@ -104,6 +110,8 @@ router.beforeEach((to, from, next) => {
             });
             return;
         }
+    }else{
+        console.log(2222)
     }
     next();
 });

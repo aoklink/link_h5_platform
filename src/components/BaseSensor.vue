@@ -1,13 +1,13 @@
 <template>
     <div class="content">
-        <div class="table">
+        <div class="table ttbox">
             <div class="crumbs">
                 <div class="oo">
                     {{shopname}}传感器
                 </div>
                 <div class="celllist">
                     {{shopname}}传感器列表
-                    <div @click="editVisiblep = true" class="addccb">
+                    <div @click="yhhy" class="addccb">
                                         添加传感器
                                         <svg width="14px" height="14px" class="svgg">
                                             <line x1="7" y1="0" x2="7" y2="14"
@@ -18,7 +18,7 @@
                                     </div>
                 </div>
             </div>
-            <div class="container">
+            <div class="container senbox">
                 <!-- <div class="handle-box">
                     <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
                     <el-select v-model="select_cate" placeholder="筛选省份" class="handle-select mr10">
@@ -33,16 +33,20 @@
                         class="table" @selection-change="handleSelectionChange"
                 >
                     <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
-                    <el-table-column prop="id" label="编号" 
-                                    style="color: red !important"
-                    />
+                    <el-table-column prop="id" label="序号">
+                        <template slot-scope="scope">
+                            <div type="text">
+                                {{ tableData[scope.$index].aindex }}
+                            </div>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="transducer_name" label="传感器"
                                     style="color: red !important"
                     />
-                    <el-table-column prop="transducer_id" label="设备ID">
+                    <el-table-column prop="transducer_num" label="设备编号">
                         <template slot-scope="scope">
                             <div type="text">
-                                {{ tableData[scope.$index].transducer_id }}
+                                {{ tableData[scope.$index].transducer_num==''?'-': tableData[scope.$index].transducer_num}}
                             </div>
                         </template>
                     </el-table-column>
@@ -56,21 +60,7 @@
                     <el-table-column prop="relation_device" label="所属器械">
                         <template slot-scope="scope">
                             <div type="text">
-                                {{ tableData[scope.$index].relation_device }}
-                            </div>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="remark" label="备注">
-                        <template slot-scope="scope">
-                            <div type="text">
-                                {{ tableData[scope.$index].remark }}
-                            </div>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="weight" label="对应重量">
-                        <template slot-scope="scope">
-                            <div type="text">
-                                {{ tableData[scope.$index].weight }}
+                                {{ tableData[scope.$index].relation_device==''?'-': tableData[scope.$index].relation_device }}
                             </div>
                         </template>
                     </el-table-column>
@@ -78,6 +68,13 @@
                         <template slot-scope="scope">
                             <div type="text">
                                 {{ tableData[scope.$index].electric }}
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="remark" label="备注">
+                        <template slot-scope="scope">
+                            <div type="text">
+                                {{ tableData[scope.$index].remark }}
                             </div>
                         </template>
                     </el-table-column>
@@ -204,7 +201,7 @@ stroke-width="1" stroke="red" fill="transparent"/>
                             </div>
                         </div>
                         <div class="bmma">
-                            <div class="bdta bdtb">
+                            <div class="bdta bdtb" v-show="oka == 2">
                                 <span class="hnha">关联器械</span>
                                 <div class="ddbox">
                                     <el-select v-model="value" placeholder="选择器械">
@@ -217,9 +214,13 @@ stroke-width="1" stroke="red" fill="transparent"/>
                                     </el-select>
                                 </div>
                             </div>
-                            <div class="bdta bdtb">
-                                <span class="hnha">设备ID</span>
-                                <input class="inuu" type="text" v-model="form.bpu" placeholder="请输入备注">
+                            <div class="bdta bdtb" v-show="oka == 1 || oka == 2">
+                                <span class="hnha">自定义编号</span>
+                                <input class="inuu" type="text" v-model="form.bpu" placeholder="请输入编号">
+                            </div>
+                            <div class="bdta bdtb" v-show="oka == 1">
+                                <span class="hnha">模块ID</span>
+                                <input class="inuu" type="text" v-model="form.dpu" placeholder="请输入模块ID">
                             </div>
                             <div class="bdta bdtb">
                                 <span class="hnha">备注</span>
@@ -298,7 +299,7 @@ stroke-width="1" stroke="red" fill="transparent"/>
                             </div>
                         </div>
                         <div class="bmma">
-                            <div class="bdta bdtb">
+                            <div class="bdta bdtb" v-show="oka == 2">
                                 <span class="hnha">关联器械</span>
                                 <div class="ddbox">
                                     <el-select v-model="value" placeholder="选择器械">
@@ -311,9 +312,13 @@ stroke-width="1" stroke="red" fill="transparent"/>
                                     </el-select>
                                 </div>
                             </div>
-                            <div class="bdta bdtb">
-                                <span class="hnha">设备ID</span>
-                                <input class="inuu" type="text" v-model="form.bpu" placeholder="请输入设备ID">
+                            <div class="bdta bdtb" v-show="oka == 1 || oka == 2">
+                                <span class="hnha">自定义编号</span>
+                                <input class="inuu" type="text" v-model="form.bpu" placeholder="请输入编号">
+                            </div>
+                            <div class="bdta bdtb" v-show="oka == 1">
+                                <span class="hnha">模块ID</span>
+                                <input class="inuu" type="text" v-model="form.dpu" placeholder="请输入模块ID">
                             </div>
                             <div class="bdta bdtb">
                                 <span class="hnha">备注</span>
@@ -416,6 +421,7 @@ export default {
             delVisible: false,
             taddcellnumber: '',
             form: {
+                aindex: '',
                 user_name: '',
                 date: '',
                 address: '',
@@ -427,7 +433,9 @@ export default {
                 apu: '',
                 bpu: '',
                 cpu: '',
-                transducer_name: 'uwb基站'
+                dpu: '',
+                transducer_name: 'uwb基站',
+                transducer_num: ''
             },
             idx: -1,
             actived: 0,
@@ -458,26 +466,11 @@ export default {
                 label: '单车'
             }],
             value: '',
+            olda: '',
+            oldb: ''
         };
     },
     computed: {
-        // data () {
-        //     return this.tableData.filter((d) => {
-        //         let is_del = false;
-        //         for (let i = 0; i < this.del_list.length; i++) {
-        //             if (d.id === this.del_list[i].id) {
-        //                 is_del = true;
-        //                 break;
-        //             }
-        //         }
-        //         if (!is_del) {
-        //             console.log(d);
-        //             if ((d.id).indexOf(this.select_cate) > -1) {
-        //                 return d;
-        //             }
-        //         }
-        //     });
-        // }
     },
     created () {
         this.shopname = this.$route.query.inquiry;
@@ -563,26 +556,12 @@ export default {
                     console.log(xbox);
                     var aDiv = [];
                     for (var i = 0; i < xbox.length; i++) {
+                        xbox[i].aindex = i + 1
                         aDiv.push(xbox[i]);
                     }
-                    aDiv.sort(function (a, b) { return a.id - b.id; });
+                    aDiv.sort(function (a, b) { return b.id - a.id; });
                     console.log(aDiv);
                     this.tableData = aDiv;
-                    console.log(this.tableData.filter((d) => {
-                        let is_del = false;
-                        for (let i = 0; i < this.del_list.length; i++) {
-                            if (d.id === this.del_list[i].id) {
-                                is_del = true;
-                                break;
-                            }
-                        }
-                        if (!is_del) {
-                            console.log(d);
-                            if ((d.id).indexOf(this.select_cate) > -1) {
-                                return d;
-                            }
-                        }
-                    }));
                 })
                 .catch((res) => {
                     console.log(res);
@@ -620,14 +599,19 @@ export default {
         saveadd () {
             let that = this;
             console.log(this.form.transducer_name)
-            if(this.form.bpu.length == 0){
-                that.$message.error(`请填写设备ID`);
-                return;
-            }
+            // if(this.form.bpu.length == 0){
+            //     that.$message.error(`请填写编号`);
+            //     return;
+            // }
+            // if(this.form.dpu.length == 0){
+            //     that.$message.error(`请填写模块ID`);
+            //     return;
+            // }
             let datt = {
                 gym_name: global.gym_name || localStorage.getItem("gym_name"),
                 transducer_name: this.form.transducer_name,
-                transducer_id: this.form.bpu,
+                transducer_id: this.form.dpu,
+                transducer_num: this.form.bpu,
                 relation_device: this.value,
                 weight: this.form.phone_num,
                 remark: this.form.cpu,
@@ -642,27 +626,115 @@ export default {
                         that.$message.success(`添加传感器成功`);
                         that.getData();
                     }
-                    if (res.data.code == 103) {
-                        that.$message.error(`手机号未注册`);
+                    if (res.data.code == 402) {
+                        that.$message.success(`添加传感器成功`);
+                        that.$message.error(res.data.message);
                     }
                 })
                 .catch((res) => {
                     console.log(res);
                 });
         },
-        // 绑定手环请求接口
+        //oppp
+        // 绑定传感器请求接口
         getedit () {
             let that = this;
-            let datt = {
-                gym_name: global.gym_name || localStorage.getItem("gym_name"),
-                transducer_name: this.form.transducer_name,
-                transducer_id: this.form.bpu,
-                relation_device: this.value,
-                weight: this.form.phone_num,
-                remark: this.form.cpu,
-                id: this.form.id,
-                page: this.cur_page
-            };
+            if(this.oka == 0){
+                var datt = {
+                    gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                    transducer_name: this.form.transducer_name,
+                    weight: this.form.phone_num,
+                    remark: this.form.cpu,
+                    id: this.form.id,
+                    page: this.cur_page
+                };
+            }
+            if(this.oka == 1){
+                if(this.form.bpu == this.olda && this.form.dpu == this.oldb){
+                    var datt = {
+                        gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                        transducer_name: this.form.transducer_name,
+                        transducer_id: '',
+                        transducer_num: '',
+                        weight: this.form.phone_num,
+                        remark: this.form.cpu,
+                        id: this.form.id,
+                        page: this.cur_page
+                    };
+                }
+                if(this.form.bpu != this.olda && this.form.dpu != this.oldb){
+                    var datt = {
+                        gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                        transducer_name: this.form.transducer_name,
+                        transducer_id: this.form.dpu,
+                        transducer_num: this.form.bpu,
+                        weight: this.form.phone_num,
+                        remark: this.form.cpu,
+                        id: this.form.id,
+                        page: this.cur_page
+                    };
+                }
+                if(this.form.bpu == this.olda && this.form.dpu != this.oldb){
+                    var datt = {
+                        gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                        transducer_name: this.form.transducer_name,
+                        transducer_id: this.form.dpu,
+                        transducer_num: '',
+                        weight: this.form.phone_num,
+                        remark: this.form.cpu,
+                        id: this.form.id,
+                        page: this.cur_page
+                    };
+                }
+                if(this.form.bpu != this.olda && this.form.dpu == this.oldb){
+                    var datt = {
+                        gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                        transducer_name: this.form.transducer_name,
+                        transducer_id: '',
+                        transducer_num: this.form.bpu,
+                        weight: this.form.phone_num,
+                        remark: this.form.cpu,
+                        id: this.form.id,
+                        page: this.cur_page
+                    };
+                }
+            }
+            if(this.oka == 2){
+                if(this.form.bpu != this.olda){
+                    var datt = {
+                        gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                        transducer_name: this.form.transducer_name,
+                        relation_device: this.value,
+                        transducer_num: this.form.bpu,
+                        weight: this.form.phone_num,
+                        remark: this.form.cpu,
+                        id: this.form.id,
+                        page: this.cur_page
+                    };
+                }
+                if(this.form.bpu == this.olda){
+                    var datt = {
+                        gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                        transducer_name: this.form.transducer_name,
+                        relation_device: this.value,
+                        transducer_num: '',
+                        weight: this.form.phone_num,
+                        remark: this.form.cpu,
+                        id: this.form.id,
+                        page: this.cur_page
+                    };
+                }
+            }
+            if(this.oka == 3){
+                var datt = {
+                    gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                    transducer_name: this.form.transducer_name,
+                    weight: this.form.phone_num,
+                    remark: this.form.cpu,
+                    id: this.form.id,
+                    page: this.cur_page
+                };
+            }
             this.$axios.post(this.localhost + '/api/platform/link/transducer/update', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
                 .then((res) => {
                     console.log(res.data.code);
@@ -672,8 +744,8 @@ export default {
                         that.$message.success(`编辑传感器成功`);
                         that.getData();
                     }
-                    if (res.data.code == 103) {
-                        that.$message.error(`手机号未注册`);
+                    if (res.data.code == 402) {
+                        that.$message.error(res.data.message);
                     }
                 })
                 .catch((res) => {
@@ -743,11 +815,71 @@ export default {
             console.log(this.value)
             console.log(this.valuea)
         },
+        yhhy () {
+            this.editVisiblep = true
+            this.form.apu = ''
+            this.form.bpu = ''
+            this.form.cpu = ''
+            this.form.dpu = ''
+            this.value = ''
+            let datt = {
+                gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                page: this.cur_page
+            };
+            this.$axios.post(this.localhost+'/api/platform/link/transducer/dic_data', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
+                .then((res) => {
+                    if (res.data.code == 200) {
+                        var opu = []
+                        var oko = []
+                        opu = res.data.data
+                        console.log(opu)
+                        var nim
+                        for(var i=0;i<opu.length;i++){
+                            nim = {}
+                            nim.value = opu[i]
+                            nim.label = opu[i]
+                            oko.push(nim)
+                        }
+                        this.options = oko
+                        console.log(this.options)
+                    }
+                })
+                .catch((res) => {
+                    console.log(res);
+                });
+        },
         handleEdit (index, row, id) {
+            let datt = {
+                gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                page: this.cur_page
+            };
+            this.$axios.post(this.localhost+'/api/platform/link/transducer/dic_data', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
+                .then((res) => {
+                    if (res.data.code == 200) {
+                        var opu = []
+                        var oko = []
+                        opu = res.data.data
+                        console.log(opu)
+                        var nim
+                        for(var i=0;i<opu.length;i++){
+                            nim = {}
+                            nim.value = opu[i]
+                            nim.label = opu[i]
+                            oko.push(nim)
+                        }
+                        this.options = oko
+                        console.log(this.options)
+                    }
+                })
+                .catch((res) => {
+                    console.log(res);
+                });
             let that = this;
             this.idx = index;
             this.form.id = id
             const item = this.tableData[index];
+            this.olda = item.transducer_num
+            this.oldb = item.transducer_id
             if( item.transducer_name == 'uwb基站'){
                 that.oka = 0
             }
@@ -771,8 +903,9 @@ export default {
                 phone_num: item.phone_num,
                 status: item.status,
                 bind_time: Date.parse(new Date()),
-                bpu: item.transducer_id,
+                bpu: item.transducer_num,
                 cpu: item.remark,
+                dpu: item.transducer_id,
                 transducer_name: item.transducer_name
             };
         },
@@ -896,9 +1029,9 @@ export default {
         justify-content: space-between;
         margin-left: 30px;
     }
-    tbody tr td:nth-of-type(1) .cell{
+    /* tbody tr td:nth-of-type(1) .cell{
         margin-left: 0;
-    }
+    } */
     .dialog-footer{
         position: inherit;
     }
@@ -1253,6 +1386,14 @@ export default {
         transform: translate(-50%, -50%);
         color: #000;
     }
+    .senbox tbody{
+        overflow: scroll;
+        height: 500px;
+    }
+    .senbox .el-table__body-wrapper, .senbox .el-table__body{
+        min-height: 460px;
+        width: 100%;
+    }
 </style>
 
 <style scoped>
@@ -1298,7 +1439,7 @@ export default {
         height: 46px;
     }
     .table{
-        height: 550px;
+        min-height: 500px;
     }
     .crumbs{
         margin: 0;
@@ -1329,6 +1470,7 @@ export default {
     .container{
         border-radius: 0;
         padding: 0;
+        height: 505px;
     }
     .aa{
         background: #5780FF;
@@ -1405,7 +1547,7 @@ export default {
     }
     .content{
         background: #F6F7F8;
-        height: 670px;
+        height: 595px;
     }
     .el-table--border th, .el-table__fixed-right-patch{
         background: red !important;

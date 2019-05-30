@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <div class="table">
+        <div class="table ttbox">
             <div class="crumbs">
                 <div class="oo">
                     传感器管理
@@ -611,9 +611,9 @@ export default {
         justify-content: space-between;
         margin-left: 30px;
     }
-    tbody tr td:nth-of-type(1) .cell{
+    /* tbody tr td:nth-of-type(1) .cell{
         margin-left: 0;
-    }
+    } */
     .dialog-footer{
         position: inherit;
     }

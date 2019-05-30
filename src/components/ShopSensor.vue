@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <div class="table">
+        <div class="table ttbox">
             <div class="crumbs">
                 <div class="oo">
                     传感器管理
@@ -24,31 +24,34 @@
                         class="table" @selection-change="handleSelectionChange"
                 >
                     <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
-                    <el-table-column prop="gym_name" label="健身房名称" 
+                    <el-table-column prop="gym_name" label="健身房名称"
                                     style="color: red !important"
                     />
-                    <el-table-column prop="uwb_count" label="uwb基站数量"
-                                    style="color: red !important"
-                    />
+                    <el-table-column prop="uwb_count" label="uwb基站数量">
+                        <template slot-scope="scope">
+                            <div type="text">
+                                {{ tableData[scope.$index].uwb_count>0?tableData[scope.$index].uwb_count:'-' }}
+                            </div>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="uwb_sub_count" label="uwb子模块数量">
                         <template slot-scope="scope">
                             <div type="text">
-                                <!-- {{ tableData[scope.$index].status == 1?tableData[scope.$index].uwb_id:'-' }} -->
-                                {{ tableData[scope.$index].uwb_sub_count }}
+                                {{ tableData[scope.$index].uwb_sub_count>0?tableData[scope.$index].uwb_sub_count:'-' }}
                             </div>
                         </template>
                     </el-table-column>
                     <el-table-column prop="hank_count" label="hank数量">
                         <template slot-scope="scope">
                             <div type="text">
-                                {{ tableData[scope.$index].hank_count }}
+                                {{ tableData[scope.$index].hank_count>0?tableData[scope.$index].hank_count:'-' }}
                             </div>
                         </template>
                     </el-table-column>
                     <el-table-column prop="tension_count" label="拉力传感器数量">
                         <template slot-scope="scope">
                             <div type="text">
-                                {{ tableData[scope.$index].tension_count }}
+                                {{ tableData[scope.$index].tension_count>0?tableData[scope.$index].tension_count:'-' }}
                             </div>
                         </template>
                     </el-table-column>
@@ -648,9 +651,9 @@ export default {
         justify-content: space-between;
         margin-left: 30px;
     }
-    tbody tr td:nth-of-type(1) .cell{
+    /* tbody tr td:nth-of-type(1) .cell{
         margin-left: 0;
-    }
+    } */
     .dialog-footer{
         position: inherit;
     }
@@ -1072,6 +1075,7 @@ export default {
         letter-spacing: 0px;
         margin: 0 auto;
         border-radius: 0.05rem;
+        cursor: pointer;
     }
     .dd{
         background: #3C4456;

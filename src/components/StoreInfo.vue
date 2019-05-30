@@ -146,7 +146,7 @@
             </div>
             <div class="class-info-item class-info-content">
                 <label>课程内容</label>
-                <div>
+                <div class="cont">
                     {{ classInfoDetail.content }}
                 </div>
             </div>
@@ -392,11 +392,14 @@ export default {
     }
     .class-info-content{
         margin-top: .5rem;
-        min-height: 3rem;
+        min-height: 8rem;
         width: 25rem;
     }
     .class-info-operation >span{
         margin-right: 1em;
     }
-
+    .cont{
+        overflow: auto;
+        height: 100%;
+    }
 </style>

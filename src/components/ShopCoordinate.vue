@@ -9,7 +9,7 @@
                 </i>
             </app-button> -->
         </div>
-        <div>
+        <div class="bbox">
             <el-table :data="gymInfoList" style="width: 100%" stripe
                       header-cell-class-name="management-table-header"
             >
@@ -138,7 +138,7 @@ export default {
     .dialog-add-edit-gym{
         display: flex;
         width:27.78rem !important;
-        height:24.72rem;
+        height:30.5rem;
         background:rgba(255,255,255,1);
         border-radius:0.06rem;
     }
@@ -148,6 +148,7 @@ export default {
     .dialog-add-edit-gym .el-dialog__body{
         flex: 1;
         display: flex;
+        background: #FFF;
     }
     .cc{
         background: #FFC001;
@@ -164,5 +165,8 @@ export default {
         margin: 0 auto;
         border-radius: 0.05rem;
         cursor: pointer;
+    }
+    .bbox .el-table th:last-child{
+        text-align: center;
     }
 </style>

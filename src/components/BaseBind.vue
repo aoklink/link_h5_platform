@@ -1,13 +1,13 @@
 <template>
     <div class="content">
-        <div class="table">
+        <div class="table ttbox">
             <div class="crumbs">
                 <div class="oo">
                     {{shopname}}手环管理
                 </div>
                 <div class="celllist">
                     {{shopname}}手环列表
-                    <div @click="editVisiblep = true" class="addccb">
+                    <div @click="yhhy" class="addccb">
                                         添加手环
                                         <svg width="14px" height="14px" class="svgg">
                                             <line x1="7" y1="0" x2="7" y2="14"
@@ -37,6 +37,9 @@
                                     style="color: red !important"
                     />
                     <el-table-column prop="bracelet_id" label="手环ID"
+                                    style="color: red !important"
+                    />
+                    <el-table-column prop="uwb_id" label="uwb子模块ID"
                                     style="color: red !important"
                     />
                     <el-table-column prop="electric" label="电量">
@@ -122,12 +125,12 @@
                     </div>
                     <div class="bdmd">
                         <div class="bdta bdtb">
-                            <span class="icuu">手环编号</span>
-                            <input type="text" v-model="form.id" placeholder="请输入手环编号">
+                            <span class="icuu">手环ID</span>
+                            <input type="text" v-model="form.bracelet_id" placeholder="请输入手环编号">
                         </div>
                         <div class="bdta bdtb">
-                            <span class="icuu">手环ID</span>
-                            <input type="text" v-model="form.bracelet_id" placeholder="请输入会员手机号">
+                            <span class="icuu">Uwb子模块ID</span>
+                            <input type="text" v-model="form.uwb_id" placeholder="请输入会员手机号">
                         </div>
                     </div>
                     <div class="bdbt">
@@ -154,16 +157,12 @@
                     </div>
                     <div class="bdmd">
                         <div class="bdta bdtb">
-                            <span class="icuu">手环编号</span>
-                            <input type="text" v-model="form.id" placeholder="请输入手环编号">
-                        </div>
-                        <div class="bdta bdtb">
                             <span class="icuu">手环ID</span>
                             <input type="text" v-model="form.bbid" placeholder="请输入手环ID">
                         </div>
                         <div class="bdta bdtb">
-                            <span class="icuu">uwb编号</span>
-                            <input type="text" v-model="form.uwb_id" placeholder="请输入uwb编号">
+                            <span class="icuu">Uwb子模块编号</span>
+                            <input type="text" v-model="form.uwb_id" placeholder="请输入编号">
                         </div>
                     </div>
                     <div class="bdbt">
@@ -459,10 +458,6 @@ export default {
         // 添加手环请求接口
         saveAdd () {
             let that = this;
-            if(this.form.id.length == 0){
-                that.$message.error(`手环编号不能为空`);
-                return;
-            }
             if(this.form.bbid.length == 0){
                 that.$message.error(`手环ID不能为空`);
                 return;
@@ -481,7 +476,6 @@ export default {
             let datt = {
                 gym_name: global.gym_name || localStorage.getItem("gym_name"),
                 bracelet_id: this.form.bbid,
-                id: this.form.id,
                 uwb_id: this.form.uwb_id,
                 page: this.cur_page
             };
@@ -495,7 +489,7 @@ export default {
                         that.getData();
                     }
                     if (res.data.code == 101) {
-                        that.$message.error(`该手环已存在`);
+                        that.$message.error(res.data.msg);
                     }
                 })
                 .catch((res) => {
@@ -516,21 +510,21 @@ export default {
             //         return
             //     }
             // }
-            if(this.form.bracelet_id == this.old_bracelet_id && this.old_id == this.form.id){
-                that.$message.error(`该手环ID与手环编号信息未发生改变`);
+            if(this.form.bracelet_id == this.old_bracelet_id && this.old_uuid == this.form.uwb_id){
+                that.$message.error(`该手环ID与Uwb子模块ID信息未发生改变`);
                 return;
             }
-            if(this.form.bracelet_id != this.old_bracelet_id && this.old_id != this.form.id){
+            if(this.form.bracelet_id != this.old_bracelet_id && this.old_uuid != this.form.uwb_id){
                 var datt = {
                     gym_name: global.gym_name || localStorage.getItem("gym_name"),
                     bracelet_id: this.form.bracelet_id,
                     old_bracelet_id: this.old_bracelet_id,
-                    id: this.form.id,
+                    uwb_id: this.form.uwb_id,
                     bind_time: Date.parse(new Date()),
                     page: this.cur_page
                 }
             }
-            if(this.form.bracelet_id != this.old_bracelet_id && this.old_id == this.form.id){
+            if(this.form.bracelet_id != this.old_bracelet_id && this.old_uuid == this.form.uwb_id){
                 var datt = {
                     gym_name: global.gym_name || localStorage.getItem("gym_name"),
                     bracelet_id: this.form.bracelet_id,
@@ -539,11 +533,11 @@ export default {
                     page: this.cur_page
                 }
             }
-            if(this.form.bracelet_id == this.old_bracelet_id && this.old_id != this.form.id){
+            if(this.form.bracelet_id == this.old_bracelet_id && this.old_uuid != this.form.uwb_id){
                 var datt = {
                     gym_name: global.gym_name || localStorage.getItem("gym_name"),
                     old_bracelet_id: this.old_bracelet_id,
-                    id: this.form.id,
+                    uwb_id: this.form.uwb_id,
                     bind_time: Date.parse(new Date()),
                     page: this.cur_page
                 }
@@ -558,7 +552,7 @@ export default {
                         that.getData();
                     }
                     if (res.data.code == 402) {
-                        that.$message.error(`该手环已存在`);
+                        that.$message.error(res.data.message);
                     }
                 })
                 .catch((res) => {
@@ -624,12 +618,18 @@ export default {
         filterTag (value, row) {
             return row.tag === value;
         },
+        yhhy () {
+            this.editVisiblep = true;
+            this.form.uwb_id = '';
+            this.form.bbid = '';
+        },
         handleEdit (index, row) {
             let that = this;
             this.idx = index;
             const item = this.tableData[index];
             this.old_bracelet_id = this.tableData[index].bracelet_id;
             this.old_id = this.tableData[index].id
+            this.old_uuid = this.tableData[index].uwb_id
             this.editVisible = true;
             that.form = {
                 bracelet_id: item.bracelet_id,
@@ -697,6 +697,9 @@ export default {
 </script>
 
 <style>
+    .el-table th>.cell{
+        padding-left: 0.833rem;
+    }
     .container .el-table thead{
         color: #5A6286;
         font-size:12px;
@@ -759,9 +762,15 @@ export default {
         justify-content: space-between;
         margin-left: 30px;
     }
-    tbody tr td:nth-of-type(1) .cell{
-        margin-left: 0;
+    .ttbox .el-table th:nth-of-type(1){
+        text-indent: 10px;
     }
+    .bbox .el-table td.is-center,.bbox .el-table th.is-center{
+        text-align: center;
+    }
+    /* tbody tr td:nth-of-type(1) .cell{
+        margin-left: 0;
+    } */
     .dialog-footer{
         position: inherit;
     }
@@ -1118,7 +1127,7 @@ export default {
         height: 46px;
     }
     .table{
-        height: 550px;
+        min-height: 550px;
     }
     .crumbs{
         margin: 0;

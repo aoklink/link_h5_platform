@@ -1,13 +1,13 @@
 <template>
     <div class="content">
-        <div class="table">
+        <div class="table ttbox">
             <div class="crumbs">
                 <div class="oo">
                     {{shopname}}坐标管理
                 </div>
                 <div class="celllist">
                     坐标列表
-                    <div @click="editVisiblep = true" class="addccb">
+                    <div @click="yhhy" class="addccb">
                                         添加器械
                                         <svg width="14px" height="14px" class="svgg">
                                             <line x1="7" y1="0" x2="7" y2="14"
@@ -33,17 +33,17 @@
                         class="table" @selection-change="handleSelectionChange"
                 >
                     <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
-                    <el-table-column prop="id" label="编号" 
+                    <el-table-column prop="number" label="编号" 
                                     style="color: red !important"
                     />
-                    <el-table-column prop="device_category" label="器械名称"
+                    <el-table-column prop="area_name" label="器械名称"
                                     style="color: red !important"
                     />
-                    <el-table-column prop="category" label="器械类型">
+                    <el-table-column prop="device_name" label="器械类型">
                         <template slot-scope="scope">
                             <div type="text">
                                 <!-- {{ tableData[scope.$index].status == 1?tableData[scope.$index].uwb_id:'-' }} -->
-                                {{ tableData[scope.$index].category }}
+                                {{ tableData[scope.$index].device_name }}
                             </div>
                         </template>
                     </el-table-column>
@@ -253,24 +253,6 @@
             </div>
 
             <!-- 删除提示框 -->
-            <!-- <el-dialog title="提示" :visible.sync="delVisible" width="300px"
-                    center
-            >
-                <el-form ref="form" :model="form" label-width="50px">
-                    <el-form-item label="手环">
-                        <div v-model="form.bracelet_id">
-                            {{ form.bracelet_id }}
-                        </div>
-                    </el-form-item>
-                </el-form>
-                <div class="del-dialog-cnt">
-                    删除不可恢复，是否确定删除？
-                </div>
-                <span slot="footer" class="dialog-footer">
-                    <el-button @click="delVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="deleteRow">确 定</el-button>
-                </span>
-            </el-dialog> -->
             <div class="bindlog" v-if="delVisiblea">
                 <div class="unbindbox">
                     <div class="ubdup">
@@ -289,11 +271,11 @@
                     <div class="ubdmd" :model="form">
                         <span class="dece"></span>
                         <div class="ubdta">是否确认删除器械</div>
-                        <div class="debbp">{{ form.device_category }}</div>
+                        <div class="debbp">{{ form.device_name }}</div>
                     </div>
                     <div class="ubdbt" :model="form">
                         <span @click="delVisiblea=false">取消</span>
-                        <span @click="delyzy(form.student_count,form.uid,1)">删除器械</span>
+                        <span @click="deleteRow(form.student_count,form.uid,1)">删除器械</span>
                     </div>
                 </div>
             </div>
@@ -316,7 +298,7 @@
                     <div class="ubdmd" :model="form">
                         <span class="dece"></span>
                         <div class="ubdta">确认删除？删除后无法恢复</div>
-                        <div class="debbp">{{ form.device_category }}</div>
+                        <div class="debbp">{{ form.device_name }}</div>
                     </div>
                     <div class="ubdbt" :model="form">
                         <span @click="delVisible=false">取消</span>
@@ -403,31 +385,10 @@ export default {
                 txt: ''
             },
             idx: -1,
-            options: [{
-                value: '有氧运动',
-                label: '有氧运动'
-                }, {
-                value: '力量运动',
-                label: '力量运动'
-                }, {
-                value: 'HIIT',
-                label: 'HIIT'
-            }],
-            optiona: [{
-                value: '跑步机',
-                label: '跑步机'
-                }, {
-                value: '椭圆机',
-                label: '椭圆机'
-                },{
-                value: '飞鸟架',
-                label: '飞鸟架'
-                }, {
-                value: '单车',
-                label: '单车'
-            }],
+            options: [],
+            optiona: [],
             value: '',
-            valuea: ''
+            valuea: '',
         };
     },
     computed: {
@@ -462,11 +423,77 @@ export default {
         console.log(this.del_list);
     },
     methods: {
+        yhhy () {
+            this.editVisiblep = true
+            this.form.ax = ''
+            this.form.ay = ''
+            this.form.bx = ''
+            this.form.by = ''
+            this.form.cx = ''
+            this.form.cy = ''
+            this.form.dx = ''
+            this.form.dy = ''
+            this.value = ''
+            this.valuea = ''
+            this.form.txt = ''
+            let datt = {
+                gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                page: this.cur_page
+            };
+            this.$axios.post(this.localhost+'/api/platform/link/coordinate/dic_data', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
+                .then((res) => {
+                    if (res.data.code == 200) {
+                        var opu = []
+                        var oko = []
+                        console.log(res.data.data)
+                        for(var i=0;i<res.data.data.length;i++){
+                            console.log(res.data.data[i].category)
+                            opu.push(res.data.data[i].category)
+                        }
+                        console.log(opu)
+                        var nim
+                        for(var i=0;i<opu.length;i++){
+                            nim = {}
+                            nim.value = opu[i]
+                            nim.label = opu[i]
+                            nim.kk = []
+                            nim.gg = []
+                            oko.push(nim)
+                        }
+                        var oct = []
+                        var ock = []
+                        for(var i=0;i<res.data.data.length;i++){
+                            if(res.data.data[i].category == oko[i].value){
+                                oko[i].kk = res.data.data[i].device_name
+                            }
+                        }
+                        for(var i=0;i<oko.length;i++){
+                            for(var j=0;j<oko[i].kk.length;j++){
+                                nim = {}
+                                nim.value = oko[i].kk[j]
+                                nim.label = oko[i].kk[j]
+                                oko[i].gg.push(nim)
+                            }
+                        }
+                        this.options = oko
+                        console.log(this.options)
+                    }
+                })
+                .catch((res) => {
+                    console.log(res);
+                });
+        },
         handleClick () {
             alert('button click')
         },
         chickvalue () {
             console.log(this.value)
+            for(var i=0;i<this.options.length;i++){
+                if(this.options[i].value == this.value){
+                    this.optiona = this.options[i].gg
+                }
+            }
+            console.log(this.optiona)
             console.log(this.valuea)
         },
         // 分页导航
@@ -600,8 +627,8 @@ export default {
                 four_cdn_x: this.form.dx,
                 four_cdn_y: this.form.dy,
                 remark: this.form.txt,
-                category: this.value,
-                device_category: this.valuea,
+                device_category: this.value,
+                device_name: this.valuea,
                 page: this.cur_page,
                 id: this.idt
             };
@@ -638,8 +665,8 @@ export default {
                 four_cdn_x: this.form.dx,
                 four_cdn_y: this.form.dy,
                 remark: this.form.txt,
-                category: this.value,
-                device_category: this.valuea,
+                device_category: this.value,
+                device_name: this.valuea,
                 bind_time: Date.parse(new Date()),
                 page: this.cur_page,
                 id: this.idt
@@ -702,10 +729,10 @@ export default {
                     if (res.data.code == 200) {
                         that.$message.success('删除成功');
                         that.tableData.splice(this.idx, 1);
-                        that.delVisible = false;
+                        that.delVisiblea = false;
                     } else if (res.data.code == 106) {
                         that.$message.success('请先解绑');
-                        that.delVisible = false;
+                        that.delVisiblea = false;
                     }
                 })
                 .catch((res) => {
@@ -764,7 +791,7 @@ export default {
             this.idx = index;
             const item = this.tableData[index];
             this.form = {
-                device_category: item.device_category,
+                device_name: item.device_name,
                 id: item.id,
             };
             this.delVisiblea = true;
@@ -876,9 +903,9 @@ export default {
         justify-content: space-between;
         margin-left: 30px;
     }
-    tbody tr td:nth-of-type(1) .cell{
+    /* tbody tr td:nth-of-type(1) .cell{
         margin-left: 0;
-    }
+    } */
     .dialog-footer{
         position: inherit;
     }
@@ -1252,7 +1279,7 @@ export default {
         height: 46px;
     }
     .table{
-        height: 550px;
+        min-height: 550px;
     }
     .crumbs{
         margin: 0;
