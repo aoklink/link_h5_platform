@@ -3,10 +3,10 @@
         <div class="table ttbox">
             <div class="crumbs">
                 <div class="oo">
-                    传感器管理
+                    手环管理
                 </div>
                 <div class="celllist">
-                    店铺传感器信息
+                    店铺手环信息
                 </div>
             </div>
             <div class="container">
@@ -159,26 +159,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- 删除提示框 -->
-            <!-- <el-dialog title="提示" :visible.sync="delVisible" width="300px"
-                    center
-            >
-                <el-form ref="form" :model="form" label-width="50px">
-                    <el-form-item label="手环">
-                        <div v-model="form.bracelet_id">
-                            {{ form.bracelet_id }}
-                        </div>
-                    </el-form-item>
-                </el-form>
-                <div class="del-dialog-cnt">
-                    删除不可恢复，是否确定删除？
-                </div>
-                <span slot="footer" class="dialog-footer">
-                    <el-button @click="delVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="deleteRow">确 定</el-button>
-                </span>
-            </el-dialog> -->
             <div class="bindlog" v-if="delVisible">
                 <div class="unbindbox">
                     <div class="ubdup">
@@ -215,8 +195,8 @@ export default {
     name: 'shopbind',
     data () {
         return {
-            // localhost: 'http://bg.linkfeeling.cn',
-            localhost: 'http://test.linkfeeling.cn',
+            localhost: 'http://bg.linkfeeling.cn',
+            // localhost: 'http://test.linkfeeling.cn',
             // url: './static/vuetable.json',
             url: 'http://bg.linkfeeling.cn/api/platform/bracelet/data',
             tableData: [],

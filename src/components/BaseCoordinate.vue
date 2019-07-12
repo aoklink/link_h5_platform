@@ -342,8 +342,8 @@ export default {
     name: 'BaseXy',
     data () {
         return {
-            // localhost: 'http://bg.linkfeeling.cn',
-            localhost: 'http://test.linkfeeling.cn',
+            localhost: 'http://bg.linkfeeling.cn',
+            // localhost: 'http://test.linkfeeling.cn',
             // url: './static/vuetable.json',
             url: 'http://bg.linkfeeling.cn/api/platform/bracelet/data',
             tableData: [],
