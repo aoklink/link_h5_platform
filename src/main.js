@@ -11,8 +11,11 @@ import './assets/form-upload-img-item.css';
 import axios from 'axios';
 import Qs from 'qs';
 
+axios.defaults.withCredentials=true //让ajax携带cookie
+
 Vue.prototype.$axios = axios;
 Vue.prototype.$qs = Qs;
+
 
 Vue.use(ElementUI);
 

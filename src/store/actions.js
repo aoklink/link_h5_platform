@@ -159,5 +159,9 @@ export default {
     async [types.UPDATE_GYM_COACH_BY_ID] (_, payload) {
         let result = await nets.gymCoachUpdate(payload);
         return result;
+    },
+    async [types.LIST_GYM_PLAY_COACH] (_, payload) {
+        let result = await nets.gymPlayCoachList(payload);
+        return result;
     }
 };

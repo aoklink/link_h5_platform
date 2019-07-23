@@ -188,3 +188,14 @@ export function gymInfoUpdate (payload) {
 export function gymInfoDelete (payload) {
     return wrapAjaxToPromise(axios.post(api.GYM_INFO_DELETE, payload));
 }
+
+export function gymInfoTestList (payload) {
+    return wrapAjaxToPromise(axios.post(api.GYM_INFO_TEST_LIST, payload));
+}
+
+// export function gymInfoListAll (payload) {
+//     return wrapAjaxToPromise(axios.post(api.GYM_INFO_LIST_ALL, payload));
+// }
+export function gymPlayCoachList (payload) {
+    return wrapAjaxToPromise(axios.post(api.GYM_PLAY_COACH_LIST, payload));
+}

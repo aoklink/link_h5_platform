@@ -24,9 +24,9 @@
             :key="item.value" :to="{path:item.path,query:{item:index}}"
             :class="{'menu-item':ind == index}"
             @click.native="changeBgc(index)"  class="menu-hidden"
-            v-show="item.kk==0 || item.gg==true"
+            v-show="item.vv==0 || item.gg==true"
             > 
-            <img :src="item.img" v-show="item.kk==0">
+            <img :src="item.img" v-show="item.vv==0">
             {{item.label}}
             <span class="spaa" v-show="item.kk==1"></span>
             <span class="click-area" @click="scal" v-show="item.kk==0">
@@ -45,10 +45,11 @@ export default {
             // active: 0,
             // hidden: false,
             list: [
-                {path:'/',label:'店铺管理',img: require('../assets/icon1.png'),kk:0},
-                {path:'/ShopCoordinate',label:'坐标设置',kk:1,gg:true},
-                {path:'/ShopSensor',label:'传感器管理',kk:1,gg:true},
-                {path:'/ShopBind',label:'手环管理',kk:1,gg:true}
+                {path:'/',label:'店铺管理',img: require('../assets/icon1.png'),kk:0,vv:0},
+                {path:'/ShopCoordinate',label:'坐标设置',kk:1,gg:true,vv:1},
+                {path:'/ShopSensor',label:'传感器管理',kk:1,gg:true,vv:1},
+                {path:'/ShopBind',label:'手环管理',kk:1,gg:true,vv:1},
+                {path:'/ShopTest',label:'试用管理',kk:1,gg:true,vv:0,img: require('../assets/icon1.png')},
             ],
             ind: '0',
             hidden: 'false'
@@ -119,6 +120,7 @@ export default {
         width: 100%;
         text-decoration:none;
         box-sizing: border-box;
+        height: 1.39rem;
     }
     .menu-hidden img{
         display: inline-block;
@@ -136,6 +138,7 @@ export default {
         color:rgba(60,68,86,1);
         line-height:1.39rem;
         text-align: left;
+        height: 1.39rem;
     }
     .menu-item img{
         display: inline-block;

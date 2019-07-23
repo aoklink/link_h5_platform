@@ -196,7 +196,7 @@ export default {
     data () {
         return {
             localhost: 'http://bg.linkfeeling.cn',
-            // localhost: 'http://test.linkfeeling.cn',
+            localhost: 'http://test.linkfeeling.cn',
             // url: './static/vuetable.json',
             url: 'http://bg.linkfeeling.cn/api/platform/bracelet/data',
             tableData: [],
@@ -576,7 +576,7 @@ export default {
         color:rgba(90,98,134,1);
     }
     .el-table .cell, .el-table th div, .el-table--border td:first-child .cell, .el-table--border th:first-child .cell{
-        padding-left: 30px;
+        /* padding-left: 30px; */
 
         box-sizing: border-box;
     }

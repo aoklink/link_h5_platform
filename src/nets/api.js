@@ -1,6 +1,6 @@
 // const PREFIX = process.env.NODE_ENV === 'production' ? 'http://www.linkfeeling.cn' : 'http://www.linkfeeling.cn';
-const PREFIX = process.env.NODE_ENV === 'production' ? 'http://bg.linkfeeling.cn' : 'http://bg.linkfeeling.cn';
-// const PREFIX = process.env.NODE_ENV === 'production' ? 'http://test.linkfeeling.cn' : 'http://test.linkfeeling.cn';
+// const PREFIX = process.env.NODE_ENV === 'production' ? 'http://bg.linkfeeling.cn' : 'http://bg.linkfeeling.cn';
+const PREFIX = process.env.NODE_ENV === 'production' ? 'http://test.linkfeeling.cn' : 'http://test.linkfeeling.cn';
 
 export const LOGIN = `${PREFIX}/api/account/platform/login`;
 export const GET_OSS_SESSION = `http://oss.linkfeeling.cn/access_callback`;
@@ -47,3 +47,7 @@ export const GYM_INFO_LIST_ALL = `${PREFIX}/api/platform/gym_info/list_all`;
 export const GYM_INFO_UPDATE_ME = `${PREFIX}/api/platform/gym_info/update_me`;
 export const GYM_INFO_UPDATE = `${PREFIX}/api/platform/gym_info/update`;
 export const GYM_INFO_DELETE = `${PREFIX}/api/platform/gym_info/delete`;
+
+export const GYM_INFO_TEST_LIST = `${PREFIX}/api/platform/web/application/info/list`;
+// export const GYM_INFO_LIST_ALL = `${PREFIX}/api/platform/gym_info/list_all`;
+export const GYM_PLAY_COACH_LIST = `${PREFIX}/api/platform/web/application/info/list`;

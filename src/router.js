@@ -8,6 +8,7 @@ import ShopCoordinate from './components/ShopCoordinate.vue';
 import BaseCoordinate from './components/BaseCoordinate.vue';
 import ShopSensor from './components/ShopSensor.vue';
 import BaseSensor from './components/BaseSensor.vue';
+import ShopTest from './components/ShopTest.vue';
 
 import {
     isLogin
@@ -91,6 +92,16 @@ const router = new Router({
         path: '/BaseSensor',
         component: BaseSensor,
         displayName: '店铺传感器信息',
+        meta: {
+            requiresAuth: true,
+            keepAlive: true
+        },
+    },
+    {
+        name: 'shoptest',
+        path: '/ShopTest',
+        component: ShopTest,
+        displayName: '试用管理',
         meta: {
             requiresAuth: true,
             keepAlive: true
