@@ -20,21 +20,21 @@
             <img src="../assets/icon1.png">
             账户管理
         </div> -->
-        <router-link v-for="(item,index) in list" 
-            :key="item.value" :to="{path:item.path,query:{item:index}}"
-            :class="{'menu-item':ind == index}"
-            @click.native="changeBgc(index)"  class="menu-hidden"
-            v-show="item.vv==0 || item.gg==true"
-            > 
-            <img :src="item.img" v-show="item.vv==0">
-            {{item.label}}
-            <span class="spaa" v-show="item.kk==1"></span>
-            <span class="click-area" @click="scal" v-show="item.kk==0">
+        <router-link v-for="(item,index) in list"
+                     v-show="item.vv==0 || item.gg==true" :key="item.value"
+                     :to="{path:item.path,query:{item:index}}"
+                     :class="{'menu-item':ind == index}" class="menu-hidden"
+                     @click.native="changeBgc(index)"
+        >
+            <img v-show="item.vv==0" :src="item.img">
+            {{ item.label }}
+            <span v-show="item.kk==1" class="spaa" />
+            <span v-show="item.kk==0" class="click-area" @click="scal">
                 <svg width="8px" height="8px" class="svg">
-                    <polygon points="0,0 8,0 4,8" style="fill:#000;stroke:#000;stroke-width:1" /> 
+                    <polygon points="0,0 8,0 4,8" style="fill:#000;stroke:#000;stroke-width:1" />
                 </svg>
             </span>
-        </router-link> 
+        </router-link>
     </div>
 </template>
 
@@ -45,15 +45,22 @@ export default {
             // active: 0,
             // hidden: false,
             list: [
-                {path:'/',label:'店铺管理',img: require('../assets/icon1.png'),kk:0,vv:0},
-                {path:'/ShopCoordinate',label:'坐标设置',kk:1,gg:true,vv:1},
-                {path:'/ShopSensor',label:'传感器管理',kk:1,gg:true,vv:1},
-                {path:'/ShopBind',label:'手环管理',kk:1,gg:true,vv:1},
-                {path:'/ShopTest',label:'试用管理',kk:1,gg:true,vv:0,img: require('../assets/icon1.png')},
+                {path: '/', label: '店铺管理', img: require('../assets/icon1.png'), kk: 0, vv: 0},
+                {path: '/ShopCoordinate', label: '器械配置', kk: 1, gg: true, vv: 1},
+                {path: '/ShopSensor', label: '传感器管理', kk: 1, gg: true, vv: 1},
+                {path: '/ShopBind', label: '手环管理', kk: 1, gg: true, vv: 1},
+                {path: '/ShopTest', label: '试用管理', kk: 1, gg: true, vv: 0, img: require('../assets/icon1.png')}
             ],
             ind: '0',
             hidden: 'false'
         };
+    },
+    mounted () {
+        if (this.$route.query.item) {
+            this.ind = this.$route.query.item;
+        } else {
+            this.ind = 0;
+        }
     },
     methods: {
         // changeRouter (data) {
@@ -73,26 +80,19 @@ export default {
         //         this.$router.push({path: '/AccountManagement'});
         //     }
         //     this.active = data;
-        //},
+        // },
         // scal () {
         //     this.hidden = !this.hidden
         // }
-        changeBgc(index){
+        changeBgc (index) {
             this.ind = index;
         },
         scal () {
-            for(var i=0;i<this.list.length;i++){
-                if(this.list[i].gg == true || this.list[i].gg ==false){
-                   this.list[i].gg  = !this.list[i].gg 
+            for (var i = 0; i < this.list.length; i++) {
+                if (this.list[i].gg == true || this.list[i].gg == false) {
+                    this.list[i].gg = !this.list[i].gg;
                 }
             }
-        }
-    },
-    mounted(){
-        if(this.$route.query.item){
-            this.ind = this.$route.query.item;
-        }else{
-            this.ind = 0;
         }
     }
 };

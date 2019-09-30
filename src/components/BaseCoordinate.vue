@@ -3,19 +3,23 @@
         <div class="table ttbox">
             <div class="crumbs">
                 <div class="oo">
-                    {{shopname}}坐标管理
+                    {{ shopname }}坐标管理
                 </div>
                 <div class="celllist">
                     坐标列表
-                    <div @click="yhhy" class="addccb">
-                                        添加器械
-                                        <svg width="14px" height="14px" class="svgg">
-                                            <line x1="7" y1="0" x2="7" y2="14"
-                    style="stroke:#888EA7;stroke-width:1"/>
-                                            <line x1="0" y1="7" x2="14" y2="7"
-                    style="stroke:#888EA7;stroke-width:1"/>
-                                        </svg>
-                                    </div>
+                    <div class="addccb" @click="addDevice">
+                        添加器械
+                        <svg width="14px" height="14px" class="svgg">
+                            <line x1="7" y1="0" x2="7"
+                                  y2="14"
+                                  style="stroke:#888EA7;stroke-width:1"
+                            />
+                            <line x1="0" y1="7" x2="14"
+                                  y2="7"
+                                  style="stroke:#888EA7;stroke-width:1"
+                            />
+                        </svg>
+                    </div>
                 </div>
             </div>
             <div class="container">
@@ -30,14 +34,14 @@
                     <el-button type="primary" icon="search" @click="tadd">添加手环</el-button>
                 </div> -->
                 <el-table ref="multipleTable" :data="tableData" border
-                        class="table" @selection-change="handleSelectionChange"
+                          class="table" @selection-change="handleSelectionChange"
                 >
                     <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
-                    <el-table-column prop="number" label="编号" 
-                                    style="color: red !important"
+                    <el-table-column prop="number" label="编号"
+                                     style="color: red !important"
                     />
                     <el-table-column prop="area_name" label="器械名称"
-                                    style="color: red !important"
+                                     style="color: red !important"
                     />
                     <el-table-column prop="device_name" label="器械类型">
                         <template slot-scope="scope">
@@ -47,10 +51,10 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="one_cdn_x" label="坐标" width=400>
+                    <el-table-column prop="one_cdn_x" label="坐标" width="400">
                         <template slot-scope="scope">
                             <div class="hyyn">
-                                {{ tableData[scope.$index].one_cdn_x+','+tableData[scope.$index].one_cdn_y+'&nbsp;&nbsp;&nbsp;&nbsp;'+tableData[scope.$index].two_cdn_x+','+tableData[scope.$index].two_cdn_y+'&nbsp;&nbsp;&nbsp;&nbsp;'+tableData[scope.$index].thr_cdn_x+','+tableData[scope.$index].thr_cdn_y+'&nbsp;&nbsp;&nbsp;&nbsp;'+tableData[scope.$index].four_cdn_x+','+tableData[scope.$index].four_cdn_y}}
+                                {{ tableData[scope.$index].one_cdn_x+','+tableData[scope.$index].one_cdn_y+'&nbsp;&nbsp;&nbsp;&nbsp;'+tableData[scope.$index].two_cdn_x+','+tableData[scope.$index].two_cdn_y+'&nbsp;&nbsp;&nbsp;&nbsp;'+tableData[scope.$index].thr_cdn_x+','+tableData[scope.$index].thr_cdn_y+'&nbsp;&nbsp;&nbsp;&nbsp;'+tableData[scope.$index].four_cdn_x+','+tableData[scope.$index].four_cdn_y }}
                             </div>
                         </template>
                     </el-table-column>
@@ -63,14 +67,16 @@
                         </template>
                     </el-table-column>
                     <el-table-column label="操作" align="center"
-                                    prop="status"
-                                    width=200
+                                     prop="status"
+                                     width="200"
                     >
                         <template slot-scope="scope">
                             <div class="cc" type="text" @click="handleEdit(scope.$index,tableData[scope.$index].id)">
                                 编辑
                             </div>
-                            <div class="ee" type="text"  @click="handleDelete(scope.$index, scope.row, tableData[scope.$index].id)">删除</div>
+                            <div class="ee" type="text" @click="handleDelete(scope.$index, scope.row, tableData[scope.$index].id)">
+                                删除
+                            </div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -81,25 +87,34 @@
             </div>
 
             <!-- 解绑弹出框 -->
-            <div class="bindlog" v-if="unBindVisible">
+            <div v-if="unBindVisible" class="bindlog">
                 <div class="unbindbox">
                     <div class="ubdup">
-                        <div>解除绑定
-                            <span></span>
+                        <div>
+                            解除绑定
+                            <span />
                             <span @click="unBindVisible=false">
                                 <svg width="10px" height="10px" class="svg">
-                                    <line x1="0" y1="0" x2="10" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
-                                    <line x1="10" y1="0" x2="0" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
+                                    <line x1="0" y1="0" x2="10"
+                                          y2="10"
+                                          style="stroke:#888EA7;stroke-width:1"
+                                    />
+                                    <line x1="10" y1="0" x2="0"
+                                          y2="10"
+                                          style="stroke:#888EA7;stroke-width:1"
+                                    />
                                 </svg>
                             </span>
                         </div>
                     </div>
                     <div class="ubdmd">
-                        <span class="unce"></span>
-                        <div class="ubdta">是否确认解除手环绑定？</div>
-                        <div class="ubdtb">手环解除绑定后，将结束本次运动并生成运动报告</div>
+                        <span class="unce" />
+                        <div class="ubdta">
+                            是否确认解除手环绑定？
+                        </div>
+                        <div class="ubdtb">
+                            手环解除绑定后，将结束本次运动并生成运动报告
+                        </div>
                     </div>
                     <div class="ubdbt">
                         <span @click="unBindVisible=false">取消</span>
@@ -108,17 +123,22 @@
                 </div>
             </div>
             <!-- 添加器械 -->
-            <div class="bindlog" v-if="editVisiblep">
+            <div v-if="editVisiblep" class="bindlog">
                 <div class="bindbox">
                     <div class="bdup">
-                        <div>添加器械
-                            <span></span>
+                        <div>
+                            添加器械
+                            <span />
                             <span @click="editVisiblep=false">
                                 <svg width="10px" height="10px" class="svg">
-                                    <line x1="0" y1="0" x2="10" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
-                                    <line x1="10" y1="0" x2="0" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
+                                    <line x1="0" y1="0" x2="10"
+                                          y2="10"
+                                          style="stroke:#888EA7;stroke-width:1"
+                                    />
+                                    <line x1="10" y1="0" x2="0"
+                                          y2="10"
+                                          style="stroke:#888EA7;stroke-width:1"
+                                    />
                                 </svg>
                             </span>
                         </div>
@@ -127,42 +147,62 @@
                         <div class="bdta">
                             <span class="hnha">器械选择</span>
                             <div class="xcbox">
-                                <el-select v-model="value" placeholder="选择类型"  @change="chickvalue">
+                                <el-select v-model="chooseType" placeholder="选择类型" @change="chooseDeviceFunc">
                                     <el-option
-                                    v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
-                                    v-model="item.value">
-                                    </el-option>
+                                        v-for="item in diclist"
+                                        :key="item.category"
+                                        v-model="item.category"
+                                        :label="item.category"
+                                        :value="item.category"
+                                    />
                                 </el-select>
                             </div>
                             <div class="ccbox">
-                                <el-select v-model="valuea" placeholder="选择器械">
+                                <el-select v-model="chooseDevice" placeholder="选择器械">
                                     <el-option
-                                    v-for="item in optiona"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                                    </el-option>
+                                        v-for="item in devicelist"
+                                        :key="item"
+                                        :label="item"
+                                        :value="item"
+                                    />
                                 </el-select>
                             </div>
                         </div>
                         <div class="bdta">
                             <span class="hnha">坐标1</span>
-                            <div class="hnhc">坐标2</div>
-                            <input class="hnhb" type="text" v-model="form.ax" placeholder="X">
-                            <input class="hnhd" type="text" v-model="form.ay" placeholder="Y">
-                            <input class="hnhe" type="text" v-model="form.bx" placeholder="X">
-                            <input class="hnhf" type="text" v-model="form.by" placeholder="Y">
+                            <div class="hnhc">
+                                坐标2
+                            </div>
+                            <input v-model="form.ax" class="hnhb" type="text"
+                                   placeholder="X"
+                            >
+                            <input v-model="form.ay" class="hnhd" type="text"
+                                   placeholder="Y"
+                            >
+                            <input v-model="form.bx" class="hnhe" type="text"
+                                   placeholder="X"
+                            >
+                            <input v-model="form.by" class="hnhf" type="text"
+                                   placeholder="Y"
+                            >
                         </div>
                         <div class="bdta">
                             <span class="hnha">坐标3</span>
-                            <div class="hnhc">坐标4</div>
-                            <input class="hnhb" type="text" v-model="form.cx" placeholder="X">
-                            <input class="hnhd" type="text" v-model="form.cy" placeholder="Y">
-                            <input class="hnhe" type="text" v-model="form.dx" placeholder="X">
-                            <input class="hnhf" type="text" v-model="form.dy" placeholder="Y">
+                            <div class="hnhc">
+                                坐标4
+                            </div>
+                            <input v-model="form.cx" class="hnhb" type="text"
+                                   placeholder="X"
+                            >
+                            <input v-model="form.cy" class="hnhd" type="text"
+                                   placeholder="Y"
+                            >
+                            <input v-model="form.dx" class="hnhe" type="text"
+                                   placeholder="X"
+                            >
+                            <input v-model="form.dy" class="hnhf" type="text"
+                                   placeholder="Y"
+                            >
                         </div>
                         <!-- <div class="bdta bdtb">
                             <span>配置uwb</span>
@@ -170,7 +210,9 @@
                         </div> -->
                         <div class="bdta bdtb">
                             <span class="hnha">备注</span>
-                            <input class="inuu" type="text" v-model="form.txt" placeholder="请输入备注">
+                            <input v-model="form.txt" class="inuu" type="text"
+                                   placeholder="请输入备注"
+                            >
                         </div>
                     </div>
                     <div class="bdbt">
@@ -180,17 +222,22 @@
                 </div>
             </div>
             <!-- 绑定弹出框 -->
-            <div class="bindlog" v-if="editVisible">
+            <div v-if="editVisible" class="bindlog">
                 <div class="bindbox">
                     <div class="bdup">
-                        <div>添加器械
-                            <span></span>
+                        <div>
+                            编辑器械
+                            <span />
                             <span @click="editVisible=false">
                                 <svg width="10px" height="10px" class="svg">
-                                    <line x1="0" y1="0" x2="10" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
-                                    <line x1="10" y1="0" x2="0" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
+                                    <line x1="0" y1="0" x2="10"
+                                          y2="10"
+                                          style="stroke:#888EA7;stroke-width:1"
+                                    />
+                                    <line x1="10" y1="0" x2="0"
+                                          y2="10"
+                                          style="stroke:#888EA7;stroke-width:1"
+                                    />
                                 </svg>
                             </span>
                         </div>
@@ -199,42 +246,62 @@
                         <div class="bdta">
                             <span class="hnha">器械选择</span>
                             <div class="xcbox">
-                                <el-select v-model="value" placeholder="选择类型"  @change="chickvalue">
+                                <el-select v-model="chooseType" placeholder="选择类型" @change="chooseDeviceFunc">
                                     <el-option
-                                    v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
-                                    v-model="item.value">
-                                    </el-option>
+                                        v-for="item in diclist"
+                                        :key="item.category"
+                                        v-model="item.category"
+                                        :label="item.category"
+                                        :value="item.category"
+                                    />
                                 </el-select>
                             </div>
                             <div class="ccbox">
-                                <el-select v-model="valuea" placeholder="选择器械">
+                                <el-select v-model="chooseDevice" placeholder="选择器械">
                                     <el-option
-                                    v-for="item in optiona"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                                    </el-option>
+                                        v-for="item in devicelist"
+                                        :key="item"
+                                        :label="item"
+                                        :value="item"
+                                    />
                                 </el-select>
                             </div>
                         </div>
                         <div class="bdta">
                             <span class="hnha">坐标1</span>
-                            <div class="hnhc">坐标2</div>
-                            <input class="hnhb" type="text" v-model="form.ax" placeholder="X">
-                            <input class="hnhd" type="text" v-model="form.ay" placeholder="Y">
-                            <input class="hnhe" type="text" v-model="form.bx" placeholder="X">
-                            <input class="hnhf" type="text" v-model="form.by" placeholder="Y">
+                            <div class="hnhc">
+                                坐标2
+                            </div>
+                            <input v-model="form.ax" class="hnhb" type="text"
+                                   placeholder="X"
+                            >
+                            <input v-model="form.ay" class="hnhd" type="text"
+                                   placeholder="Y"
+                            >
+                            <input v-model="form.bx" class="hnhe" type="text"
+                                   placeholder="X"
+                            >
+                            <input v-model="form.by" class="hnhf" type="text"
+                                   placeholder="Y"
+                            >
                         </div>
                         <div class="bdta">
                             <span class="hnha">坐标3</span>
-                            <div class="hnhc">坐标4</div>
-                            <input class="hnhb" type="text" v-model="form.cx" placeholder="X">
-                            <input class="hnhd" type="text" v-model="form.cy" placeholder="Y">
-                            <input class="hnhe" type="text" v-model="form.dx" placeholder="X">
-                            <input class="hnhf" type="text" v-model="form.dy" placeholder="Y">
+                            <div class="hnhc">
+                                坐标4
+                            </div>
+                            <input v-model="form.cx" class="hnhb" type="text"
+                                   placeholder="X"
+                            >
+                            <input v-model="form.cy" class="hnhd" type="text"
+                                   placeholder="Y"
+                            >
+                            <input v-model="form.dx" class="hnhe" type="text"
+                                   placeholder="X"
+                            >
+                            <input v-model="form.dy" class="hnhf" type="text"
+                                   placeholder="Y"
+                            >
                         </div>
                         <!-- <div class="bdta bdtb">
                             <span>配置uwb</span>
@@ -242,7 +309,9 @@
                         </div> -->
                         <div class="bdta bdtb">
                             <span class="hnha">备注</span>
-                            <input class="inuu" type="text" v-model="form.txt" placeholder="请输入备注">
+                            <input v-model="form.txt" class="inuu" type="text"
+                                   placeholder="请输入备注"
+                            >
                         </div>
                     </div>
                     <div class="bdbt">
@@ -253,25 +322,34 @@
             </div>
 
             <!-- 删除提示框 -->
-            <div class="bindlog" v-if="delVisiblea">
+            <div v-if="delVisiblea" class="bindlog">
                 <div class="unbindbox">
                     <div class="ubdup">
-                        <div>删除器械
-                            <span></span>
+                        <div>
+                            删除器械
+                            <span />
                             <span @click="delVisiblea=false">
                                 <svg width="10px" height="10px" class="svg">
-                                    <line x1="0" y1="0" x2="10" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
-                                    <line x1="10" y1="0" x2="0" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
+                                    <line x1="0" y1="0" x2="10"
+                                          y2="10"
+                                          style="stroke:#888EA7;stroke-width:1"
+                                    />
+                                    <line x1="10" y1="0" x2="0"
+                                          y2="10"
+                                          style="stroke:#888EA7;stroke-width:1"
+                                    />
                                 </svg>
                             </span>
                         </div>
                     </div>
                     <div class="ubdmd" :model="form">
-                        <span class="dece"></span>
-                        <div class="ubdta">是否确认删除器械</div>
-                        <div class="debbp">{{ form.device_name }}</div>
+                        <span class="dece" />
+                        <div class="ubdta">
+                            是否确认删除器械
+                        </div>
+                        <div class="debbp">
+                            {{ form.device_name }}
+                        </div>
                     </div>
                     <div class="ubdbt" :model="form">
                         <span @click="delVisiblea=false">取消</span>
@@ -280,25 +358,34 @@
                 </div>
             </div>
             <!-- lll -->
-            <div class="bindlog" v-if="delVisible">
+            <div v-if="delVisible" class="bindlog">
                 <div class="unbindbox">
                     <div class="ubdup">
-                        <div>删除器械
-                            <span></span>
+                        <div>
+                            删除器械
+                            <span />
                             <span @click="delVisible=false">
                                 <svg width="10px" height="10px" class="svg">
-                                    <line x1="0" y1="0" x2="10" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
-                                    <line x1="10" y1="0" x2="0" y2="10"
-            style="stroke:#888EA7;stroke-width:1"/>
+                                    <line x1="0" y1="0" x2="10"
+                                          y2="10"
+                                          style="stroke:#888EA7;stroke-width:1"
+                                    />
+                                    <line x1="10" y1="0" x2="0"
+                                          y2="10"
+                                          style="stroke:#888EA7;stroke-width:1"
+                                    />
                                 </svg>
                             </span>
                         </div>
                     </div>
                     <div class="ubdmd" :model="form">
-                        <span class="dece"></span>
-                        <div class="ubdta">确认删除？删除后无法恢复</div>
-                        <div class="debbp">{{ form.device_name }}</div>
+                        <span class="dece" />
+                        <div class="ubdta">
+                            确认删除？删除后无法恢复
+                        </div>
+                        <div class="debbp">
+                            {{ form.device_name }}
+                        </div>
                     </div>
                     <div class="ubdbt" :model="form">
                         <span @click="delVisible=false">取消</span>
@@ -336,7 +423,7 @@
 </template>
 
 <script>
-import global from '../components/Global'
+import global from '../components/Global';
 // this.$axios.defaults.headers.post['Content-Type'] = 'application/json'
 export default {
     name: 'BaseXy',
@@ -364,6 +451,8 @@ export default {
             delVisiblea: false,
             taddcellnumber: '',
             shopname: '',
+            chooseType: '',
+            chooseDevice: '',
             form: {
                 user_name: '',
                 date: '',
@@ -385,116 +474,65 @@ export default {
                 txt: ''
             },
             idx: -1,
-            options: [],
-            optiona: [],
-            value: '',
-            valuea: '',
+            diclist: [],
+            devicelist: []
         };
     },
     computed: {
-        // data () {
-        //     return this.tableData.filter((d) => {
-        //         let is_del = false;
-        //         for (let i = 0; i < this.del_list.length; i++) {
-        //             if (d.id === this.del_list[i].id) {
-        //                 is_del = true;
-        //                 break;
-        //             }
-        //         }
-        //         if (!is_del) {
-        //             console.log(d);
-        //             if (d.id.indexOf(this.select_cate) > -1) {
-        //                 return d;
-        //             }
-        //         }
-        //     });
-        // }
     },
     created () {
         this.shopname = this.$route.query.inquiry;
         global.gym_name = this.$route.query.gym;
-        localStorage.setItem("gym_name",this.$route.query.gym);
+        localStorage.setItem('gym_name', this.$route.query.gym);
         this.getData();
+        this.initData();
     },
     mounted () {
-
     },
     updated () {
         console.log(this.del_list);
     },
     methods: {
-        yhhy () {
-            this.editVisiblep = true
-            this.form.ax = ''
-            this.form.ay = ''
-            this.form.bx = ''
-            this.form.by = ''
-            this.form.cx = ''
-            this.form.cy = ''
-            this.form.dx = ''
-            this.form.dy = ''
-            this.value = ''
-            this.valuea = ''
-            this.form.txt = ''
+        initData () {
+            this.form.ax = '';
+            this.form.ay = '';
+            this.form.bx = '';
+            this.form.by = '';
+            this.form.cx = '';
+            this.form.cy = '';
+            this.form.dx = '';
+            this.form.dy = '';
+            this.form.txt = '';
             let datt = {
-                gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                gym_name: global.gym_name || localStorage.getItem('gym_name'),
                 page: this.cur_page
             };
-            this.$axios.post(this.localhost+'/api/platform/link/coordinate/dic_data', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
+            this.$axios.post(this.localhost + '/api/platform/link/coordinate/dic_data', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
                 .then((res) => {
                     if (res.data.code == 200) {
-                        var opu = []
-                        var oko = []
-                        console.log(res.data.data)
-                        for(var i=0;i<res.data.data.length;i++){
-                            console.log(res.data.data[i].category)
-                            opu.push(res.data.data[i].category)
-                        }
-                        console.log(opu)
-                        var nim
-                        for(var i=0;i<opu.length;i++){
-                            nim = {}
-                            nim.value = opu[i]
-                            nim.label = opu[i]
-                            nim.kk = []
-                            nim.gg = []
-                            oko.push(nim)
-                        }
-                        var oct = []
-                        var ock = []
-                        for(var i=0;i<res.data.data.length;i++){
-                            if(res.data.data[i].category == oko[i].value){
-                                oko[i].kk = res.data.data[i].device_name
-                            }
-                        }
-                        for(var i=0;i<oko.length;i++){
-                            for(var j=0;j<oko[i].kk.length;j++){
-                                nim = {}
-                                nim.value = oko[i].kk[j]
-                                nim.label = oko[i].kk[j]
-                                oko[i].gg.push(nim)
-                            }
-                        }
-                        this.options = oko
-                        console.log(this.options)
+                        this.diclist = res.data.data;
                     }
                 })
                 .catch((res) => {
                     console.log(res);
                 });
         },
-        handleClick () {
-            alert('button click')
+        addDevice () {
+            this.chooseType = '';
+            this.chooseDevice = '';
+            this.devicelist = [];
+            this.form = {};
+            this.editVisiblep = true;
         },
-        chickvalue () {
-            console.log(this.value)
-            for(var i=0;i<this.options.length;i++){
-                if(this.options[i].value == this.value){
-                    this.optiona = this.options[i].gg
+        chooseDeviceFunc (item) {
+            this.chooseType = item;
+            this.chooseDevice = '';
+            for (var i = 0; i < this.diclist.length; i++) {
+                if (this.diclist[i].category == item) {
+                    this.devicelist = this.diclist[i].device_name;
+                    break;
                 }
             }
-            console.log(this.optiona)
-            console.log(this.valuea)
         },
         // 分页导航
         handleCurrentChange (val) {
@@ -537,87 +575,37 @@ export default {
             //     this.url = '/ms/table/list';
             // };
             let datt = {
-                gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                gym_name: global.gym_name || localStorage.getItem('gym_name'),
                 page: this.cur_page,
                 page_size: 50
             };
             console.log(this);
-            this.$axios.post(this.localhost+'/api/platform/link/coordinate/list', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}}
+            this.$axios.post(this.localhost + '/api/platform/link/coordinate/list', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}}
             )
                 .then((res) => {
-                    console.log(res.data.data);
-                    var xbox = res.data.data;
-                    console.log(xbox);
-                    var aDiv = [];
-                    for (var i = 0; i < xbox.length; i++) {
-                        aDiv.push(xbox[i]);
-                    }
-                    aDiv.sort(function (a, b) { return a.id - b.id; });
-                    console.log(aDiv);
-                    this.tableData = aDiv;
-                    // console.log(this.tableData.filter((d) => {
-                    //     let is_del = false;
-                    //     for (let i = 0; i < this.del_list.length; i++) {
-                    //         if (d.id === this.del_list[i].id) {
-                    //             is_del = true;
-                    //             break;
-                    //         }
-                    //     }
-                    //     if (!is_del) {
-                    //         console.log(d);
-                    //         if (d.id.indexOf(this.select_cate) > -1) {
-                    //             return d;
-                    //         }
-                    //     }
-                    // }));
+                    var data = res.data.data;
+                    console.log(data);
+                    data.sort(function (a, b) { return a.id - b.id; });
+                    this.tableData = data;
                 })
                 .catch((res) => {
                     console.log(res);
                 });
         },
-        yzy () {
-            console.log('yzy');
-        },
-        // 添加手环请求接口
-        // getadd() {
-        //     let that =this;
-        //     let datt = {
-        //         gym_name: 'link_office',
-        //         bracelet_id: this.taddcellnumber,
-        //         user_name: '',
-        //         phone_num: '',
-        //         bind_time: '',
-        //         page: this.cur_page
-        //         }
-        //         console.log("add1")
-        //     this.$axios.post('https://ll.linkfeeling.cn/api/platform/bracelet/add',JSON.stringify(datt))
-        //     .then((res) => {
-        //         console.log(res.data.code)
-        //         if(res.data.code == 200){
-        //             that.getData();
-        //         }else{
-        //             console.log(res.data)
-        //         }
-        //     })
-        //     .catch((res) => {
-        //         console.log(res)
-        //     })
-        // },
         // 添加器械请求接口
         saveAdd () {
-            console.log(this.idt)
             let that = this;
-            console.log(this.form.ax.length)
-            if(this.form.ax.length == 0 || this.form.ay.length == 0 || this.form.bx.length == 0 || this.form.by.length == 0 || this.form.cx.length == 0 || this.form.cy.length == 0 || this.form.dx.length == 0 || this.form.dy.length == 0){
+            console.log(this.form.ax.length);
+            if (this.form.ax.length == 0 || this.form.ay.length == 0 || this.form.bx.length == 0 || this.form.by.length == 0 || this.form.cx.length == 0 || this.form.cy.length == 0 || this.form.dx.length == 0 || this.form.dy.length == 0) {
                 that.$message.error(`请填写坐标`);
                 return;
             }
-            if(this.value.length == 0 || this.valuea.length == 0){
+            if (this.chooseType.length == 0 || this.chooseDevice.length == 0) {
                 that.$message.error(`请选择类型或器械`);
                 return;
             }
             let datt = {
-                gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                gym_name: global.gym_name || localStorage.getItem('gym_name'),
                 one_cdn_x: this.form.ax,
                 one_cdn_y: this.form.ay,
                 two_cdn_x: this.form.bx,
@@ -627,8 +615,8 @@ export default {
                 four_cdn_x: this.form.dx,
                 four_cdn_y: this.form.dy,
                 remark: this.form.txt,
-                device_category: this.value,
-                device_name: this.valuea,
+                device_category: this.chooseType,
+                device_name: this.chooseDevice,
                 page: this.cur_page,
                 id: this.idt
             };
@@ -652,10 +640,10 @@ export default {
         },
         // 编辑器械请求接口
         getedit () {
-            console.log(this.idt)
+            console.log(this.idt);
             let that = this;
             let datt = {
-                gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                gym_name: global.gym_name || localStorage.getItem('gym_name'),
                 one_cdn_x: this.form.ax,
                 one_cdn_y: this.form.ay,
                 two_cdn_x: this.form.bx,
@@ -665,8 +653,8 @@ export default {
                 four_cdn_x: this.form.dx,
                 four_cdn_y: this.form.dy,
                 remark: this.form.txt,
-                device_category: this.value,
-                device_name: this.valuea,
+                device_category: this.chooseType,
+                device_name: this.chooseDevice,
                 bind_time: Date.parse(new Date()),
                 page: this.cur_page,
                 id: this.idt
@@ -693,7 +681,7 @@ export default {
         getfalseedit () {
             let that = this;
             let datt = {
-                gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                gym_name: global.gym_name || localStorage.getItem('gym_name'),
                 bracelet_id: this.form.bracelet_id,
                 phone_num: this.form.phone_num,
                 unbind_time: Date.parse(new Date()),
@@ -719,12 +707,12 @@ export default {
         getdel () {
             let that = this;
             let datt = {
-                gym_name: global.gym_name || localStorage.getItem("gym_name"),
+                gym_name: global.gym_name || localStorage.getItem('gym_name'),
                 id: this.idt,
                 page: this.cur_page
             };
             console.log('del');
-            this.$axios.post(this.localhost+'/api/platform/link/coordinate/delete', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
+            this.$axios.post(this.localhost + '/api/platform/link/coordinate/delete', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
                 .then((res) => {
                     if (res.data.code == 200) {
                         that.$message.success('删除成功');
@@ -751,48 +739,44 @@ export default {
         handleEdit (index, id) {
             let that = this;
             this.idx = index;
-            this.idt = id
+            this.idt = id;
             const item = this.tableData[index];
             // if (status == 0) {
             this.editVisible = true;
+            that.chooseType = item.device_category;
+            that.chooseDeviceFunc(that.chooseType);
+            that.chooseDevice = item.device_name;
             that.form = {
-                bracelet_id: item.bracelet_id,
-                id: item.id,
-                uwb_id: item.uwb_id,
-                user_name: item.user_name,
-                date: item.date,
-                address: item.address,
-                phone_num: item.phone_num,
-                status: item.status,
-                bind_time: Date.parse(new Date())
+                // bracelet_id: item.bracelet_id,
+                // id: item.id,
+                // uwb_id: item.uwb_id,
+                // user_name: item.user_name,
+                // date: item.date,
+                // address: item.address,
+                // phone_num: item.phone_num,
+                // status: item.status,
+                // bind_time: Date.parse(new Date())
+                ax: item.one_cdn_x,
+                ay: item.one_cdn_y,
+                bx: item.two_cdn_x,
+                by: item.two_cdn_y,
+                cx: item.thr_cdn_x,
+                cy: item.thr_cdn_y,
+                dx: item.four_cdn_x,
+                dy: item.four_cdn_y,
+                txt: item.remark
             };
-            console.log('status = 0');
-            // } else if (status == 1) {
-            //     this.unBindVisible = true;
-            //     that.form = {
-            //         bracelet_id: item.bracelet_id,
-            //         id: item.id,
-            //         user_name: item.user_name,
-            //         date: item.date,
-            //         address: item.address,
-            //         phone_num: item.phone_num,
-            //         status: item.status,
-            //         bind_time: Date.parse(new Date())
-            //     };
-            //     // that.getfalseedit()
-            //     console.log('status = 1');
-            // }
         },
         tadd () {
             this.taddVisible = true;
         },
         handleDelete (index, row, id) {
-            this.idt = id
+            this.idt = id;
             this.idx = index;
             const item = this.tableData[index];
             this.form = {
                 device_name: item.device_name,
-                id: item.id,
+                id: item.id
             };
             this.delVisiblea = true;
         },
@@ -811,7 +795,6 @@ export default {
         },
         // 确定添加
         saveTadd () {
-            console.log('点击添加1');
             this.getadd();
             this.taddVisible = false;
             this.$message.success(`添加第 ${this.idx + 1} 行成功`);
@@ -823,11 +806,6 @@ export default {
         // 确定解绑
         saveUn () {
             this.getfalseedit();
-        },
-        // 确定删除
-        delyzy (cc,uid) {
-            this.delVisiblea = false;
-            this.delVisible = true;
         },
         deleteRow () {
             this.getdel();
@@ -1134,7 +1112,7 @@ export default {
     }
     .bdtb input::-webkit-input-placeholder{
         color: #BFC4D1;
-    } 
+    }
     .ubdta{
         text-align: left;
         text-indent: 49px;
