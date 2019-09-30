@@ -9,6 +9,7 @@ import BaseCoordinate from './components/BaseCoordinate.vue';
 import ShopSensor from './components/ShopSensor.vue';
 import BaseSensor from './components/BaseSensor.vue';
 import ShopTest from './components/ShopTest.vue';
+import DeviceMgr from './components/DeviceMgr';
 
 import {
     isLogin
@@ -55,7 +56,7 @@ const router = new Router({
         meta: {
             requiresAuth: true,
             keepAlive: true
-        },
+        }
     },
     {
         name: 'shopcoordinate',
@@ -75,7 +76,7 @@ const router = new Router({
         meta: {
             requiresAuth: true,
             keepAlive: true
-        },
+        }
     },
     {
         name: 'shopsensor',
@@ -85,7 +86,7 @@ const router = new Router({
         meta: {
             requiresAuth: true,
             keepAlive: true
-        },
+        }
     },
     {
         name: 'basesensor',
@@ -95,7 +96,7 @@ const router = new Router({
         meta: {
             requiresAuth: true,
             keepAlive: true
-        },
+        }
     },
     {
         name: 'shoptest',
@@ -105,7 +106,17 @@ const router = new Router({
         meta: {
             requiresAuth: true,
             keepAlive: true
-        },
+        }
+    },
+    {
+        name: 'deviceMgr',
+        path: '/DeviceMgr',
+        component: DeviceMgr,
+        displayName: '器械管理',
+        meta: {
+            requiresAuth: true,
+            keepAlive: true
+        }
     }
     ]
 });
@@ -121,8 +132,7 @@ router.beforeEach((to, from, next) => {
             });
             return;
         }
-    }else{
-        console.log(2222)
+    } else {
     }
     next();
 });
