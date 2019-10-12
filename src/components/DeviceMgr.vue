@@ -5,7 +5,7 @@
         <div class="oo">器械管理</div>
         <div class="celllist">
           器械配置
-          <div class="addccb" @click="showAddView">
+          <div class="addccb" @click="showAddDeviceView">
             添加器械
             <svg width="14px" height="14px" class="svgg">
               <line x1="7" y1="0" x2="7" y2="14" style="stroke:#888EA7;stroke-width:1" />
@@ -16,27 +16,27 @@
       </div>
       <div class="container">
         <el-table ref="multipleTable" :data="tableData" border class="table">
-          <el-table-column prop="id" label="编号" style="color: red !important" />
+          <el-table-column prop="number" label="编号" style="color: red !important" />
           <el-table-column prop="device_name" label="器械名称" style="color: red !important" />
 
           <el-table-column prop="category" label="器械类型" style="color: red !important" />
-          <!-- <el-table-column prop="remark" label="备注">
+          <el-table-column prop="code" label="字典码">
             <template slot-scope="scope">
-              <div type="text">{{ tableData[scope.$index].remark }}</div>
+              <div type="text">{{ tableData[scope.$index].code }}</div>
             </template>
-          </el-table-column>-->
+          </el-table-column>
           <el-table-column label="操作" align="center" prop="status" width="200">
             <template slot-scope="scope">
               <div
                 class="cc"
                 type="text"
                 @click="editAction(scope.$index,tableData[scope.$index].id)"
-              >编辑</div>
-              <div
+              > {{ tableData[scope.$index].count==0?"添加教程":"编辑教程" }} </div>
+              <!-- <div
                 class="ee"
                 type="text"
                 @click="deleteAction(scope.$index, scope.row, tableData[scope.$index].id)"
-              >删除</div>
+              >删除</div> -->
             </template>
           </el-table-column>
         </el-table>
@@ -50,6 +50,53 @@
         </div>-->
       </div>
       <!-- 添加器械 -->
+      <div v-if="showAdd" class="bindlog">
+        <div class="addbox">
+          <div class="addbox-head">
+            <div>
+              添加器械
+              <span></span>
+              <span @click="showAdd=false">
+                <svg width="10px" height="10px" class="svg">
+                  <line x1="0" y1="0" x2="10" y2="10" style="stroke:#888EA7;stroke-width:1" />
+                  <line x1="10" y1="0" x2="0" y2="10" style="stroke:#888EA7;stroke-width:1" />
+                </svg>
+              </span>
+            </div>
+          </div>
+          <div class="addbox-content">
+            <div class="addbox-content-item"> 
+              <div>器械类型</div> 
+              <div class="">
+                <el-select v-model="chooseType" placeholder="选择类型" >
+                  <el-option 
+                    v-for="item in diclist"
+                    :key="item.category"
+                    v-model="item.category"
+                    :label="item.category"
+                    :value="item.category"
+                  />
+                </el-select>
+              </div> 
+              <div class="">器械名称</div> 
+              <div class="">
+                <input
+                  type="text"
+                  v-model="chooseDevice"
+                  style="height:30px; width: 90%;"
+                  placeholder="请输入器械名称"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="addbox-footer">
+            <span @click="showAdd=false">取消</span>
+            <span @click="saveDeviceAction">添加</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 添加、编辑教程 -->
       <div v-if="showEdit" class="bindlog">
         <div class="bindbox">
           <div class="bdup">
@@ -67,13 +114,15 @@
           </div>
 
           <div class="bdmd">
-            <div class="subTitle">通用信息</div>
-
+            <div class="
+            ">通用信息</div>
             <div class="bdta" style="border:0px;">
               <div class="chooseDevice">
                 <span class="hnha">器械类型</span>
                 <div class="xcbox">
-                  <el-select
+                
+                <span class="">{{chooseType}}</span>
+                  <!-- <el-select
                     v-model="chooseType"
                     placeholder="选择类型"
                     @change="chooseTypeFunc"
@@ -86,38 +135,41 @@
                       :label="item.category"
                       :value="item.category"
                     />
-                  </el-select>
+                  </el-select> -->
                 </div>
               </div>
               <div class="chooseDevice">
                 <span class="hnha">器械名称</span>
                 <div class="xcbox">
-                  <el-select
+
+                <span class="">{{chooseDevice}}</span>
+                  <!-- <el-select
                     v-model="chooseDevice"
                     placeholder="选择器械"
                     v-bind:disabled="!isAdd"
                     @change="chooseDeviceFunc"
                   >
                     <el-option v-for="item in devicelist" :key="item" :label="item" :value="item" />
-                  </el-select>
+                  </el-select> -->
                 </div>
               </div>
             </div>
-            <span class="subTitle">内容信息</span>
+            <span class="
+            ">内容信息</span>
             <div v-for="action in details" class="actionContent">
               <div class="addContent">
                 <div
-                  style=" position: absolute;  right: 0px; width: 80px; height: 80px; top: 20px;"
+                  style=" position: absolute;  right: 0px; width: 30px; height: 30px; top: 20px;"
                 >
-                  <span @click="delActionNameAction(action)">
-                    <svg width="10px" height="10px" class="svg">
-                      <line x1="0" y1="0" x2="10" y2="10" style="stroke:#888EA7;stroke-width:1" />
-                      <line x1="10" y1="0" x2="0" y2="10" style="stroke:#888EA7;stroke-width:1" />
-                    </svg>
-                  </span>
+                  <img
+                    style="width: 100%; "
+                    src="../assets/dele.png"
+                    @click="delActionNameAction(action)"
+                  />
                 </div>
                 <div class="addContentLeft">
-                  <span class="subTitle">训练部位</span>
+                  <span class="
+                  ">训练部位</span>
                   <template>
                     <el-checkbox-group v-model="action.parts">
                       <el-checkbox
@@ -129,25 +181,28 @@
                     </el-checkbox-group>
                   </template>
                   <div class="bordered" style="height:70px">
-                    <span class="subTitle">动作名称</span>
+                    <span class="
+                    ">动作名称</span>
                     <input
                       type="text"
                       v-model="action.type"
-                      style="height:30px; width: 90%; border: 0px;"
+                      style="height:30px; width: 90%; "
                       placeholder="请输入动作名称"
                     />
                   </div>
                   <div class="bordered" style="height:100px">
-                    <span class="subTitle">锻炼建议</span>
+                    <span class="
+                    ">锻炼建议</span>
                     <textarea
                       type="text"
                       v-model="action.recom_text"
-                      style="height:70px; width: 100%; border: 0px;"
+                      style="height:70px; width: 100%;  border: 0px; "
                       placeholder="请输入锻炼建议"
                     />
                   </div>
                   <div class="bordered" style="height:110px">
-                    <span class="subTitle">恢复建议</span>
+                    <span class="
+                    ">恢复建议</span>
                     <textarea
                       type="text"
                       v-model="action.recover_text"
@@ -157,8 +212,14 @@
                   </div>
                 </div>
                 <div class="addContentRight" v-for="video in action.video">
-                  <span class="subTitle">视频封面</span>
+                  <span class="
+                  ">视频封面</span>
                   <upload-img v-model="video.video_pic" @error="onUploadImgError" />
+                  <span
+                    class="picDelete"
+                    @click="removeVideoPicture(video)"
+                    v-if="video.video_pic"
+                  >删除图片</span>
                   <div>{{action.video_url}}</div>
                   <div style="position: relative;">
                     <div class="bordered videoUrl">
@@ -185,7 +246,7 @@
           <div class="bdbt" style="float:left; width: 100%; height: 80px; padding: 20px;">
             <span @click="addActionName">添加动作</span>
             <span @click="showEdit=false">取消</span>
-            <span @click="saveAction" v-if="(isAdd && canAdd) || !isAdd">确定</span>
+            <span @click="saveLearnAction" v-if="(isAdd && canAdd) || !isAdd">确定</span>
           </div>
         </div>
       </div>
@@ -234,6 +295,7 @@ export default {
       cur_page: 1,
       showEdit: false,
       showDelete: false,
+      showAdd: false,
       currentItem: {},
       diclist: [],
       devicelist: [],
@@ -311,6 +373,10 @@ export default {
         }
       });
     },
+    removeVideoPicture(item) {
+      //删除图片
+      item.video_pic = "";
+    },
     delActionNameAction(item) {
       //单个动作删除
       var index = this.details.indexOf(item);
@@ -340,9 +406,13 @@ export default {
         page_size: 100
       };
       this.client.request(datt, "equipment/config/list").then(res => {
-        var data = res.data.data;
+        var data = res.data.data.list;
         data.sort(function(a, b) {
-          return a.id - b.id;
+          return a.code - b.code;
+        });
+        var i = 1; //自增序号
+        data.forEach(v => {
+          v.number = i++;
         });
         this.tableData = data;
       });
@@ -375,7 +445,10 @@ export default {
             d.parts = [];
             if (d.sec_category) {
               d.sec_category.forEach(v => {
-                d.parts.push(v.name);
+                if (v.name == "其他") {
+                } else {
+                  d.parts.push(v.name); //已选部位
+                }
               });
             }
             if (!d.video || d.video.length == 0) {
@@ -392,7 +465,14 @@ export default {
       //添加动作
       this.details.push({ parts: [], video: [{ video_title: "" }] });
     },
-    showAddView() {
+    showAddDeviceView() {
+      //添加教程
+      this.showAdd = true;
+      this.chooseType = "";
+      this.chooseDevice = "";
+    },
+    showAddLearnView() {
+      //添加教程
       this.devicelist = [];
       this.isAdd = true;
       this.deleteDetails = [];
@@ -402,37 +482,69 @@ export default {
       this.chooseDevice = "";
       this.details = [{ parts: [], video: [{ video_title: "" }] }];
     },
-    saveAction() {
+    saveDeviceAction() {
+      //添加教程
+      var that = this;
+      if (this.chooseType.length == 0 || this.chooseDevice.length == 0) {
+        that.$message.error(`请选择类型或器械`);
+        return;
+      }
+      var datt = {
+        category: this.chooseType,
+        device_name: this.chooseDevice
+      };
+      this.client.request(datt, "equipment/config/device/add").then(res => {
+        if (res.data.code == 200) {
+          that.showAdd = false;
+          that.$message.success(`操作成功`);
+          that.getDic();
+          that.getData();
+        } else {
+          console.log('msg: ',res.data.msg);
+          that.$message.error(res.data.msg || `操作失败`);
+        }
+      });
+    },
+    saveLearnAction() {
       //教程-保存
       var that = this;
       if (this.chooseType.length == 0 || this.chooseDevice.length == 0) {
         that.$message.error(`请选择类型或器械`);
         return;
       }
-      if (this.details.length == 0) {
-        that.$message.error(`请添加动作`);
-        return;
-      }
-      //判断是否存在相同动作，相同部位。
-      // var sameActionAndPart = false;
-      // for (var i = 0; i < this.details.length; i++) {
-      //   var item = this.details[i];
-      //   for (var j = 0; j < this.details.length; j++) {
-      //     var item2 = this.details[j];
-      //     if (item2 != item && item.type == item2.type) {
-      //       item.sec_category.forEach(v => {
-      //         if (item2.sec_category.indexOf(v) > -1) {
-      //           sameActionAndPart = true;
-      //         }
-      //       });
-      //       break;
-      //     }
-      //   }
-      //   if (sameActionAndPart) {
-      //     that.$message.error(`存在相同动作和部位，请检查`);
-      //     break;
-      //   }
+      // if (this.details.length == 0) {
+      //   that.$message.error(`请添加动作`);
+      //   return;
       // }
+
+      //判断是否存在相同动作，相同部位。
+      var sameActionAndPart = false;
+      for (var i = 0; i < this.details.length; i++) {
+        var item = this.details[i];
+        if (!item.sec_category) {
+          item.sec_category = [];
+        }
+        for (var j = 0; j < this.details.length; j++) {
+          var item2 = this.details[j];
+          if (!item2.sec_category) {
+            item2.sec_category = [];
+          }
+          if (item2 != item && item.type == item2.type) {
+            item.sec_category.forEach(v => {
+              item2.sec_category.forEach(v2 => {
+                if (v != v2 && v.name == v2.name) {
+                  sameActionAndPart = true;
+                }
+              });
+            });
+          }
+        }
+        if (sameActionAndPart) {
+          that.$message.error(`存在相同动作和部位，请检查`);
+          break;
+        }
+      }
+
       for (var i = 0; i < this.details.length; i++) {
         var d = this.details[i];
         d.category = this.chooseType;
@@ -441,6 +553,7 @@ export default {
           that.$message.error(`请完善动作信息`);
           return;
         }
+
         //合并部位 status:1 新增 0 删除
         var originParts = [];
         if (!d.sec_category) {
@@ -461,6 +574,18 @@ export default {
           });
         }
         //合并部位end
+
+        //删除所有部位,默认为”其他“
+        var hasPart = false;
+        d.sec_category.forEach(v => {
+          if (v.status == "1") {
+            hasPart = true;
+          }
+        });
+        if (!hasPart) {
+          //没有选择部位时，默认为”其他“
+          d.sec_category.push({ id: "", status: "1", name: "其他" });
+        }
       }
 
       var postData = this.details;
@@ -639,6 +764,7 @@ a {
   margin: 50px auto 0;
   padding: 0 30px 0;
 }
+
 .unbindbox {
   width: 500px;
   height: 300px;
@@ -820,6 +946,7 @@ a {
   font-size: 12px;
   font-family: PingFangSC-Medium;
   font-weight: 500;
+  text-align: center;
   color: #fff;
   line-height: 40px;
   top: 12px;
@@ -827,7 +954,6 @@ a {
   background: #ff6464;
   font-weight: 500;
   border-radius: 2px;
-  text-align: center;
   cursor: pointer;
 }
 .bdta .inuu {
@@ -915,7 +1041,7 @@ thead tr th:last-child .cell {
   width: 100% !important;
 }
 .xcbox .el-input__inner,
-.ccbox .el-input__inner {
+.ccbox .el-input__inner { 
   position: absolute;
   top: 0;
   left: 0;
@@ -1067,8 +1193,8 @@ thead tr th:last-child .cell {
   font-weight: 500;
   letter-spacing: 0px;
   border-radius: 0.05rem;
-  position: absolute;
-  left: 0.1rem;
+  /* position: absolute;
+  left: 0.1rem; */
 }
 .dd {
   background: #3c4456;
@@ -1138,6 +1264,7 @@ thead tr th:last-child .cell {
 .chooseDevice {
   width: 350px;
   height: 60px;
+  background:rgba(247, 247, 247, 1);
   border: 1px solid rgba(225, 227, 232, 1);
   position: relative;
 }
@@ -1332,7 +1459,8 @@ thead tr th:last-child .cell {
   text-indent: 1.173rem;
   cursor: pointer;
 }
-.subTitle {
+.
+ {
   width: 3rem;
   height: 0.9rem;
   line-height: 0.9rem;
@@ -1366,5 +1494,82 @@ thead tr th:last-child .cell {
   width: 100%;
   height: 470px;
   margin: 0 auto;
+}
+.picDelete {
+  color: darkblue;
+  font-size: 12px;
+}
+
+.addbox {
+  width: 500px;
+  height: 300px;
+  margin: 50px auto 0;
+  padding: 0 30px 0;
+  background: #fff;
+}
+.addbox-head {
+  width: 100%;
+  height: 30px;
+  position: relative;
+  padding-top: 15px;
+  font-size: 14px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+} 
+.addbox-head span:nth-of-type(1) { 
+  width: 40px;
+  height: 4px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background: #ffc001;
+}
+.addbox-head span:nth-of-type(2) {
+position: absolute;
+right: 0;
+}
+.addbox-content {
+  width: 100%;
+  height: 170px; 
+  padding-top: 15px;
+} 
+.addbox-content-item {
+  position: relative;
+  padding: 15px;
+  border: 1px solid rgba(198, 204, 220, 1);
+}
+.addbox-content-item div {  
+  width:100%;
+  margin-top:5px;
+  margin-bottom:5px;
+} 
+.addbox-footer {
+  width: 100%;
+  height: 70px;  
+  padding-top: 10px;
+}
+.addbox-footer span { 
+  font-size: 12px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: center;
+  line-height: 40px;
+  float: left;
+  height:40px; 
+  color: #000; 
+}
+.addbox-footer span:nth-of-type(1) {
+  width: 80px;
+  border: 1px solid rgba(198, 204, 220, 1);
+  margin-left: 300px;
+}
+.addbox-footer span:nth-of-type(2) {
+  width: 100px; 
+  background: rgba(255, 192, 1, 1); 
+  margin-left: 10px;
+}
+input {
+   border: 0px;
+   padding: 0;
 }
 </style>
