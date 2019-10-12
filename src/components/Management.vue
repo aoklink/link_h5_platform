@@ -95,7 +95,7 @@ export default {
         async handleEdit (row) {
             this.dialogAddEdit = true;
             this.dialogIsEdit = true;
-            this.editGymId = row.id;
+            this.editGymId = parseFloat(row.id);
         },
         onAdd () {
             this.dialogAddEdit = true;
