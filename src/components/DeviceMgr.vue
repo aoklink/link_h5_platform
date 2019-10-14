@@ -1380,7 +1380,7 @@ thead tr th:last-child .cell {
   text-indent: 1.173rem;
   cursor: pointer;
 }
-. {
+.subTitle {
   width: 3rem;
   height: 0.9rem;
   line-height: 0.9rem;
