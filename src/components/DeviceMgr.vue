@@ -15,14 +15,14 @@
         </div>
       </div>
       <div class="container">
-        <el-table ref="multipleTable" :data="tableData" border class="table">
+        <el-table ref="multipleTable" :data="learnList" border class="table">
           <el-table-column prop="number" label="编号" style="color: red !important" />
           <el-table-column prop="device_name" label="器械名称" style="color: red !important" />
 
           <el-table-column prop="category" label="器械类型" style="color: red !important" />
           <el-table-column prop="code" label="字典码">
             <template slot-scope="scope">
-              <div type="text">{{ tableData[scope.$index].code }}</div>
+              <div type="text">{{ learnList[scope.$index].code }}</div>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" prop="status" width="200">
@@ -30,13 +30,13 @@
               <div
                 class="cc"
                 type="text"
-                @click="editAction(scope.$index,tableData[scope.$index].id)"
-              > {{ tableData[scope.$index].count==0?"添加教程":"编辑教程" }} </div>
+                @click="editAction(scope.$index,learnList[scope.$index].id)"
+              >{{ learnList[scope.$index].count==0?"添加教程":"编辑教程" }}</div>
               <!-- <div
                 class="ee"
                 type="text"
-                @click="deleteAction(scope.$index, scope.row, tableData[scope.$index].id)"
-              >删除</div> -->
+                @click="deleteAction(scope.$index, scope.row, learnList[scope.$index].id)"
+              >删除</div>-->
             </template>
           </el-table-column>
         </el-table>
@@ -65,21 +65,21 @@
             </div>
           </div>
           <div class="addbox-content">
-            <div class="addbox-content-item"> 
-              <div>器械类型</div> 
-              <div class="">
-                <el-select v-model="chooseType" placeholder="选择类型" >
-                  <el-option 
-                    v-for="item in diclist"
+            <div class="addbox-content-item">
+              <div>器械类型</div>
+              <div class>
+                <el-select v-model="chooseType" placeholder="选择类型">
+                  <el-option
+                    v-for="item in deviceList"
                     :key="item.category"
                     v-model="item.category"
                     :label="item.category"
                     :value="item.category"
                   />
                 </el-select>
-              </div> 
-              <div class="">器械名称</div> 
-              <div class="">
+              </div>
+              <div class>器械名称</div>
+              <div class>
                 <input
                   type="text"
                   v-model="chooseDevice"
@@ -91,7 +91,7 @@
           </div>
           <div class="addbox-footer">
             <span @click="showAdd=false">取消</span>
-            <span @click="saveDeviceAction">添加</span>
+            <span @click="addDeviceAction">添加</span>
           </div>
         </div>
       </div>
@@ -114,14 +114,12 @@
           </div>
 
           <div class="bdmd">
-            <div class="
-            ">通用信息</div>
+            <div class>通用信息</div>
             <div class="bdta" style="border:0px;">
               <div class="chooseDevice">
                 <span class="hnha">器械类型</span>
                 <div class="xcbox">
-                
-                <span class="">{{chooseType}}</span>
+                  <span class>{{chooseType}}</span>
                   <!-- <el-select
                     v-model="chooseType"
                     placeholder="选择类型"
@@ -129,20 +127,19 @@
                     v-bind:disabled="!isAdd"
                   >
                     <el-option
-                      v-for="item in diclist"
+                      v-for="item in deviceList"
                       :key="item.category"
                       v-model="item.category"
                       :label="item.category"
                       :value="item.category"
                     />
-                  </el-select> -->
+                  </el-select>-->
                 </div>
               </div>
               <div class="chooseDevice">
                 <span class="hnha">器械名称</span>
                 <div class="xcbox">
-
-                <span class="">{{chooseDevice}}</span>
+                  <span class>{{chooseDevice}}</span>
                   <!-- <el-select
                     v-model="chooseDevice"
                     placeholder="选择器械"
@@ -150,12 +147,11 @@
                     @change="chooseDeviceFunc"
                   >
                     <el-option v-for="item in devicelist" :key="item" :label="item" :value="item" />
-                  </el-select> -->
+                  </el-select>-->
                 </div>
               </div>
             </div>
-            <span class="
-            ">内容信息</span>
+            <span class>内容信息</span>
             <div v-for="action in details" class="actionContent">
               <div class="addContent">
                 <div
@@ -164,12 +160,11 @@
                   <img
                     style="width: 100%; "
                     src="../assets/dele.png"
-                    @click="delActionNameAction(action)"
+                    @click="delActionName(action)"
                   />
                 </div>
                 <div class="addContentLeft">
-                  <span class="
-                  ">训练部位</span>
+                  <span class>训练部位</span>
                   <template>
                     <el-checkbox-group v-model="action.parts">
                       <el-checkbox
@@ -181,8 +176,7 @@
                     </el-checkbox-group>
                   </template>
                   <div class="bordered" style="height:70px">
-                    <span class="
-                    ">动作名称</span>
+                    <span class>动作名称</span>
                     <input
                       type="text"
                       v-model="action.type"
@@ -191,8 +185,7 @@
                     />
                   </div>
                   <div class="bordered" style="height:100px">
-                    <span class="
-                    ">锻炼建议</span>
+                    <span class>锻炼建议</span>
                     <textarea
                       type="text"
                       v-model="action.recom_text"
@@ -201,8 +194,7 @@
                     />
                   </div>
                   <div class="bordered" style="height:110px">
-                    <span class="
-                    ">恢复建议</span>
+                    <span class>恢复建议</span>
                     <textarea
                       type="text"
                       v-model="action.recover_text"
@@ -212,14 +204,9 @@
                   </div>
                 </div>
                 <div class="addContentRight" v-for="video in action.video">
-                  <span class="
-                  ">视频封面</span>
+                  <span class>视频封面</span>
                   <upload-img v-model="video.video_pic" @error="onUploadImgError" />
-                  <span
-                    class="picDelete"
-                    @click="removeVideoPicture(video)"
-                    v-if="video.video_pic"
-                  >删除图片</span>
+                  <span class="picDelete" @click="delPicture(video)" v-if="video.video_pic">删除图片</span>
                   <div>{{action.video_url}}</div>
                   <div style="position: relative;">
                     <div class="bordered videoUrl">
@@ -282,22 +269,31 @@
 </template>
 
 <script>
+import {
+  LIST_LEARN,
+  LIST_DEVICE,
+  GET_LEARN,
+  ADD_LEARN,
+  UPDATE_LEARN,
+  ADD_DEVICE
+} from "../store/action_type.js";
+import { mapState } from "vuex";
+import { Promise } from "q";
 import global from "../components/Global";
 import UploadImg from "./UploadImg.vue";
 export default {
-  name: "BaseXy",
+  name: "DeviceMgr",
   components: {
     UploadImg
   },
   data() {
     return {
-      tableData: [],
       cur_page: 1,
       showEdit: false,
       showDelete: false,
       showAdd: false,
       currentItem: {},
-      diclist: [],
+      // diclist: [],
       devicelist: [],
       isAdd: false,
       form: {},
@@ -326,58 +322,35 @@ export default {
       canAdd: false //类型器械是否允许添加动作
     };
   },
-  computed: {},
+  computed: {
+    // ...mapState(["learnList"])
+    ...mapState({ learnList: "learnList", deviceList: "deviceList" })
+  },
   created() {
-    global.gym_name = this.$route.query.gym;
-    this.getDic();
-    this.getData();
+    this.$store.dispatch(LIST_DEVICE);
+    let datt = {
+      page_num: this.cur_page,
+      page_size: 100
+    };
+    this.$store.dispatch(LIST_LEARN, datt);
   },
   mounted() {},
-  updated() {
-    //console.log(this.del_list);
-  },
+  updated() {},
   methods: {
+    chooseItem(model, item) {
+      console.log(model, item);
+    },
+    delPicture(item) {
+      //删除图片
+      item.video_pic = "";
+    },
     async onUploadImgError(msg) {
       this.$notify.error({
         title: "图片上传失败",
         message: msg
       });
     },
-    chooseItem(model, item) {
-      console.log(model, item);
-    },
-    chooseTypeFunc(item) {
-      this.chooseType = item;
-      this.chooseDevice = "";
-      for (var i = 0; i < this.diclist.length; i++) {
-        if (this.diclist[i].category == item) {
-          this.devicelist = this.diclist[i].device_name;
-          break;
-        }
-      }
-    },
-    chooseDeviceFunc(item) {
-      console.log("chooseDeviceFunc");
-      var that = this;
-      var datt = {
-        category: this.chooseType,
-        device_name: item
-      };
-      this.client.request(datt, "equipment/config/exist").then(res => {
-        if (res.data.code == 200) {
-          that.canAdd = !res.data.data;
-        } else {
-        }
-        if (!that.canAdd) {
-          that.$message.error("已添加动作，请转至列表编辑");
-        }
-      });
-    },
-    removeVideoPicture(item) {
-      //删除图片
-      item.video_pic = "";
-    },
-    delActionNameAction(item) {
+    delActionName(item) {
       //单个动作删除
       var index = this.details.indexOf(item);
       if (index > -1) {
@@ -395,39 +368,16 @@ export default {
       this.cur_page = val;
       this.getData();
     },
-    getDic() {
-      this.client.request({}, "equipment/config/category/list").then(res => {
-        this.diclist = res.data.data;
-      });
-    },
-    getData() {
-      let datt = {
-        page_num: this.cur_page,
-        page_size: 100
-      };
-      this.client.request(datt, "equipment/config/list").then(res => {
-        var data = res.data.data.list;
-        data.sort(function(a, b) {
-          return a.code - b.code;
-        });
-        var i = 1; //自增序号
-        data.forEach(v => {
-          v.number = i++;
-        });
-        this.tableData = data;
-      });
-    },
     editAction(index, id) {
       //列表-编辑
       this.isAdd = false;
       this.showEdit = true;
       this.deleteDetails = [];
       this.idx = index;
-      const item = this.tableData[index];
+      const item = this.learnList[index];
 
       this.idt = item.id;
       this.chooseType = item.category;
-      this.chooseTypeFunc(this.chooseType);
       this.chooseDevice = item.device_name;
 
       this.details = [item];
@@ -436,29 +386,29 @@ export default {
         device_name: item.device_name
       };
       var that = this;
-      this.client.request(datt, "equipment/config/get").then(res => {
-        if (res.data.code == 200) {
-          var data = res.data.data;
-          var details = data.detail;
-          for (var i = 0; i < details.length; i++) {
-            var d = details[i];
-            d.parts = [];
-            if (d.sec_category) {
-              d.sec_category.forEach(v => {
-                if (v.name == "其他") {
-                } else {
-                  d.parts.push(v.name); //已选部位
-                }
-              });
-            }
-            if (!d.video || d.video.length == 0) {
-              d.video = [{ video_title: "" }];
-            }
-          }
-          that.details = details;
-        } else {
+      this.$store.dispatch(GET_LEARN, datt).then(result => {
+        //console.log("get item ", result);
+        if (!result.success) {
           that.$message.error(`操作失败`);
+          return;
         }
+        var details = result.data.detail;
+        for (var i = 0; i < details.length; i++) {
+          var d = details[i];
+          d.parts = [];
+          if (d.sec_category) {
+            d.sec_category.forEach(v => {
+              if (v.name == "其他") {
+              } else {
+                d.parts.push(v.name); //已选部位
+              }
+            });
+          }
+          if (!d.video || d.video.length == 0) {
+            d.video = [{ video_title: "" }];
+          }
+        }
+        that.details = details;
       });
     },
     addActionName() {
@@ -466,23 +416,12 @@ export default {
       this.details.push({ parts: [], video: [{ video_title: "" }] });
     },
     showAddDeviceView() {
-      //添加教程
+      //添加器械
       this.showAdd = true;
       this.chooseType = "";
       this.chooseDevice = "";
     },
-    showAddLearnView() {
-      //添加教程
-      this.devicelist = [];
-      this.isAdd = true;
-      this.deleteDetails = [];
-      this.showEdit = true;
-      this.idt = "";
-      this.chooseType = "";
-      this.chooseDevice = "";
-      this.details = [{ parts: [], video: [{ video_title: "" }] }];
-    },
-    saveDeviceAction() {
+    addDeviceAction() {
       //添加教程
       var that = this;
       if (this.chooseType.length == 0 || this.chooseDevice.length == 0) {
@@ -493,15 +432,19 @@ export default {
         category: this.chooseType,
         device_name: this.chooseDevice
       };
-      this.client.request(datt, "equipment/config/device/add").then(res => {
-        if (res.data.code == 200) {
+      this.$store.dispatch(ADD_DEVICE, datt).then(result => {
+        console.log(result);
+        if (result.success) {
           that.showAdd = false;
           that.$message.success(`操作成功`);
-          that.getDic();
-          that.getData();
+          this.$store.dispatch(LIST_DEVICE); //todo: 分页
+          let datt = {
+            page_num: this.cur_page,
+            page_size: 100
+          };
+          this.$store.dispatch(LIST_LEARN, datt);
         } else {
-          console.log('msg: ',res.data.msg);
-          that.$message.error(res.data.msg || `操作失败`);
+          that.$message.error(result.message || `操作失败`);
         }
       });
     },
@@ -611,42 +554,20 @@ export default {
       } else {
         datt = postData;
       }
-      let method = "equipment/config/" + (that.isAdd ? "add" : "update");
-      this.client.request(datt, method).then(res => {
-        if (res.data.code == 200) {
+      var method = that.isAdd ? ADD_LEARN : UPDATE_LEARN;
+      this.$store.dispatch(method, datt).then(result => {
+        if (result.success) {
           that.deleteDetails = [];
-          that.$set(that.tableData, that.idx, that.form);
+          that.$set(that.learnList, that.idx, that.form);
           that.showEdit = false;
           that.$message.success(`操作成功`);
-          that.getData();
-        } else {
-          that.$message.error(`操作失败`);
-        }
-      });
-    },
-    deleteAction(index, row, id) {
-      this.idt = id;
-      this.idx = index;
-      const item = this.tableData[index];
-      this.form = {
-        device_name: item.device_name,
-        category: item.category,
-        id: item.id
-      };
-      this.showDelete = true;
-    },
-    deleteRow() {
-      var that = this;
-      var datt = {
-        category: this.form.category,
-        device_name: this.form.device_name
-      };
-      this.client.request(datt, "equipment/config/del").then(res => {
-        if (res.data.code == 200) {
-          that.$set(that.tableData, that.idx, that.form);
-          that.showDelete = false;
-          that.$message.success(`操作成功`);
-          that.getData();
+
+          let datt = {
+            //todo: 分页
+            page_num: this.cur_page,
+            page_size: 100
+          };
+          this.$store.dispatch(LIST_LEARN, datt);
         } else {
           that.$message.error(`操作失败`);
         }
@@ -1041,7 +962,7 @@ thead tr th:last-child .cell {
   width: 100% !important;
 }
 .xcbox .el-input__inner,
-.ccbox .el-input__inner { 
+.ccbox .el-input__inner {
   position: absolute;
   top: 0;
   left: 0;
@@ -1264,7 +1185,7 @@ thead tr th:last-child .cell {
 .chooseDevice {
   width: 350px;
   height: 60px;
-  background:rgba(247, 247, 247, 1);
+  background: rgba(247, 247, 247, 1);
   border: 1px solid rgba(225, 227, 232, 1);
   position: relative;
 }
@@ -1459,8 +1380,7 @@ thead tr th:last-child .cell {
   text-indent: 1.173rem;
   cursor: pointer;
 }
-.
- {
+. {
   width: 3rem;
   height: 0.9rem;
   line-height: 0.9rem;
@@ -1515,8 +1435,8 @@ thead tr th:last-child .cell {
   font-size: 14px;
   font-family: PingFangSC-Medium;
   font-weight: 500;
-} 
-.addbox-head span:nth-of-type(1) { 
+}
+.addbox-head span:nth-of-type(1) {
   width: 40px;
   height: 4px;
   position: absolute;
@@ -1525,38 +1445,38 @@ thead tr th:last-child .cell {
   background: #ffc001;
 }
 .addbox-head span:nth-of-type(2) {
-position: absolute;
-right: 0;
+  position: absolute;
+  right: 0;
 }
 .addbox-content {
   width: 100%;
-  height: 170px; 
+  height: 170px;
   padding-top: 15px;
-} 
+}
 .addbox-content-item {
   position: relative;
   padding: 15px;
   border: 1px solid rgba(198, 204, 220, 1);
 }
-.addbox-content-item div {  
-  width:100%;
-  margin-top:5px;
-  margin-bottom:5px;
-} 
+.addbox-content-item div {
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
 .addbox-footer {
   width: 100%;
-  height: 70px;  
+  height: 70px;
   padding-top: 10px;
 }
-.addbox-footer span { 
+.addbox-footer span {
   font-size: 12px;
   font-family: PingFangSC-Medium;
   font-weight: 500;
   text-align: center;
   line-height: 40px;
   float: left;
-  height:40px; 
-  color: #000; 
+  height: 40px;
+  color: #000;
 }
 .addbox-footer span:nth-of-type(1) {
   width: 80px;
@@ -1564,12 +1484,12 @@ right: 0;
   margin-left: 300px;
 }
 .addbox-footer span:nth-of-type(2) {
-  width: 100px; 
-  background: rgba(255, 192, 1, 1); 
+  width: 100px;
+  background: rgba(255, 192, 1, 1);
   margin-left: 10px;
 }
 input {
-   border: 0px;
-   padding: 0;
+  border: 0px;
+  padding: 0;
 }
 </style>

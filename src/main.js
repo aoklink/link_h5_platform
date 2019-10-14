@@ -2,8 +2,7 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import ElementUI from 'element-ui';
-import tools from './nets/tools';
+import ElementUI from 'element-ui'; 
 import 'element-ui/lib/theme-chalk/index.css';
 import 'normalize.css';
 import './assets/form-item-input.css';
@@ -12,11 +11,10 @@ import './assets/form-upload-img-item.css';
 import axios from 'axios';
 import Qs from 'qs';
 
-axios.defaults.withCredentials=true //让ajax携带cookie
+axios.defaults.withCredentials = true //让ajax携带cookie
 
 Vue.prototype.$axios = axios;
-Vue.prototype.$qs = Qs;
-Vue.use(tools);
+Vue.prototype.$qs = Qs; 
 Vue.use(ElementUI);
 
 Vue.config.productionTip = false;

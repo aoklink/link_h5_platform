@@ -4,7 +4,7 @@ import * as mutationTypes from './mutation_type';
 import * as persistence from './persistence';
 
 export default {
-    async [types.LOGIN] ({
+    async [types.LOGIN]({
         commit
     }, payload) {
         let result = await nets.login(payload);
@@ -15,16 +15,16 @@ export default {
         }
         return result;
     },
-    [types.LOGOUT] ({
+    [types.LOGOUT]({
         commit
     }) {
         commit(mutationTypes.AUTHORIZATION, false);
     },
-    async [types.VERIFY_AUTH] () {
+    async [types.VERIFY_AUTH]() {
         let result = await nets.gymInfoListAll();
         return result;
     },
-    async [types.GET_ALL_GYM_INFO] ({
+    async [types.GET_ALL_GYM_INFO]({
         commit
     }) {
         let result = await nets.gymInfoListAll();
@@ -46,29 +46,29 @@ export default {
         }
         return result;
     },
-    async [types.GET_GYM_INFO] ({commit}, payload) {
+    async [types.GET_GYM_INFO]({ commit }, payload) {
         let result = await nets.gymInfoGet(payload);
         return result;
     },
-    async [types.ADD_GYM] ({dispatch}, payload) {
+    async [types.ADD_GYM]({ dispatch }, payload) {
         let result = await nets.gymInfoAdd(payload);
         if (result.success) {
             dispatch(types.GET_ALL_GYM_INFO);
         }
         return result;
     },
-    async [types.ADD_COASH] ({commit}, payload) {
+    async [types.ADD_COASH]({ commit }, payload) {
         let result = await nets.gymCoachAdd(payload);
         return result;
     },
-    async [types.DELETE_GYM] ({dispatch}, payload) {
+    async [types.DELETE_GYM]({ dispatch }, payload) {
         let result = await nets.gymInfoDelete(payload);
         if (result.success) {
             dispatch(types.GET_ALL_GYM_INFO);
         }
         return result;
     },
-    async [types.GET_COACH_LIST_BY_GYMID] ({commit}, payload) {
+    async [types.GET_COACH_LIST_BY_GYMID]({ commit }, payload) {
         let result = await nets.gymCoachList(payload);
         if (result.success) {
             commit(mutationTypes.MUTATE_COACH_INFO_LIST_SELECTED, result.data);
@@ -78,7 +78,7 @@ export default {
         }
         return result;
     },
-    async [types.GET_CLASS_INFO_LIST_BY_GYMID] ({commit}, payload) {
+    async [types.GET_CLASS_INFO_LIST_BY_GYMID]({ commit }, payload) {
         let result = await nets.gymClassList(payload);
         if (result.success) {
             commit(mutationTypes.MUTATE_CLASS_INFO_LIST_SELECTED, result.data);
@@ -88,7 +88,7 @@ export default {
         }
         return result;
     },
-    async [types.GET_GYM_ADMIN_USER_GET_BIND] ({commit}, payload) {
+    async [types.GET_GYM_ADMIN_USER_GET_BIND]({ commit }, payload) {
         let result = await nets.gymAdminUserBindGet(payload);
         if (result.success) {
             commit(mutationTypes.MUTATE_GYM_ADMIN_INFO_SELECTED, result.data);
@@ -98,25 +98,25 @@ export default {
         }
         return result;
     },
-    async [types.ADD_GYM_ADMIN] (_, payload) {
+    async [types.ADD_GYM_ADMIN](_, payload) {
         let result = await nets.gymAdminUserAdd(payload);
         return result;
     },
-    async [types.GET_OSS_SESSION] ({commit}, payload) {
+    async [types.GET_OSS_SESSION]({ commit }, payload) {
         let result = await nets.getOSSSession(payload);
         if (result.success) {
             commit(mutationTypes.MUTATE_OSS_SESSION, result.data);
         }
         return result;
     },
-    async [types.ADD_CLASS_INFO] ({dispatch}, payload) {
+    async [types.ADD_CLASS_INFO]({ dispatch }, payload) {
         let result = await nets.gymClassAdd(payload);
         if (result.success) {
-            dispatch(types.GET_CLASS_INFO_LIST_BY_GYMID, {gym_id: result.data.gym_id});
+            dispatch(types.GET_CLASS_INFO_LIST_BY_GYMID, { gym_id: result.data.gym_id });
         }
         return result;
     },
-    async [types.GET_CLASS_INFO_BY_ID] ({commit}, payload) {
+    async [types.GET_CLASS_INFO_BY_ID]({ commit }, payload) {
         let result = await nets.gymClassGet(payload);
         if (result.success) {
             commit(mutationTypes.MUTATE_CLASS_INFO_SELECTED, {
@@ -130,38 +130,77 @@ export default {
         }
         return result;
     },
-    async [types.UPDATE_GYM] ({dispatch}, payload) {
+    async [types.UPDATE_GYM]({ dispatch }, payload) {
         let result = await nets.gymInfoUpdate(payload);
         if (result.success) {
             dispatch(types.GET_ALL_GYM_INFO);
         }
         return result;
     },
-    async [types.UPDATE_CLASS_INFO_BY_ID] ({dispatch}, payload) {
+    async [types.UPDATE_CLASS_INFO_BY_ID]({ dispatch }, payload) {
         let result = await nets.gymClassUpdate(payload);
         if (result.success) {
-            dispatch(types.GET_CLASS_INFO_LIST_BY_GYMID, {gym_id: payload.gym_id});
+            dispatch(types.GET_CLASS_INFO_LIST_BY_GYMID, { gym_id: payload.gym_id });
         }
         return result;
     },
-    async [types.UPDATE_GYM_ADMIN_USER] (_, payload) {
+    async [types.UPDATE_GYM_ADMIN_USER](_, payload) {
         let result = await nets.gymAdminUserUpdate(payload);
         return result;
     },
-    async [types.DELETE_GYM_COACH_BY_ID] (_, payload) {
+    async [types.DELETE_GYM_COACH_BY_ID](_, payload) {
         let result = await nets.gymCoachDelete(payload);
         return result;
     },
-    async [types.DELETE_CLASS_BY_ID] (_, payload) {
+    async [types.DELETE_CLASS_BY_ID](_, payload) {
         let result = await nets.gymClassDelete(payload);
         return result;
     },
-    async [types.UPDATE_GYM_COACH_BY_ID] (_, payload) {
+    async [types.UPDATE_GYM_COACH_BY_ID](_, payload) {
         let result = await nets.gymCoachUpdate(payload);
         return result;
     },
-    async [types.LIST_GYM_PLAY_COACH] (_, payload) {
+    async [types.LIST_GYM_PLAY_COACH](_, payload) {
         let result = await nets.gymPlayCoachList(payload);
+        return result;
+    },
+    // 教程管理
+    async [types.ADD_DEVICE](_, payload) {
+        let result = await nets.deviceAdd(payload);
+        return result;
+    },
+    async [types.LIST_LEARN]({ commit }, payload) {
+        let result = await nets.learnList(payload);
+        var data = result.data.list || {};
+        if (result.success) {
+            data.sort(function (a, b) {
+                return a.code - b.code;
+            });
+            var i = 1; // 自增序号
+            data.forEach(v => {
+                v.number = i++;
+            });
+        }
+        commit(mutationTypes.MUTATE_LEARN_LIST, result.data.list);
+        return result;
+    },
+    async [types.GET_LEARN]({ dispatch }, payload) {
+        let result = await nets.learnItem(payload);
+        return result;
+    },
+    async [types.ADD_LEARN](_, payload) {
+        let result = await nets.learnAdd(payload);
+        return result;
+    },
+    async [types.UPDATE_LEARN](_, payload) {
+        let result = await nets.learnUpdate(payload);
+        return result;
+    },
+    async [types.LIST_DEVICE]({ commit }, payload) {
+        let result = await nets.deviceList(payload);
+        if (result.success) {
+            commit(mutationTypes.MUTATE_DEVICE_LIST, result.data);
+        }
         return result;
     }
 };

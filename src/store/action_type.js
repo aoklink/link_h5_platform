@@ -25,3 +25,11 @@ export const UPDATE_GYM_ADMIN_USER = 'UPDATE_GYM_ADMIN_USER';
 
 export const GET_OSS_SESSION = 'GET_OSS_SESSION';
 export const LIST_GYM_PLAY_COACH = 'LIST_GYM_PLAY_COACH';
+
+// 教程管理
+export const ADD_DEVICE = 'ADD_DEVICE';
+export const LIST_LEARN = 'LIST_LEARN';
+export const GET_LEARN = 'GET_LEARN';
+export const ADD_LEARN = 'ADD_LEARN';
+export const UPDATE_LEARN = 'UPDATE_LEARN';
+export const LIST_DEVICE = 'LIST_DEVICE';

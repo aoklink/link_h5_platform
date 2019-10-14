@@ -4,6 +4,8 @@
  */
 export function wrapAjaxToPromise (p) {
     return p.then((response) => {
+        // console.log("reponse ",response.data.code, response.data.data)
+        let msg = response.data.message || response.data.msg
         if (response.data.code == 200) {
             return {
                 success: true,
@@ -12,8 +14,8 @@ export function wrapAjaxToPromise (p) {
         }
         return {
             success: false,
-            data: response.data.message,
-            message: response.data.message
+            data: msg,
+            message: msg
         };
     }, (err) => {
         console.log(err);

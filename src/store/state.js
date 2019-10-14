@@ -12,7 +12,9 @@ export const initVal = {
     coachInfoListSelected: [],
     classInfoListSelected: [],
     classInfoSelected: {},
-    OSSsession: {}
+    OSSsession: {},
+    learnList: {},
+    deviceList: {}
 };
 
 export default {

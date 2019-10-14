@@ -4,11 +4,36 @@ import qs from 'qs';
 import {
     wrapAjaxToPromise
 } from '../utils';
+import router from '../router';
 
 const axios = http.create({
     timeout: 15000,
     withCredentials: true
 });
+
+http.interceptors.response.use(
+    function (response) {
+        const res = response.data;
+        if (res.code !== 200) {
+            let mes;
+            switch (res.code) {
+            case 401:
+                mes = '登录超时，请重新登录';
+                router.push('/Login');
+                break;
+            }
+            mes = mes || res.message;
+            return Promise.reject(mes);
+        } else {
+            return response;
+        }
+    },
+    error => {
+        console.log('err' + error);// for debug
+        return Promise.reject(error.message);
+    }
+);
+
 export function getOSSSession (payload) {
     return wrapAjaxToPromise(http.create({timeout: 15000}).get(api.GET_OSS_SESSION).then(res => {
         res.data.data = {...res.data};
@@ -198,4 +223,23 @@ export function gymInfoTestList (payload) {
 // }
 export function gymPlayCoachList (payload) {
     return wrapAjaxToPromise(axios.post(api.GYM_PLAY_COACH_LIST, payload));
+}
+// 教程管理
+export function deviceAdd (payload) {
+    return wrapAjaxToPromise(axios.post(api.DEVICE_ADD, payload));
+}
+export function learnList (payload) {
+    return wrapAjaxToPromise(axios.post(api.LEARN_LIST, payload));
+}
+export function learnItem (payload) {
+    return wrapAjaxToPromise(axios.post(api.LEARN_ITEM, payload));
+}
+export function learnAdd (payload) {
+    return wrapAjaxToPromise(axios.post(api.LEARN_ADD, payload));
+}
+export function learnUpdate (payload) {
+    return wrapAjaxToPromise(axios.post(api.LEARN_UPDATE, payload));
+}
+export function deviceList (payload) {
+    return wrapAjaxToPromise(axios.post(api.DEVICE_LIST, payload));
 }

@@ -2,6 +2,7 @@
 // const PREFIX = process.env.NODE_ENV === 'production' ? 'http://bg.linkfeeling.cn' : 'http://bg.linkfeeling.cn';
 export const PREFIX = process.env.NODE_ENV === 'production' ? 'http://test.linkfeeling.cn' : 'http://test.linkfeeling.cn';
 
+const LINKAPI = `${PREFIX}/api/platform/link`;
 export const LOGIN = `${PREFIX}/api/account/platform/login`;
 export const GET_OSS_SESSION = `http://oss.linkfeeling.cn/access_callback`;
 
@@ -51,3 +52,11 @@ export const GYM_INFO_DELETE = `${PREFIX}/api/platform/gym_info/delete`;
 export const GYM_INFO_TEST_LIST = `${PREFIX}/api/platform/web/application/info/list`;
 // export const GYM_INFO_LIST_ALL = `${PREFIX}/api/platform/gym_info/list_all`;
 export const GYM_PLAY_COACH_LIST = `${PREFIX}/api/platform/web/application/info/list`;
+// 教程管理
+export const DEVICE_ADD = `${LINKAPI}/equipment/config/device/add`;
+export const DEVICE_LIST = `${LINKAPI}/equipment/config/category/list`;
+export const LEARN_LIST = `${LINKAPI}/equipment/config/list`;
+export const LEARN_ITEM = `${LINKAPI}/equipment/config/get`;
+export const LEARN_ADD = `${LINKAPI}/equipment/config/add`;
+export const LEARN_UPDATE = `${LINKAPI}/equipment/config/update`;
+

@@ -50,7 +50,7 @@ export default {
                 {path: '/ShopSensor', label: '传感器管理', kk: 1, gg: true, vv: 1},
                 {path: '/ShopBind', label: '手环管理', kk: 1, gg: true, vv: 1},
                 {path: '/ShopTest', label: '试用管理', kk: 1, gg: true, vv: 0, img: require('../assets/icon1.png')},
-                {path: '/DeviceMgr', label: '器械管理', kk: 1, gg: true, vv: 0, img: require('../assets/icon1.png')}
+                {path: '/DeviceMgr', label: '器械管理', kk: 1, gg: true, vv: 0, img: require('../assets/device.png')}
             ],
             ind: '0',
             hidden: 'false'
