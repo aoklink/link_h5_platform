@@ -375,6 +375,7 @@ export default {
       this.deleteDetails = [];
       this.idx = index;
       const item = this.learnList[index];
+      this.form = item
 
       this.idt = item.id;
       this.chooseType = item.category;
@@ -537,7 +538,8 @@ export default {
         postData.push(item);
       });
       var datt = {};
-      if (this.isAdd) {
+      var isAdd = that.form.count == 0
+      if (isAdd) {
         //添加时，sec_category = ”肩部1，肩部2，肩部3“
         postData.forEach(d => {
           var partsNames = "";
@@ -554,7 +556,7 @@ export default {
       } else {
         datt = postData;
       }
-      var method = that.isAdd ? ADD_LEARN : UPDATE_LEARN;
+      var method = isAdd ? ADD_LEARN : UPDATE_LEARN;
       this.$store.dispatch(method, datt).then(result => {
         if (result.success) {
           that.deleteDetails = [];
