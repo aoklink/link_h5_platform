@@ -144,6 +144,12 @@
                         </div>
                     </div>
                     <div class="bdmd">
+                           <div class="bdta bdtb">
+                            <span class="hnha">显示名称</span>
+                            <input v-model="form.name" class="inuu" type="text"
+                                   placeholder="请输入名称（用于app显示）"
+                            >
+                        </div>
                         <div class="bdta">
                             <span class="hnha">器械选择</span>
                             <div class="xcbox">
@@ -243,6 +249,12 @@
                         </div>
                     </div>
                     <div class="bdmd">
+                           <div class="bdta bdtb">
+                            <span class="hnha">显示名称</span>
+                            <input v-model="form.name" class="inuu" type="text"
+                                   placeholder="请输入名称（用于app显示）"
+                            >
+                        </div>
                         <div class="bdta">
                             <span class="hnha">器械选择</span>
                             <div class="xcbox">
@@ -471,7 +483,8 @@ export default {
                 cy: '',
                 dx: '',
                 dy: '',
-                txt: ''
+                txt: '',
+                name: ''
             },
             idx: -1,
             diclist: [],
@@ -494,6 +507,7 @@ export default {
     },
     methods: {
         initData () {
+            this.form.name = '';
             this.form.ax = '';
             this.form.ay = '';
             this.form.bx = '';
@@ -507,7 +521,7 @@ export default {
                 gym_name: global.gym_name || localStorage.getItem('gym_name'),
                 page: this.cur_page
             };
-            this.$axios.post(this.localhost + '/api/platform/link/coordinate/dic_data', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
+            this.$axios.post(this.localhost + '/api/platform/link/equipment/config/category/list', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
                 .then((res) => {
                     if (res.data.code == 200) {
                         this.diclist = res.data.data;
@@ -615,6 +629,7 @@ export default {
                 four_cdn_x: this.form.dx,
                 four_cdn_y: this.form.dy,
                 remark: this.form.txt,
+                name: this.form.name,
                 device_category: this.chooseType,
                 device_name: this.chooseDevice,
                 page: this.cur_page,
@@ -653,6 +668,7 @@ export default {
                 four_cdn_x: this.form.dx,
                 four_cdn_y: this.form.dy,
                 remark: this.form.txt,
+                name: this.form.name,
                 device_category: this.chooseType,
                 device_name: this.chooseDevice,
                 bind_time: Date.parse(new Date()),
@@ -764,7 +780,8 @@ export default {
                 cy: item.thr_cdn_y,
                 dx: item.four_cdn_x,
                 dy: item.four_cdn_y,
-                txt: item.remark
+                txt: item.remark,
+                name: item.name,
             };
         },
         tadd () {

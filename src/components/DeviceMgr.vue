@@ -158,7 +158,7 @@
                   style=" position: absolute;  right: 0px; width: 30px; height: 30px; top: 20px;"
                 >
                   <img
-                    style="width: 100%; "
+                    style="width: 100%; cursor: pointer;"
                     src="../assets/dele.png"
                     @click="delActionName(action)"
                   />
@@ -206,7 +206,7 @@
                 <div class="addContentRight" v-for="video in action.video">
                   <span class>视频封面</span>
                   <upload-img v-model="video.video_pic" @error="onUploadImgError" />
-                  <span class="picDelete" @click="delPicture(video)" v-if="video.video_pic">删除图片</span>
+                  <span class="pic-delete" @click="delPicture(video)" v-if="video.video_pic">删除图片</span>
                   <div>{{action.video_url}}</div>
                   <div style="position: relative;">
                     <div class="bordered videoUrl">
@@ -233,7 +233,7 @@
           <div class="bdbt" style="float:left; width: 100%; height: 80px; padding: 20px;">
             <span @click="addActionName">添加动作</span>
             <span @click="showEdit=false">取消</span>
-            <span @click="saveLearnAction" v-if="(isAdd && canAdd) || !isAdd">确定</span>
+            <span style="cursor: pointer;" @click="saveLearnAction" v-if="(isAdd && canAdd) || !isAdd">确定</span>
           </div>
         </div>
       </div>
@@ -1417,9 +1417,10 @@ thead tr th:last-child .cell {
   height: 470px;
   margin: 0 auto;
 }
-.picDelete {
+.pic-delete {
   color: darkblue;
   font-size: 12px;
+  cursor: pointer;
 }
 
 .addbox {
