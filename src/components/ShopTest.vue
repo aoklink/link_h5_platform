@@ -190,8 +190,7 @@ export default {
     name: 'basesensor',
     data () {
         return {
-            localhost: 'http://bg.linkfeeling.cn',
-            localhost: 'http://test.linkfeeling.cn',
+            localhost: global.host,
             // url: './static/vuetable.json',
             url: 'http://bg.linkfeeling.cn/api/platform/bracelet/data',
             oka: 0,

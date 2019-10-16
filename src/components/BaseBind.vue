@@ -279,8 +279,7 @@ export default {
     name: 'Basebind',
     data () {
         return {
-            localhost: 'http://bg.linkfeeling.cn',
-            localhost: 'http://test.linkfeeling.cn',
+            localhost: global.host,
             // url: './static/vuetable.json',
             url: 'http://ll.linkfeeling.cn/api/platform/bracelet/data',
             tableData: [],
