@@ -14,15 +14,26 @@ const axios = http.create({
 http.interceptors.response.use(
     function (response) {
         const res = response.data;
-        if (res.code !== 200) {
+        // if (res.code !== 200) {
+        //     let mes;
+        //     switch (res.code) {
+        //     case 401:
+        //         mes = '登录超时，请重新登录';
+        //         router.push('/Login');
+        //         break;
+        //     }
+        //     mes = mes || res.message;
+        //     return Promise.reject(mes);
+        // } else {
+        //     return response;
+        // }
+        if (res.code == 200) {
+            return response;
+        } else if(res.code == 401){
+            mes = '登录超时，请重新登录';
+            router.push('/Login');
             let mes;
-            switch (res.code) {
-            case 401:
-                mes = '登录超时，请重新登录';
-                router.push('/Login');
-                break;
-            }
-            mes = mes || res.message;
+            mes = mes || res.message || res.msg;
             return Promise.reject(mes);
         } else {
             return response;

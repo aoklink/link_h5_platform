@@ -466,21 +466,17 @@ export default {
                 return;
             }
             console.log(that.tableData)
-            // for(var i=0;i<that.tableData.length;i++){
-            //     if(that.form.phone_num == that.tableData[i].phone_num){
-            //         that.$message.error(`该手机号已绑定手环,请先解绑`);
-            //         return
-            //     }
-            // }
+            console.log(this.localhost + '/api/platform/bracelet/add')
+            
             let datt = {
                 gym_name: global.gym_name || localStorage.getItem("gym_name"),
                 bracelet_id: this.form.bbid,
                 uwb_id: this.form.uwb_id,
                 page: this.cur_page
             };
-            this.$axios.post(this.localhost + '/api/platform/bracelet/add', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
+            that.$axios.post(that.localhost + '/api/platform/bracelet/add', JSON.stringify(datt), {headers: {'Content-Type': 'application/json'}})
                 .then((res) => {
-                    console.log(res.data.code);
+                    console.log(res);
                     if (res.data.code == 200) {
                         that.$set(that.tableData, that.idx, that.form);
                         that.editVisiblep = false;
