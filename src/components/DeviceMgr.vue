@@ -4,7 +4,11 @@
       <div class="crumbs">
         <div class="oo">器械管理</div>
         <div class="celllist">
-          器械配置
+          <div class="search">
+            器械配置 |
+            <input type="text" v-model="keyword" placeholder="搜索" />
+            <div class="search-btn" @click="searchAction">搜索</div>
+          </div>
           <div class="addccb" @click="showAddDeviceView">
             添加器械
             <svg width="14px" height="14px" class="svgg">
@@ -40,14 +44,19 @@
             </template>
           </el-table-column>
         </el-table>
-        <!-- <div class="pagination">
-          <el-pagination
-            background
-            @current-change="handleCurrentChange"
-            layout="prev, pager, next"
-            :total="1000"
-          ></el-pagination>
-        </div>-->
+
+        <div class="page_list">
+          <div class="pagination">
+            <el-pagination
+              background
+              @current-change="handleCurrentChange"
+              layout="prev, pager, next"
+              :total="page_total"
+              :page-size="page_size"
+              :pager-count="5"
+            ></el-pagination>
+          </div>
+        </div>
       </div>
       <!-- 添加器械 -->
       <div v-if="showAdd" class="bindlog">
@@ -230,10 +239,14 @@
               </div>
             </div>
           </div>
-          <div class="bdbt" style="float:left; width: 100%; height: 80px; padding: 20px;">
+          <div class="bdbt">
             <span @click="addActionName">添加动作</span>
             <span @click="showEdit=false">取消</span>
-            <span style="cursor: pointer;" @click="saveLearnAction" v-if="(isAdd && canAdd) || !isAdd">确定</span>
+            <span
+              style="cursor: pointer;"
+              @click="saveLearnAction"
+              v-if="(isAdd && canAdd) || !isAdd"
+            >确定</span>
           </div>
         </div>
       </div>
@@ -288,7 +301,9 @@ export default {
   },
   data() {
     return {
-      cur_page: 1,
+      page_num: 1,
+      page_size: 20,
+      page_total: 0,
       showEdit: false,
       showDelete: false,
       showAdd: false,
@@ -319,7 +334,8 @@ export default {
       remark: "",
       details: [],
       deleteDetails: [],
-      canAdd: false //类型器械是否允许添加动作
+      canAdd: false, //类型器械是否允许添加动作
+      keyword: "" //搜索关键字
     };
   },
   computed: {
@@ -327,16 +343,24 @@ export default {
     ...mapState({ learnList: "learnList", deviceList: "deviceList" })
   },
   created() {
-    this.$store.dispatch(LIST_DEVICE);
-    let datt = {
-      page_num: this.cur_page,
-      page_size: 100
-    };
-    this.$store.dispatch(LIST_LEARN, datt);
+    this.getData();
   },
   mounted() {},
   updated() {},
   methods: {
+    getData() {
+      var that = this;
+      this.$store.dispatch(LIST_DEVICE);
+      let datt = {
+        page_num: this.page_num,
+        page_size: this.page_size
+      };
+      this.$store.dispatch(LIST_LEARN, datt).then(result => {
+        if (result.success) {
+          that.page_total = parseInt(result.data.total);
+        }
+      });
+    },
     chooseItem(model, item) {
       console.log(model, item);
     },
@@ -348,6 +372,20 @@ export default {
       this.$notify.error({
         title: "图片上传失败",
         message: msg
+      });
+    },
+    searchAction() { 
+      var that = this;
+       let datt = {
+        page_num: this.page_num,
+        page_size: this.page_size,
+        device_name: this.keyword
+      };
+      this.$store.dispatch(LIST_LEARN, datt).then(result => {
+        if (result.success) { 
+          that.page_num = 1;
+          that.page_total = parseInt(result.data.total);
+        }
       });
     },
     delActionName(item) {
@@ -365,7 +403,7 @@ export default {
     },
     handleCurrentChange(val) {
       // 分页导航
-      this.cur_page = val;
+      this.page_num = val;
       this.getData();
     },
     editAction(index, id) {
@@ -375,7 +413,7 @@ export default {
       this.deleteDetails = [];
       this.idx = index;
       const item = this.learnList[index];
-      this.form = item
+      this.form = item;
 
       this.idt = item.id;
       this.chooseType = item.category;
@@ -438,12 +476,7 @@ export default {
         if (result.success) {
           that.showAdd = false;
           that.$message.success(`操作成功`);
-          this.$store.dispatch(LIST_DEVICE); //todo: 分页
-          let datt = {
-            page_num: this.cur_page,
-            page_size: 100
-          };
-          this.$store.dispatch(LIST_LEARN, datt);
+          that.getData();
         } else {
           that.$message.error(result.message || `操作失败`);
         }
@@ -538,7 +571,7 @@ export default {
         postData.push(item);
       });
       var datt = {};
-      var isAdd = that.form.count == 0
+      var isAdd = that.form.count == 0;
       if (isAdd) {
         //添加时，sec_category = ”肩部1，肩部2，肩部3“
         postData.forEach(d => {
@@ -565,9 +598,8 @@ export default {
           that.$message.success(`操作成功`);
 
           let datt = {
-            //todo: 分页
-            page_num: this.cur_page,
-            page_size: 100
+            page_num: this.page_num,
+            page_size: this.page_size
           };
           this.$store.dispatch(LIST_LEARN, datt);
         } else {
@@ -582,6 +614,10 @@ export default {
 <style scoped>
 a {
   text-decoration: none;
+}
+.container {
+  height: calc(100% - 106px);
+  overflow: scroll;
 }
 .container .el-table thead {
   color: #5a6286;
@@ -681,7 +717,7 @@ a {
 .bindbox {
   width: 900px;
   height: 90%;
-  overflow: scroll;
+  /* overflow: scroll; */
   box-sizing: border-box;
   background: #fff;
   margin: 50px auto 0;
@@ -762,11 +798,12 @@ a {
   margin: 0 auto;
 }
 .bdmd {
-  height: 100%;
+  height: 65%;
   width: 100%;
   box-sizing: content-box;
   padding: 20px 0 80px;
   position: relative;
+  overflow: scroll;
 }
 .ubdmd {
   height: 130px;
@@ -777,12 +814,13 @@ a {
   border-bottom: 1px solid #e5e7eb;
 }
 .bdbt {
-  height: 70px;
-  width: 350px;
   border-top: 1px solid rgba(229, 231, 235, 1);
-  position: relative;
   bottom: 15px;
   margin: 0px;
+  width: 800px;
+  height: 70px;
+  padding: 10px;
+  position: absolute;
 }
 
 .bdbt span:nth-of-type(1) {
@@ -1153,7 +1191,9 @@ thead tr th:last-child .cell {
 }
 .content {
   background: #f6f7f8;
-  height: 670px;
+  height: 100%;
+  padding-bottom: 75px;
+  box-sizing: border-box;
 }
 .el-table--border th,
 .el-table__fixed-right-patch {
@@ -1221,7 +1261,7 @@ thead tr th:last-child .cell {
   margin-top: 20px;
 }
 .addContentRight {
-  width: calc(50% - 20px);
+  width: calc(50% - 30px);
   height: calc(100% - 20px);
   float: left;
   margin-bottom: 0px;
@@ -1494,5 +1534,48 @@ thead tr th:last-child .cell {
 input {
   border: 0px;
   padding: 0;
+}
+/* 分页 */
+.el-table__body-wrapper {
+  overflow: overlay !important;
+  height: calc(100% - 50px) !important;
+}
+.el-pagination.is-background .btn-next,
+.el-pagination.is-background .btn-prev,
+.el-pagination.is-background .el-pager li {
+  background-color: white !important;
+  margin-top: 12px !important;
+}
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+  color: #fff !important;
+  background: #4f8cff !important;
+}
+.pagination {
+  display: inline-block;
+  position: absolute;
+  bottom: 30px;
+  right: 10px;
+}
+.search {
+  display: inline-block;
+  width: 100%;
+}
+.search input {
+  border: 0;
+  height: 30px;
+  padding: 5px;
+}
+.search-btn {
+  display: inherit;
+  width: 60px;
+  height: 30px;
+  margin: 0 0 0 10px;
+  font-size: 0.35rem;
+
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  line-height: 0.9rem;
+  background: #3c4456;
+  color: #fff;
 }
 </style>

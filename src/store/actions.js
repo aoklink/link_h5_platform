@@ -173,10 +173,11 @@ export default {
         let result = await nets.learnList(payload);
         var data = result.data.list || {};
         if (result.success) {
+            var i = (parseInt(payload.page_num) - 1) * parseInt(payload.page_size) + 1; // 自增序号
             data.sort(function (a, b) {
                 return a.code - b.code;
             });
-            var i = 1; // 自增序号
+            // var i = 1; // 自增序号 
             data.forEach(v => {
                 v.number = i++;
             });
