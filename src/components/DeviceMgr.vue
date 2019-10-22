@@ -377,7 +377,7 @@ export default {
     searchAction() { 
       var that = this;
        let datt = {
-        page_num: this.page_num,
+        page_num: 1,
         page_size: this.page_size,
         device_name: this.keyword
       };
